@@ -231,6 +231,7 @@ namespace ft
 		{
 			if (x._size != y._size)
 				return (0);
+			// remplacer par std::equal
 			for (size_type i = 0; i < x._size; i++)
 			{
 				if (x._memory[i] != y._memory[i])
@@ -242,6 +243,7 @@ namespace ft
     
 
 	/*
+	// quand j'aurais finnis de faire les differentes classes iterators
 	template <class T, class Allocator>
 	bool operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y);
 	template <class T, class Allocator>

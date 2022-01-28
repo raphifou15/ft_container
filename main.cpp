@@ -1,5 +1,7 @@
 #include "stack.hpp"
 #include "vector.hpp"
+#include "lexicographical_compare.hpp"
+#include "iterator.hpp"
 #include <stack>
 #include <vector>
 #include <iostream>
