@@ -5,6 +5,7 @@
 # include <iostream>
 # include <stdexcept>
 # include <sstream>
+# include "iterator.hpp"
 
 namespace ft
 {
@@ -40,16 +41,16 @@ namespace ft
 			// types:
 			typedef typename Allocator::reference				reference;
 			typedef typename Allocator::const_reference 		const_reference;
-			//typedef implementation defined                	iterator; // See 23.1
-			//typedef implementation defined					const_iterator; // See 23.1
+			typedef	ft::random_access_iterator<T>      			iterator; // See 23.1
+			typedef ft::random_access_iterator<const T>			const_iterator; // See 23.1
 			typedef typename Allocator::size_type				size_type; // See 23.1
 			typedef typename Allocator::difference_type			difference_type;// See 23.1 The signed integer type describes an object that can represent the difference between the addresses of any two elements in a sequence that an object of template class allocator can allocate
 			typedef T											value_type;
 			typedef Allocator									allocator_type;
 			typedef typename Allocator::pointer					pointer;
 			typedef typename Allocator::const_pointer			const_pointer;
-			//typedef std::reverse_iterator<iterator>			reverse_iterator;
-			//typedef std::reverse_iterator<const_iterator>		const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator>				reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 			// 23.2.4.1 construct/copy/destroy:
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 			explicit vector(const Allocator& = Allocator()) : _memory(NULL), _size(0), _capacity(0) 

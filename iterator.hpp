@@ -22,6 +22,7 @@ namespace ft
         typedef typename Iterator::reference            reference;
         typedef typename Iterator::iterator_category    iterator_category;
     };
+
     // Il est spécialisé pour les pointeurs comme
     template<class T> struct iterator_traits<T*>
     {
@@ -55,7 +56,8 @@ namespace ft
     */
 
     
-    template<class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&> struct iterator
+    template<class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
+    struct iterator
     {
         typedef T           value_type;
         typedef Distance    difference_type;
@@ -63,6 +65,18 @@ namespace ft
         typedef Reference   reference;
         typedef Category    iterator_category;
     };
+
+
+    template<class Iterator>
+    class random_access_iterator : public iterator<random_access_iterator_tag, Iterator>
+    {
+        
+    };
+
+
+
+
+
 
     // 24.3.4, iterator operations:
     template <class InputIterator, class Distance>
@@ -77,11 +91,24 @@ namespace ft
     // Effects: Returns the number of increments or decrements needed to get from first to last.
     // Requires: last must be reachable from first.
     // 24.4, predefined iterators:
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
     template <class Iterator> 
     class reverse_iterator : public iterator<typename iterator_traits<Iterator>::iterator_category, typename iterator_traits<Iterator>::value_type, typename iterator_traits<Iterator>::difference_type, typename iterator_traits<Iterator>::pointer, typename iterator_traits<Iterator>::reference>
     {
         protected:
-
             Iterator    current;
         public:
             typedef Iterator                                            iterator_type;
@@ -93,6 +120,7 @@ namespace ft
             explicit reverse_iterator(Iterator x); // Effects: Initializes current with x
             template <class U> reverse_iterator(const reverse_iterator<U>& u); // Effects: Initializes current with u.current
             Iterator base() const; // explicit Returns: current
+            
             reference operator*() const; // Effects: Iterator tmp = current; return *--tmp;
             pointer operator->() const; // Effects: return &(operator*());
             reverse_iterator& operator++(); // Effects: --current; Returns: *this
@@ -123,6 +151,26 @@ namespace ft
     template <class Iterator>
     reverse_iterator<Iterator> operator+( typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& x); // Returns: reverse_iterator<Iterator> (x.current - n)
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+
     template <class Container> class back_insert_iterator : public iterator<output_iterator_tag,void,void,void,void>
     {
         protected:
@@ -175,40 +223,94 @@ namespace ft
     class istream_iterator : public iterator<input_iterator_tag, T, Distance, const T*, const T&>
     {
         public:
-            typedef charT char_type 
+            typedef charT char_type; 
             typedef traits traits_type;
-            typedef basic_istream<charT,traits> istream_type;
+            typedef std::basic_istream<charT,traits> istream_type;
             istream_iterator(); // Effects: Constructs the end-of-stream iterator.
-            istream_iterator(istream_type& s);
-            istream_iterator(const istream_iterator<T,charT,traits,Distance>& x);
-            ~istream_iterator();
-            const T& operator*() const;
-            const T* operator->() const;
-            istream_iterator<T,charT,traits,Distance>& operator++();
-            istream_iterator<T,charT,traits,Distance> operator++(int);
+            istream_iterator(istream_type& s); // Effects: Initializes in_stream with s. value may be initialized during construction or the first time it is referenced.
+            istream_iterator(const istream_iterator<T,charT,traits,Distance>& x); // Effects: Constructs a copy of x.
+            ~istream_iterator(); // Effects: The iterator is destroyed.
+            const T& operator*() const; // Returns: value
+            const T* operator->() const; // Returns: &(operator*())
+            istream_iterator<T,charT,traits,Distance>& operator++(); // Effects: *in_stream >> value; Returns: *this
+            istream_iterator<T,charT,traits,Distance> operator++(int); // istream_iterator<T,charT,traits,Distance> tmp = *this; *in_stream >> value; return (tmp);
             private:
                 //basic_istream<charT,traits>* in_stream; exposition only
                 //T value; exposition only
     };
     template <class T, class charT, class traits, class Distance>
-    bool operator==(const istream_iterator<T,charT,traits,Distance>& x,
-    const istream_iterator<T,charT,traits,Distance>& y);
+    bool operator==(const istream_iterator<T,charT,traits,Distance>& x, const istream_iterator<T,charT,traits,Distance>& y);
     template <class T, class charT, class traits, class Distance>
-    bool operator!=(const istream_iterator<T,charT,traits,Distance>& x,
-    const istream_iterator<T,charT,traits,Distance>& y);
-    /*
-    template <class T, class charT = char, class traits = char_traits<charT> >
-    class ostream_iterator;
-    template<class charT, class traits = char_traits<charT> >
-    class istreambuf_iterator;
+    bool operator!=(const istream_iterator<T,charT,traits,Distance>& x, const istream_iterator<T,charT,traits,Distance>& y);
+    // Returns: (x.in_stream == y.in_stream)
+
+    
+    template <class T, class charT = char, class traits = std::char_traits<charT> >
+    class ostream_iterator : public iterator<output_iterator_tag, void, void, void, void>
+    {
+        public:
+            typedef charT char_type; 
+            typedef traits traits_type;
+            typedef std::basic_ostream<charT,traits> ostream_type;
+            ostream_iterator(ostream_type& s); // Effects: Initializes out_stream with s and delim with null.
+            ostream_iterator(ostream_type& s, const charT* delimiter); // Effects: Initializes out_stream with s and delim with delimiter.
+            ostream_iterator(const ostream_iterator<T,charT,traits>& x); // Effects: Constructs a copy of x;
+            ~ostream_iterator(); // Effects: The iterator is destroyed.
+            ostream_iterator<T,charT,traits>& operator=(const T& value); // Effects: *out_stream << value; if(delim != 0) *out_stream << delim; return (*this);
+            ostream_iterator<T,charT,traits>& operator*(); // Returns: *this
+            ostream_iterator<T,charT,traits>& operator++(); // Returns: *this
+            ostream_iterator<T,charT,traits>& operator++(int); // Returns: *this
+        private:
+            // basic_ostream<charT,traits>* out_stream; exposition only
+            // const char* delim; exposition only
+    };
+    template<class charT, class traits = std::char_traits<charT> >
+    class istreambuf_iterator : public iterator<input_iterator_tag, charT, typename traits::off_type, charT*, charT&>
+    {
+        public:
+            typedef charT char_type;
+            typedef traits traits_type;
+            typedef typename traits::int_type int_type;
+            typedef std::basic_streambuf<charT,traits> streambuf_type;
+            typedef std::basic_istream<charT,traits> istream_type;
+            class proxy; // exposition only
+        public:
+            istreambuf_iterator() throw(); // Effects: Constructs the end-of-stream iterator
+            istreambuf_iterator(istream_type& s) throw(); // Effects: Constructs an istreambuf_iterator<> that uses the basic_streambuf<> object *(s.rdbuf()), or *s, respectively. Constructs an end-of-stream iterator if s.rdbuf() is null.
+            istreambuf_iterator(streambuf_type* s) throw(); // Effects: Constructs an istreambuf_iterator<> that uses the basic_streambuf<> object *(s.rdbuf()), or *s, respectively. Constructs an end-of-stream iterator if s.rdbuf() is null.
+            istreambuf_iterator(const proxy& p) throw(); // Effects: Constructs a istreambuf_iterator<> that uses the basic_streambuf<> object pointed to by the proxy object’s constructor argument p
+            charT operator*() const; // Returns: The character obtained via the streambuf member sbuf_->sgetc().
+            istreambuf_iterator<charT,traits>& operator++(); // Effects: sbuf_->sbumpc(). Returns: *this.
+            proxy operator++(int); // Returns: proxy(sbuf_->sbumpc(), sbuf_). istreambuf_iterator<charT,traits> tmp = *this; sbuf_->sbumpc(); return(tmp);
+            bool equal(istreambuf_iterator& b); // Returns: true if and only if both iterators are at end-of-stream, or neither is at end-of-stream, regardless of what streambuf object they use.
+        private:
+            streambuf_type* sbuf_; //exposition only
+    };
+
     template <class charT, class traits>
-    bool operator==(const istreambuf_iterator<charT,traits>& a,
-    const istreambuf_iterator<charT,traits>& b);
+    bool operator==(const istreambuf_iterator<charT,traits>& a, const istreambuf_iterator<charT,traits>& b); // Returns: a.equal(b)
     template <class charT, class traits>
-    bool operator!=(const istreambuf_iterator<charT,traits>& a,
-    const istreambuf_iterator<charT,traits>& b);
-    template <class charT, class traits = char_traits<charT> >
-    class ostreambuf_iterator;
+    bool operator!=(const istreambuf_iterator<charT,traits>& a, const istreambuf_iterator<charT,traits>& b); // Returns: !a.equal(b).
+    
+    template <class charT, class traits = std::char_traits<charT> >
+    class ostreambuf_iterator : public iterator<output_iterator_tag, void, void, void, void>
+    {
+        public:
+            typedef charT char_type;
+            typedef traits traits_type;
+            typedef std::basic_streambuf<charT,traits> streambuf_type;
+            typedef std::basic_ostream<charT,traits> ostream_type;
+        public:
+            ostreambuf_iterator(ostream_type& s) throw(); // Requires: s is not null Effects: : sbuf_(s.rdbuf()) {}
+            ostreambuf_iterator(streambuf_type* s) throw(); // Effects: : sbuf_(s) {}
+            ostreambuf_iterator& operator=(charT c); // Effects: If failed() yields false, calls sbuf_->sputc(c); otherwise has no effect Returns: *this.
+            ostreambuf_iterator& operator*(); // Returns: *this.
+            ostreambuf_iterator& operator++(); // Returns: *this.
+            ostreambuf_iterator& operator++(int); // Returns: *this.
+            bool failed() const throw(); // Returns: true if in any prior use of member operator=, the call to sbuf_->sputc() returned traits::eof(); or false otherwise.
+        private:
+            streambuf_type* sbuf_; // exposition only
+    };
     */
 }
 
