@@ -14,6 +14,7 @@ int main(void)
 {
     
     {
+        std::vector<int>::iterator it;
         std::vector<int> la (4, 100);
         std::vector<int> lou;
         for (int i = 0 ; i < 4; i++)
@@ -44,9 +45,13 @@ int main(void)
         std::cout << COLOR_GREEN << lou.capacity() << COLOR_END << std::endl;
         std::cout << COLOR_GREEN << lou.size() << COLOR_END << std::endl;
         std::cout << COLOR_GREEN << la.front() << COLOR_END << std::endl;
+        
+        
     }
 
     {
+        ft::vector<int>::iterator it;
+        ft::vector<int>::iterator it2;
         ft::vector<int> la (4, 100);
         ft::vector<int> lou;
 
@@ -78,6 +83,11 @@ int main(void)
         std::cout << COLOR_GRAY << lou.capacity() << COLOR_END << std::endl;
         std::cout << COLOR_GRAY << lou.size() << COLOR_END << std::endl;
         std::cout << COLOR_GRAY << la.front() << COLOR_END << std::endl;
+        la[1] = 2;
+        it = la.begin();
+        //it++;
+        it2 = it + 1;
+        std::cout << COLOR_GRAY << it2[0] << COLOR_END << std::endl;
     }
     return (0);
 }

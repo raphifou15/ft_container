@@ -88,11 +88,15 @@ namespace ft
 			void assign(size_type n, const T& u);
 			allocator_type get_allocator() const;
 		*/
-		/*
+		
 			// iterators:
 		
         
-			iterator				begin();
+			iterator				begin()
+			{
+				return (iterator(this->_memory));
+			}
+			/*
 			const_iterator			begin() const;
 			iterator				end();
 			const_iterator			end() const;
