@@ -12,7 +12,7 @@
 
 int main(void)
 {
-    
+   /* 
     {
         std::vector<int>::iterator it;
         std::vector<int> la (4, 100);
@@ -52,6 +52,8 @@ int main(void)
     {
         ft::vector<int>::iterator it;
         ft::vector<int>::iterator it2;
+        ft::vector<int>::reverse_iterator ot;
+        ft::vector<int>::reverse_iterator ot2;
         ft::vector<int> la (4, 100);
         ft::vector<int> lou;
 
@@ -85,9 +87,37 @@ int main(void)
         std::cout << COLOR_GRAY << la.front() << COLOR_END << std::endl;
         la[1] = 2;
         it = la.begin();
+        it = la.end();
+        ot = la.rbegin();
         //it++;
-        it2 = it + 1;
-        std::cout << COLOR_GRAY << it2[0] << COLOR_END << std::endl;
+        it2 = it;
+        if (it2 == it)
+            std::cout << "== fonctionne" << std::endl;
+        if (ot == ot2)
+            std::cout << "== fonctionne" << std::endl;
+        std::cout << COLOR_GRAY << *ot << COLOR_END << std::endl;
+    }*/
+
+    {
+        ft::vector<int>::reverse_iterator ot;
+        std::vector<int>::reverse_iterator ot_true;
+
+        std::vector<int> la_true;
+        ft::vector<int> la;
+
+        for (int i = 0; i < 20; i++)
+        {
+            la_true.push_back(i);
+            la.push_back(i);
+        }
+
+        ot_true = la_true.rbegin();
+        ot = la.rbegin();
+        std::cout << COLOR_GREEN << la_true.capacity() << COLOR_END << std::endl;
+        std::cout << COLOR_GREEN << la_true.size() << COLOR_END << std::endl;
+        std::cout << COLOR_GRAY << la.capacity() << COLOR_END << std::endl;
+        std::cout << COLOR_GRAY << la.size() << COLOR_END << std::endl;
     }
+
     return (0);
 }

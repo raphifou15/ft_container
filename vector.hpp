@@ -96,15 +96,45 @@ namespace ft
 			{
 				return (iterator(this->_memory));
 			}
-			/*
-			const_iterator			begin() const;
-			iterator				end();
-			const_iterator			end() const;
-			reverse_iterator		rbegin();
-			const_reverse_iterator 	rbegin() const;
-			reverse_iterator 		rend();
-			const_reverse_iterator 	rend() const;
-		*/
+			
+			const_iterator			begin() const
+			{
+				return (const_iterator(this->_memory));
+			}
+
+			iterator				end()
+			{
+				value_type	*lala = this->_memory;
+				lala += this->_size;
+				return (iterator(lala));
+			}
+
+			const_iterator			end() const
+			{
+				value_type	*lala = this->_memory;
+				lala += this->_size;
+				return (const_iterator(lala));
+			}
+
+			reverse_iterator		rbegin()
+			{
+				return reverse_iterator(end());
+			}
+
+			const_reverse_iterator 	rbegin() const
+			{
+				return reverse_iterator(end());
+			}
+
+			reverse_iterator 		rend()
+			{
+				return reverse_iterator(begin());
+			}
+
+			const_reverse_iterator 	rend() const
+			{
+				return reverse_iterator(begin());
+			}
 
 
 		// 23.2.4.2 capacity: normalement finnis
@@ -146,8 +176,13 @@ namespace ft
 			{
 				if (n > this->max_size())
 					throw std::length_error("vector::reserve");
-				else if(this->_capacity < n)
-					this->reallocateNumberOfCopy(n);
+				else if(this->_capacity <= n)
+				{
+					if (this->_capacity == 0)
+						this->reallocateNumberOfCopy(1);
+					else
+						this->reallocateNumberOfCopy(n);
+				}
 				// Reallouer la memoire pour n capaciter si n est superieur a n capaciter.
 				// Le but de cette fomction est de permettre de faire.
 			}
@@ -219,8 +254,15 @@ namespace ft
         
 		// 23.2.4.3 modifiers:
 
-        /*
-			void					push_back(const T& x);
+			void					push_back(const T& x)
+			{
+				if (this->_size == this->_capacity)
+					this->reserve(this->_capacity * 2);
+				else
+					this->_alloc.construct(&this->_memory[this->_size], x);
+				this->_size++;
+			}
+		/*
 			void					pop_back();
 			iterator				insert(iterator position, const T& x);
 			void					insert(iterator position, size_type n, const T& x);
