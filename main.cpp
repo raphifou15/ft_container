@@ -2,8 +2,11 @@
 #include "vector.hpp"
 #include "lexicographical_compare.hpp"
 #include "iterator.hpp"
+#include "enable_if.hpp"
+#include "is_integral.hpp"
 #include <stack>
 #include <vector>
+//#include <type_traits>
 #include <iostream>
 
 #define COLOR_GRAY  "\e[1;30m"
@@ -98,6 +101,7 @@ int main(void)
         std::cout << COLOR_GRAY << *ot << COLOR_END << std::endl;
     }*/
 
+    /*
     {
         ft::vector<int>::reverse_iterator ot;
         std::vector<int>::reverse_iterator ot_true;
@@ -118,6 +122,46 @@ int main(void)
         std::cout << COLOR_GRAY << la.capacity() << COLOR_END << std::endl;
         std::cout << COLOR_GRAY << la.size() << COLOR_END << std::endl;
     }
+    */
+   /*
+   {
+    std::vector<int> lala (4, 10);
+    std::vector<int>::iterator it;
+    lala.clear();
+    
+    std::cout << COLOR_GREEN << lala.capacity() << COLOR_END << std::endl;
+    std::cout << COLOR_GREEN << lala.size() << COLOR_END << std::endl;
+    std::cout <<  COLOR_GREEN << *(lala.begin()) << COLOR_END << std::endl;
+   }
+   */
+  /*
+  {
+    std::vector<int> lala (2, 2);
+    std::vector<int> lili (1, 1);
+    lala.swap(lili);
+    std::cout << COLOR_GREEN << lala.capacity() << COLOR_END << std::endl;
+    std::cout << COLOR_GREEN << lala.size() << COLOR_END << std::endl;
+  }
+  */
+    {
+        ft::vector<int> lala(5, 5);
+        ft::vector<int> lila(3, 3);
+        ft::vector<int> kiki(++(lala.begin()), (--lala.end()));
 
+        lala = lila;
+        std::cout << COLOR_GREEN << kiki.capacity() << COLOR_END << std::endl;
+        std::cout << COLOR_GREEN << kiki.size() << COLOR_END << std::endl;
+
+
+        std::vector<int> la(5, 5);
+        std::vector<int> li(3, 3);
+        std::vector<int> ki(++(la.begin()), --(la.end()));
+
+        la = li;
+        std::cout << COLOR_GREEN << ki.capacity() << COLOR_END << std::endl;
+        std::cout << COLOR_GREEN << ki.size() << COLOR_END << std::endl;
+
+        
+    }
     return (0);
 }

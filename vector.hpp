@@ -6,6 +6,8 @@
 # include <stdexcept>
 # include <sstream>
 # include "iterator.hpp"
+# include "enable_if.hpp"
+# include "is_integral.hpp"
 
 namespace ft
 {
@@ -66,10 +68,24 @@ namespace ft
 					this->_alloc.construct(&this->_memory[i], lala);
 			}
 			
-		/*
-			template <class InputIterator>
-			vector(InputIterator first, InputIterator last, const Allocator& = Allocator());
-		*/
+		
+			template<class InputIterator>
+			vector( InputIterator first, InputIterator last, const Allocator& = Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) : _memory(NULL), _size(0), _capacity(0)
+			{
+				std::cout << "salut" << std::endl;
+				int i = 0;
+				InputIterator lala;
+				lala = first;
+				for (;first != last; first++)
+					i++;
+				this->_size = i;
+				this->_capacity = i;
+				this->_memory = this->_alloc.allocate(i);
+				first = lala;
+				for (int i = 0; first != last; first++, i++)
+					this->_alloc.construct(&this->_memory[i], *first);
+			}
+		
 			vector(const vector<T,Allocator>& x) : _memory(x._memory), _size(x._size), _capacity(x._capacity)
 			{
 				this->_memory = this->_alloc.allocate(_capacity);
@@ -81,8 +97,16 @@ namespace ft
 			  //std::cout << "memory destroy" << std::endl;
 			  this->_alloc.deallocate(this->_memory, this->_capacity);
 			}
-        /*
-			vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
+        
+			vector<T,Allocator>& operator=(const vector<T,Allocator>& x)
+			{
+				this->clear();
+				this->resize(x._size);
+				for (size_type i = 0; i < this->_size; i++)
+					this->_alloc.construct(&this->_memory[i], x._memory[i]);
+				return *this;
+			}
+		/*
 			template <class InputIterator>
 			void assign(InputIterator first, InputIterator last);
 			void assign(size_type n, const T& u);
@@ -262,17 +286,31 @@ namespace ft
 					this->_alloc.construct(&this->_memory[this->_size], x);
 				this->_size++;
 			}
+		
+			void					pop_back()
+			{
+				this->_alloc.destroy(&this->_memory[this->_size - 1]);
+				this->_size--;
+			}
 		/*
-			void					pop_back();
 			iterator				insert(iterator position, const T& x);
 			void					insert(iterator position, size_type n, const T& x);
 			template <class InputIterator>
 			void					insert(iterator position, InputIterator first, InputIterator last);
 			iterator				erase(iterator position);
 			iterator				erase(iterator first, iterator last);
-			void					swap(vector<T,Allocator>&);
-			void					clear();
-        */
+			*/
+			/*void					swap(vector<T,Allocator>& x)
+			{
+				
+			}
+		*/
+			void					clear()
+			{
+				for (size_type i = this->_size; i > 0; i--)
+					this->_alloc.destroy(&this->_memory[i - 1]);
+				this->_size = 0;
+			}
 
 		friend bool operator==(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 		{
