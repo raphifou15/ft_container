@@ -334,18 +334,58 @@ namespace ft
 			void					insert(iterator position, InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
 			{
-				
+				size_type range1 = 0;
+				size_type range2 = this->size();
+				size_type n = 0;
+				for (iterator it = this->begin(); it != position; it++)
+					range1++;
+				for (InputIterator ite = first; ite != last; ite++)
+					n++;
+				if (this->_capacity <= (this->_size + n))
+				{
+					if ((this->_capacity * 2) > this->max_size())
+						reserve(this->max_size());
+					else if ((this->_capacity * 2) < (this->_size + n))
+						reserve(n + this->size());
+					else
+						reserve(this->_capacity * 2);
+				}
+				for (; range2 > range1; range2--)
+				{
+					this->_alloc.construct(&this->_memory[range2 - 1 + n], this->_memory[range2 - 1]);
+					this->_alloc.destroy(&this->_memory[range2 - 1]);
+				}
+				for (size_type n2 = 0; n2 < n ; n2++)
+				{
+					this->_alloc.construct(&this->_memory[range2 - 1 + n], *(last - 1));
+					range2--;
+					last--;
+				}
+				this->_size += n;
 			}
 			
-			/*
-			iterator				erase(iterator position);
-			iterator				erase(iterator first, iterator last);
-			*/
+			iterator				erase(iterator position)
+			{
+				size_type range1 = 0;
+				for (iterator it = this->begin(); it != position; it++)
+					range1++;
+				for (; range1 < (this->size() - 1); range1++)
+				{
+					this->_alloc.destroy(&this->_memory[range1]);
+					this->_alloc.construct(&this->_memory[range1], this->_memory[range1 + 1]);
+				}
+				this->size--;
+				// faire detruire l'element de la position.
+				// construire le nouvel element.
+
+			}
+			//iterator				erase(iterator first, iterator last);
+			
 			/*void					swap(vector<T,Allocator>& x)
 			{
 				
 			}
-		*/
+			*/
 			void					clear()
 			{
 				for (size_type i = this->_size; i > 0; i--)

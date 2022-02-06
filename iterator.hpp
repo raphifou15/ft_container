@@ -209,7 +209,7 @@ namespace ft
     // 24.3.4, iterator operations:
     template <class InputIterator, class Distance>
     void advance(InputIterator& i, Distance n);
-
+    
     // Requires: n may be negative only for random access and bidirectional iterators.
     // Effects: Increments (or decrements for negative n) iterator reference i by n.
 

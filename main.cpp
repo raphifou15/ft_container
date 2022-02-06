@@ -172,14 +172,16 @@ int main(void)
         
     }
     */
+   /*
    {
        
        ft::vector<int> raph;
-
+       ft::vector<int> myd (4, 200);
        //std::vector<int>::iterator pk;
 
        raph.insert(raph.begin(), 3, 34);
        raph.insert(raph.begin() + 1, 3, 4);
+       raph.insert(raph.begin(), myd.begin(), myd.end());
        ft::vector<int>::iterator lala =  raph.insert(raph.begin() + 2, 1);
        std::cout << COLOR_GREEN << raph.capacity() << COLOR_END << std::endl;
        for (size_t i = 0; i < raph.size(); i++)
@@ -189,22 +191,32 @@ int main(void)
 
         std::cout << *lala << std::endl;
 
-       std::vector<int> lol (5, 100);
+      // std::vector<int> lol (5, 100);
        std::vector<int> rapha;
        std::vector<int> my (4, 200);
        //std::vector<int>::iterator pk;
         
        rapha.insert(rapha.begin(), 3, 34);
-       //rapha.insert(rapha.begin() + 1, 3, 4);
+       rapha.insert(rapha.begin() + 1, 3, 4);
        rapha.insert(rapha.begin(), my.begin(), my.end());
        
        std::vector<int>::iterator lalala = rapha.insert(rapha.begin() + 2, 1);
        std::cout << COLOR_GREEN << rapha.capacity() << COLOR_END << std::endl;
-       for (size_t i = 0; i < raph.size(); i++)
+       for (size_t i = 0; i < rapha.size(); i++)
        {
             std::cout << COLOR_GREEN << rapha[i] << COLOR_END << std::endl;
        }
        std::cout << *lalala << std::endl;
+   }*/
+   {
+        std::vector<int> raph(3, 3);
+        raph.erase(raph.begin() + 1);
+        std::cout << COLOR_GREEN << raph.capacity() << COLOR_END << std::endl;
+        std::cout << COLOR_GREEN << raph.size() << COLOR_END << std::endl;
+        for (int i = 0; i < 3; i++)
+        {
+            std::cout << *(raph.begin() + i) << std::endl;  
+        }
    }
     return (0);
 }
