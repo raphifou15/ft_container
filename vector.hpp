@@ -200,11 +200,8 @@ namespace ft
 			{
 				if (n > this->max_size())
 					throw std::length_error("vector::reserve");
-				else if(this->_capacity <= n)
+				else if(this->_capacity < n)
 				{
-					if (this->_capacity == 0)
-						this->reallocateNumberOfCopy(1);
-					else
 						this->reallocateNumberOfCopy(n);
 				}
 				// Reallouer la memoire pour n capaciter si n est superieur a n capaciter.
@@ -282,8 +279,7 @@ namespace ft
 			{
 				if (this->_size == this->_capacity)
 					this->reserve(this->_capacity * 2);
-				else
-					this->_alloc.construct(&this->_memory[this->_size], x);
+				this->_alloc.construct(&this->_memory[this->_size], x);
 				this->_size++;
 			}
 		
@@ -292,11 +288,56 @@ namespace ft
 				this->_alloc.destroy(&this->_memory[this->_size - 1]);
 				this->_size--;
 			}
-		/*
-			iterator				insert(iterator position, const T& x);
-			void					insert(iterator position, size_type n, const T& x);
+		
+			iterator				insert(iterator position, const T& x)
+			{
+				size_type range1 = 0;
+				for(iterator it = this->begin(); it != position; it++)
+					range1++;
+				insert(position, 1, x);
+				iterator it = this->begin();
+				for(; range1 != 0; it++)
+					range1--;
+				return (it);
+			}
+			
+			void					insert(iterator position, size_type n, const T& x)
+			{
+				size_type range1 = 0;
+				size_type range2 = this->size();
+				for (iterator it = this->begin(); it != position; it++)
+					range1++;
+				if (this->_capacity <= (this->_size + n))
+				{
+					if ((this->_capacity * 2) > this->max_size())
+						reserve(this->max_size());
+					else if ((this->_capacity * 2) < (this->_size + n))
+						reserve(n + this->size());
+					else
+						reserve(this->_capacity * 2);
+				}
+				for (; range2 > range1; range2--)
+				{
+					this->_alloc.construct(&this->_memory[range2 - 1 + n], this->_memory[range2 - 1]);
+					this->_alloc.destroy(&this->_memory[range2 - 1]);
+				}
+				for (size_type n2 = 0; n2 < n ; n2++)
+				{
+					this->_alloc.construct(&this->_memory[range2 - 1 + n], x);
+					range2--;
+				}
+				this->_size += n;
+			}
+			
+		
 			template <class InputIterator>
-			void					insert(iterator position, InputIterator first, InputIterator last);
+			void					insert(iterator position, InputIterator first, InputIterator last,
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
+			{
+				
+			}
+			
+			/*
 			iterator				erase(iterator position);
 			iterator				erase(iterator first, iterator last);
 			*/

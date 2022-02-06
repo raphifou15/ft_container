@@ -143,25 +143,68 @@ int main(void)
     std::cout << COLOR_GREEN << lala.size() << COLOR_END << std::endl;
   }
   */
+ /*
     {
         ft::vector<int> lala(5, 5);
         ft::vector<int> lila(3, 3);
+
+        const ft::vector<int>::iterator rapha = lala.begin();
         ft::vector<int> kiki(++(lala.begin()), (--lala.end()));
+        
 
         lala = lila;
         std::cout << COLOR_GREEN << kiki.capacity() << COLOR_END << std::endl;
         std::cout << COLOR_GREEN << kiki.size() << COLOR_END << std::endl;
+        std::cout << COLOR_GREEN << *rapha << COLOR_END << std::endl;
 
 
         std::vector<int> la(5, 5);
         std::vector<int> li(3, 3);
+
+        const std::vector<int>::iterator raph = la.begin();
         std::vector<int> ki(++(la.begin()), --(la.end()));
 
         la = li;
         std::cout << COLOR_GREEN << ki.capacity() << COLOR_END << std::endl;
-        std::cout << COLOR_GREEN << ki.size() << COLOR_END << std::endl;
+        std::cout << COLOR_GREEN << ki.size() << COLOR_END <<sstd::endl;
+        std::cout << COLOR_GREEN << *raph << COLOR_END << std::endl;
 
         
     }
+    */
+   {
+       
+       ft::vector<int> raph;
+
+       //std::vector<int>::iterator pk;
+
+       raph.insert(raph.begin(), 3, 34);
+       raph.insert(raph.begin() + 1, 3, 4);
+       ft::vector<int>::iterator lala =  raph.insert(raph.begin() + 2, 1);
+       std::cout << COLOR_GREEN << raph.capacity() << COLOR_END << std::endl;
+       for (size_t i = 0; i < raph.size(); i++)
+       {
+            std::cout << COLOR_GREEN << raph[i] << COLOR_END << std::endl;
+       }
+
+        std::cout << *lala << std::endl;
+
+       std::vector<int> lol (5, 100);
+       std::vector<int> rapha;
+       std::vector<int> my (4, 200);
+       //std::vector<int>::iterator pk;
+        
+       rapha.insert(rapha.begin(), 3, 34);
+       //rapha.insert(rapha.begin() + 1, 3, 4);
+       rapha.insert(rapha.begin(), my.begin(), my.end());
+       
+       std::vector<int>::iterator lalala = rapha.insert(rapha.begin() + 2, 1);
+       std::cout << COLOR_GREEN << rapha.capacity() << COLOR_END << std::endl;
+       for (size_t i = 0; i < raph.size(); i++)
+       {
+            std::cout << COLOR_GREEN << rapha[i] << COLOR_END << std::endl;
+       }
+       std::cout << *lalala << std::endl;
+   }
     return (0);
 }
