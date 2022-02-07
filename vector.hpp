@@ -5,6 +5,7 @@
 # include <iostream>
 # include <stdexcept>
 # include <sstream>
+# include "lexicographical_compare.hpp"
 # include "iterator.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
@@ -106,12 +107,25 @@ namespace ft
 					this->_alloc.construct(&this->_memory[i], x._memory[i]);
 				return *this;
 			}
-		/*
+		
 			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last);
-			void assign(size_type n, const T& u);
-			allocator_type get_allocator() const;
-		*/
+			void assign(InputIterator first, InputIterator last)
+			{
+				this->erase(this->begin(), this->end());
+				this->insert(this->begin(), first, last);
+			}
+		
+			void assign(size_type n, const T& u)
+			{
+				erase(this->begin(), this->end());
+				insert(this->begin(), n, u);
+			}
+
+			allocator_type get_allocator() const
+			{
+				return this->_alloc;
+			}
+		
 		
 			// iterators:
 		
@@ -278,7 +292,12 @@ namespace ft
 			void					push_back(const T& x)
 			{
 				if (this->_size == this->_capacity)
-					this->reserve(this->_capacity * 2);
+				{
+					if (this->_capacity == 0)
+						this->reserve(1);
+					else
+						this->reserve(this->_capacity * 2);
+				}
 				this->_alloc.construct(&this->_memory[this->_size], x);
 				this->_size++;
 			}
@@ -367,25 +386,63 @@ namespace ft
 			iterator				erase(iterator position)
 			{
 				size_type range1 = 0;
+				size_type target = 0;
+
 				for (iterator it = this->begin(); it != position; it++)
 					range1++;
+				target = range1;
 				for (; range1 < (this->size() - 1); range1++)
 				{
 					this->_alloc.destroy(&this->_memory[range1]);
 					this->_alloc.construct(&this->_memory[range1], this->_memory[range1 + 1]);
 				}
 				this->size--;
-				// faire detruire l'element de la position.
-				// construire le nouvel element.
+				return (iterator(&this->_memory[target]));
+			}
 
-			}
-			//iterator				erase(iterator first, iterator last);
-			
-			/*void					swap(vector<T,Allocator>& x)
+			iterator				erase(iterator first, iterator last)
 			{
-				
+				size_type range1 = 0;
+				size_type n = 0;
+				size_type target;
+				for (iterator it = this->begin(); it != first; it++)
+					range1++;
+				for (iterator ite = first; ite != last; ite++)
+					n++;
+				target = n + range1;
+				size_type range2 = range1;
+				for (size_type range2 = range1; range2 < range1 + target; range2++)
+					this->_alloc.destroy(&this->_memory[range2]);
+				for (; range1 < (this->size() - n); range1++)
+				{
+					this->_alloc.construct(&this->_memory[range1], this->_memory[range1 + n]);
+				}
+				this->_size -= n;
+				return (iterator(&this->_memory[target]));
 			}
-			*/
+
+			void					swap(vector<T,Allocator>& x)
+			{
+				allocator_type	tmp_alloc;
+				value_type		*tmp_memory; 
+				size_type		tmp_size;
+				size_type		tmp_capacity;
+
+				tmp_alloc = this->_alloc;
+				tmp_memory = this->_memory;
+				tmp_size = this->_size;
+				tmp_capacity = this->_capacity;
+
+				this->_alloc = x._alloc;
+				this->_memory = x._memory;
+				this->_size = x._size;
+				this->_capacity = x._capacity;
+
+				x._alloc = tmp_alloc;
+				x._memory = tmp_memory;
+				x._size = tmp_size;
+				x._capacity = tmp_capacity;
+			}
 			void					clear()
 			{
 				for (size_type i = this->_size; i > 0; i--)
@@ -405,25 +462,41 @@ namespace ft
 			}
 			return (1);
 		}
+		friend bool operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+		{
+			return (ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()));
+		}
 	};
     
-
-	/*
 	// quand j'aurais finnis de faire les differentes classes iterators
+
 	template <class T, class Allocator>
-	bool operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y);
+	bool operator!=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	{
+		return ((x == y) ? 0 : 1);
+	}
 	template <class T, class Allocator>
-	bool operator!=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
+	bool operator> (const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	{
+		return (y < x);
+	}
 	template <class T, class Allocator>
-	bool operator> (const vector<T,Allocator>& x, const vector<T,Allocator>& y);
+	bool operator>=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	{
+		return ((y < x) || (x == y));
+	}
 	template <class T, class Allocator>
-	bool operator>=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
-	template <class T, class Allocator>
-	bool operator<=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
+	bool operator<=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	{
+		return ((x < y) || (x == y));
+	}
 	// specialized algorithms:
 	template <class T, class Allocator>
-	void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
-    */
+	void swap(vector<T,Allocator>& x, vector<T,Allocator>& y)
+	{
+		x.swap(y);
+	}
+    
 }
 
 #endif

@@ -209,8 +209,18 @@ int main(void)
        std::cout << *lalala << std::endl;
    }*/
    {
+        std::vector<int> rapha(3, 3);
+        rapha.erase(rapha.begin(), rapha.end());
+        std::cout << COLOR_GREEN << rapha.capacity() << COLOR_END << std::endl;
+        std::cout << COLOR_GREEN << rapha.size() << COLOR_END << std::endl;
+        for (int i = 0; i < 3; i++)
+        {
+            std::cout << *(rapha.begin() + i) << std::endl;  
+        }
+       
+       std::cout << "--------------------------------" << std::endl;
         std::vector<int> raph(3, 3);
-        raph.erase(raph.begin() + 1);
+        raph.erase(raph.begin(), raph.end());
         std::cout << COLOR_GREEN << raph.capacity() << COLOR_END << std::endl;
         std::cout << COLOR_GREEN << raph.size() << COLOR_END << std::endl;
         for (int i = 0; i < 3; i++)

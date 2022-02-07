@@ -3,6 +3,8 @@
 
 # include <cstddef>
 # include <string>
+# include "is_integral.hpp"
+# include "enable_if.hpp"
 namespace ft
 {
     // Standard iterator tags
@@ -208,14 +210,22 @@ namespace ft
 
     // 24.3.4, iterator operations:
     template <class InputIterator, class Distance>
-    void advance(InputIterator& i, Distance n);
+    void advance(InputIterator& i, Distance n, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
+    {
+        i += n;
+    }
     
     // Requires: n may be negative only for random access and bidirectional iterators.
     // Effects: Increments (or decrements for negative n) iterator reference i by n.
 
     template <class InputIterator>
     typename iterator_traits<InputIterator>::difference_type
-    distance(InputIterator first, InputIterator last);
+    distance(InputIterator first, InputIterator last)
+    {
+        for (typename iterator_traits<InputIterator>::difference_type lala = 0; first != last; first++)
+            lala++;
+        return (lala);
+    }
     // Effects: Returns the number of increments or decrements needed to get from first to last.
     // Requires: last must be reachable from first.
     // 24.4, predefined iterators:
