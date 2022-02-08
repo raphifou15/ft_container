@@ -6,15 +6,34 @@
 #include "is_integral.hpp"
 #include <stack>
 #include <vector>
+#include <list>
 //#include <type_traits>
 #include <iostream>
 
+# define TESTED_TYPE int
 #define COLOR_GRAY  "\e[1;30m"
 #define COLOR_GREEN  "\e[0;32m"
 #define COLOR_END  "\e[0m"
+/*
+        void	checkErase(std::vector<TESTED_TYPE> const &vct,
+					std::vector<TESTED_TYPE>::const_iterator const &it)
+        {
+	        static int i = 0;
+	        std::cout << "[" << i++ << "] " << "erase: " << it - vct.begin() << std::endl;
+	        std::cout << vct.size() << std::endl;
+        }
+        void	checkErase2(ft::vector<TESTED_TYPE> const &vct,
+					ft::vector<TESTED_TYPE>::const_iterator const &it)
+        {
+	        static int i = 0;
+	        std::cout << "[" << i++ << "] " << "erase: " << it - vct.begin() << std::endl;
+	        std::cout << vct.size() << std::endl;
+        }
+
 
 int main(void)
 {
+    */
    /* 
     {
         std::vector<int>::iterator it;
@@ -208,6 +227,7 @@ int main(void)
        }
        std::cout << *lalala << std::endl;
    }*/
+   /*
    {
         std::vector<int> rapha(3, 3);
         rapha.erase(rapha.begin(), rapha.end());
@@ -228,5 +248,331 @@ int main(void)
             std::cout << *(raph.begin() + i) << std::endl;  
         }
    }
+   */
+  /*
+  {
+    {
+	ft::vector<int> vct(7);
+
+	for (unsigned long int i = 0; i < vct.size(); ++i)
+	{
+		vct.at(i) = (vct.size() - i) * 3;
+		std::cout << "vct[]: " << vct[i] << std::endl;
+	}
+	std::cout << vct.size() << std::endl;
+
+	ft::vector<int> const vct_c(vct);
+
+	std::cout << "front(): " << vct.front() << " " << vct_c.front() << std::endl;
+	std::cout << "back(): " << vct.back() << " " <<  vct_c.back() << std::endl;
+
+	for (unsigned long int i = 0; i < vct_c.size(); ++i)
+		std::cout << "vct_c.at(): " << vct_c.at(i) << std::endl;
+	try {
+		std::cout << vct_c.at(10) << std::endl;
+	}
+	catch (std::out_of_range &e) {
+		std::cout << "Catch out_of_range exception!" << std::endl;
+	}
+	catch (std::exception &e) {
+		std::cout << "Catch exception: " << e.what() << std::endl;
+	}
+	std::cout << vct_c.size() << std::endl;
+    }
+    std::cout << "/////////////////////////////" << std::endl;
+    {
+	std::vector<int> vct(7);
+
+	for (unsigned long int i = 0; i < vct.size(); ++i)
+	{
+		vct.at(i) = (vct.size() - i) * 3;
+		std::cout << "vct[]: " << vct[i] << std::endl;
+	}
+	std::cout << vct.size() << std::endl;
+
+	std::vector<int> const vct_c(vct);
+
+	std::cout << "front(): " << vct.front() << " " << vct_c.front() << std::endl;
+	std::cout << "back(): " << vct.back() << " " <<  vct_c.back() << std::endl;
+
+	for (unsigned long int i = 0; i < vct_c.size(); ++i)
+		std::cout << "vct_c.at(): " << vct_c.at(i) << std::endl;
+	try {
+		std::cout << vct_c.at(10) << std::endl;
+	}
+	catch (std::out_of_range &e) {
+		std::cout << "Catch out_of_range exception!" << std::endl;
+	}
+	catch (std::exception &e) {
+		std::cout << "Catch exception: " << e.what() << std::endl;
+	}
+	std::cout << vct_c.size() << std::endl;
+    }
+  }
+  */
+ /*
+    {
+        {
+	    std::vector<TESTED_TYPE> vct(10);
+
+	    for (unsigned long int i = 0; i < vct.size(); ++i)
+		    vct[i] = std::string((vct.size() - i), i + 65);
+
+	    //printSize(vct);
+
+	    checkErase(vct, vct.erase(vct.begin() + 2));
+
+	    checkErase(vct, vct.erase(vct.begin()));
+	    checkErase(vct, vct.erase(vct.end() + 1));
+
+        
+	    checkErase(vct, vct.erase(vct.begin(), vct.begin() + 3));
+	    checkErase(vct, vct.erase(vct.end() - 3, vct.end() - 1));
+
+	    vct.push_back("Hello");
+	    vct.push_back("Hi there");
+	    //printSize(vct);
+	    checkErase(vct, vct.erase(vct.end() - 3, vct.end()));
+
+	    vct.push_back("ONE");
+	    vct.push_back("TWO");
+	    vct.push_back("THREE");
+	    vct.push_back("FOUR");
+	    //printSize(vct);
+	    checkErase(vct, vct.erase(vct.begin(), vct.end()));
+        
+        }
+
+        std::cout << "////////////////////" << std::endl;
+        
+        {
+	    ft::vector<TESTED_TYPE> vct(10);
+
+	    for (unsigned long int i = 0; i < vct.size(); ++i)
+		    vct[i] = std::string((vct.size() - i), i + 65);
+            
+	    //printSize(vct);
+        
+	    checkErase2(vct, vct.erase(vct.begin() + 2));
+
+	    checkErase2(vct, vct.erase(vct.begin()));
+	    checkErase2(vct, vct.erase(vct.end() + 1));
+        
+    
+	    checkErase2(vct, vct.erase(vct.begin(), vct.begin() + 3));
+        
+	    checkErase2(vct, vct.erase(vct.end() - 3, vct.end() - 1));
+
+	    vct.push_back("Hello");
+	    vct.push_back("Hi there");
+	    //printSize(vct);
+	    checkErase2(vct, vct.erase(vct.end() - 3, vct.end()));
+
+	    vct.push_back("ONE");
+	    vct.push_back("TWO");
+	    vct.push_back("THREE");
+	    vct.push_back("FOUR");
+	    //printSize(vct);
+	    checkErase2(vct, vct.erase(vct.begin(), vct.end()));
+        
+        }
+    }
     return (0);
 }
+
+*/
+//#define TESTED_TYPE int
+/*
+int		main(void)
+{
+    {
+	std::list<TESTED_TYPE> lst;
+	std::list<TESTED_TYPE>::iterator lst_it;
+	for (int i = 1; i < 5; ++i)
+		lst.push_back(i * 3);
+
+	ft::vector<TESTED_TYPE> vct(lst.begin(), lst.end());
+	std::cout << vct.size() << std::endl;
+
+	lst_it = lst.begin();
+	for (int i = 1; lst_it != lst.end(); ++i)
+		*lst_it++ = i * 5;
+	vct.assign(lst.begin(), lst.end());
+	std::cout << vct.size() << std::endl;
+
+	vct.insert(vct.end(), lst.rbegin(), lst.rend());
+	std::cout << vct.size() << std::endl;
+    }
+
+    {
+	std::list<TESTED_TYPE> lst;
+	std::list<TESTED_TYPE>::iterator lst_it;
+	for (int i = 1; i < 5; ++i)
+		lst.push_back(i * 3);
+
+	std::vector<TESTED_TYPE> vct(lst.begin(), lst.end());
+	std::cout << vct.size() << std::endl;
+
+	lst_it = lst.begin();
+	for (int i = 1; lst_it != lst.end(); ++i)
+		*lst_it++ = i * 5;
+	vct.assign(lst.begin(), lst.end());
+	std::cout << vct.size() << std::endl;
+
+	vct.insert(vct.end(), lst.rbegin(), lst.rend());
+	std::cout << vct.size() << std::endl;
+    }
+    return (0);
+}
+*/
+/*
+int		main(void)
+{
+    {
+	std::vector<TESTED_TYPE> vct(10);
+    std::vector<TESTED_TYPE> vct2;
+
+	for (unsigned long int i = 0; i < vct.size(); ++i)
+		vct[i] = (vct.size() - i) * 3;
+	std::cout << vct.size() << std::endl;
+
+	vct2.insert(vct2.end(), 42);
+	vct2.insert(vct2.begin(), 2, 21);
+	std::cout << vct2.size() << std::endl;
+
+	vct2.insert(vct2.end() - 2, 42);
+	std::cout << vct2.size() << std::endl;
+
+	vct2.insert(vct2.end(), 2, 84);
+	std::cout << vct2.size() << std::endl;
+
+	vct2.resize(4);
+	std::cout << vct2.size() << std::endl;
+
+	vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
+	vct.clear();
+	std::cout << vct2.size() << std::endl;
+
+	std::cout << vct.size() << std::endl;
+    }
+
+    std::cout << "/////////////////////////////////////////////////////////////////" << std::endl;
+
+    {
+    ft::vector<TESTED_TYPE> vct(10);
+    ft::vector<TESTED_TYPE> vct2;
+
+	for (unsigned long int i = 0; i < vct.size(); ++i)
+		vct[i] = (vct.size() - i) * 3;
+	std::cout << vct.size() << std::endl;
+
+	vct2.insert(vct2.end(), 42);
+	vct2.insert(vct2.begin(), 2, 21);
+	std::cout << vct2.size() << std::endl;
+
+	vct2.insert(vct2.end() - 2, 42);
+	std::cout << vct2.size() << std::endl;
+
+	vct2.insert(vct2.end(), 2, 84);
+	std::cout << vct2.size() << std::endl;
+
+	vct2.resize(4);
+	std::cout << vct2.size() << std::endl;
+
+	vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
+	vct.clear();
+	std::cout << vct2.size() << std::endl;
+
+	std::cout << vct.size() << std::endl;
+    }
+	return (0);
+}
+*/
+#define TESTED_TYPE int
+
+int		main(void)
+{
+    {
+	const int size = 5;
+	std::vector<TESTED_TYPE> vct(size);
+	std::vector<TESTED_TYPE>::iterator it(vct.begin());
+	std::vector<TESTED_TYPE>::const_iterator ite(vct.end());
+
+	for (int i = 1; it != ite; ++i)
+		*it++ = i;
+    std::cout << vct.size() << std::endl;
+
+	it = vct.begin();
+	ite = vct.begin();
+
+	std::cout << *(++ite) << std::endl;
+	std::cout << *(ite++) << std::endl;
+	std::cout << *ite++ << std::endl;
+	std::cout << *++ite << std::endl;
+
+	//it->m();
+	//ite->m();
+
+	std::cout << *(++it) << std::endl;
+	std::cout << *(it++) << std::endl;
+	std::cout << *it++ << std::endl;
+	std::cout << *++it << std::endl;
+
+	std::cout << *(--ite) << std::endl;
+	std::cout << *(ite--) << std::endl;
+	std::cout << *--ite << std::endl;
+	std::cout << *ite-- << std::endl;
+
+	//(*it).m();
+	//(*ite).m();
+
+	std::cout << *(--it) << std::endl;
+	std::cout << *(it--) << std::endl;
+	std::cout << *it-- << std::endl;
+	std::cout << *--it << std::endl;
+    }
+
+    std::cout << "/////////////////////////////////////" << std::endl;
+
+    {
+    const int size = 5;
+	ft::vector<TESTED_TYPE> vct(size);
+	ft::vector<TESTED_TYPE>::iterator it(vct.begin());
+	ft::vector<TESTED_TYPE>::const_iterator ite(vct.end());
+
+	for (int i = 1; it != ite; ++i)
+		*it++ = i;
+    std::cout << vct.size() << std::endl;
+
+	it = vct.begin();
+	ite = vct.begin();
+
+	std::cout << *(++ite) << std::endl;
+	std::cout << *(ite++) << std::endl;
+	std::cout << *ite++ << std::endl;
+	std::cout << *++ite << std::endl;
+
+	//it->m();
+	//ite->m();
+
+	std::cout << *(++it) << std::endl;
+	std::cout << *(it++) << std::endl;
+	std::cout << *it++ << std::endl;
+	std::cout << *++it << std::endl;
+
+	std::cout << *(--ite) << std::endl;
+	std::cout << *(ite--) << std::endl;
+	std::cout << *--ite << std::endl;
+	std::cout << *ite-- << std::endl;
+
+	//(*it).m();
+	//(*ite).m();
+
+	std::cout << *(--it) << std::endl;
+	std::cout << *(it--) << std::endl;
+	std::cout << *it-- << std::endl;
+	std::cout << *--it << std::endl;
+    }
+	return (0);
+}
+

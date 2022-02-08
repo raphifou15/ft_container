@@ -73,7 +73,6 @@ namespace ft
 			template<class InputIterator>
 			vector( InputIterator first, InputIterator last, const Allocator& = Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) : _memory(NULL), _size(0), _capacity(0)
 			{
-				std::cout << "salut" << std::endl;
 				int i = 0;
 				InputIterator lala;
 				lala = first;
@@ -188,10 +187,9 @@ namespace ft
 			{
 				if (sz < this->size())
 				{
-					for (; sz > this->_size ; sz--)
+					for (; sz < this->_size ; this->_size--)
 					{
-						this->_alloc.destroy(&this->_memory[sz]);
-						this->_size--;
+						this->_alloc.destroy(&this->_memory[this->_size - 1]);
 					}
 				}
 				if (sz > this->size())
@@ -376,9 +374,8 @@ namespace ft
 				}
 				for (size_type n2 = 0; n2 < n ; n2++)
 				{
-					this->_alloc.construct(&this->_memory[range2 - 1 + n], *(last - 1));
+					this->_alloc.construct(&this->_memory[range2 - 1 + n], *(--last));
 					range2--;
-					last--;
 				}
 				this->_size += n;
 			}
@@ -396,7 +393,7 @@ namespace ft
 					this->_alloc.destroy(&this->_memory[range1]);
 					this->_alloc.construct(&this->_memory[range1], this->_memory[range1 + 1]);
 				}
-				this->size--;
+				this->_size--;
 				return (iterator(&this->_memory[target]));
 			}
 
@@ -409,9 +406,8 @@ namespace ft
 					range1++;
 				for (iterator ite = first; ite != last; ite++)
 					n++;
-				target = n + range1;
-				size_type range2 = range1;
-				for (size_type range2 = range1; range2 < range1 + target; range2++)
+				target = range1;
+				for (size_type range2 = range1; range2 < range1 + n; range2++)
 					this->_alloc.destroy(&this->_memory[range2]);
 				for (; range1 < (this->size() - n); range1++)
 				{

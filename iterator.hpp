@@ -222,7 +222,8 @@ namespace ft
     typename iterator_traits<InputIterator>::difference_type
     distance(InputIterator first, InputIterator last)
     {
-        for (typename iterator_traits<InputIterator>::difference_type lala = 0; first != last; first++)
+        typename iterator_traits<InputIterator>::difference_type lala = 0;
+        for (; first != last; first++)
             lala++;
         return (lala);
     }
