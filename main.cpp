@@ -9,12 +9,123 @@
 #include <list>
 //#include <type_traits>
 #include <iostream>
+#define TESTED_TYPE int
 
-# define TESTED_TYPE int
 #define COLOR_GRAY  "\e[1;30m"
 #define COLOR_GREEN  "\e[0;32m"
 #define COLOR_END  "\e[0m"
+
+
+void	prepost_incdec(std::vector<TESTED_TYPE> &vct)
+{
+	std::vector<TESTED_TYPE>::iterator it = vct.begin();
+	std::vector<TESTED_TYPE>::iterator it_tmp;
+
+	std::cout << "Pre inc" << std::endl;
+	it_tmp = ++it;
+	std::cout << *it_tmp << " | " << *it << std::endl;
+
+	std::cout << "Pre dec" << std::endl;
+	it_tmp = --it;
+	std::cout << *it_tmp << " | " << *it << std::endl;
+
+	std::cout << "Post inc" << std::endl;
+	it_tmp = it++;
+	std::cout << *it_tmp << " | " << *it << std::endl;
+
+	std::cout << "Post dec" << std::endl;
+	it_tmp = it--;
+	std::cout << *it_tmp << " | " << *it << std::endl;
+	std::cout << "###############################################" << std::endl;
+}
+
+void	prepost_incdec2(ft::vector<TESTED_TYPE> &vct)
+{
+	ft::vector<TESTED_TYPE>::iterator it = vct.begin();
+	ft::vector<TESTED_TYPE>::iterator it_tmp;
+
+	std::cout << "Pre inc" << std::endl;
+	it_tmp = ++it;
+	std::cout << *it_tmp << " | " << *it << std::endl;
+
+	std::cout << "Pre dec" << std::endl;
+	it_tmp = --it;
+	std::cout << *it_tmp << " | " << *it << std::endl;
+
+	std::cout << "Post inc" << std::endl;
+	it_tmp = it++;
+	std::cout << *it_tmp << " | " << *it << std::endl;
+
+	std::cout << "Post dec" << std::endl;
+	it_tmp = it--;
+	std::cout << *it_tmp << " | " << *it << std::endl;
+	std::cout << "###############################################" << std::endl;
+}
+
+int main()
+{
+    {
+        const int size = 5;
+	    std::vector<TESTED_TYPE> vct(size);
+	    std::vector<TESTED_TYPE>::iterator it = vct.begin();
+	    std::vector<TESTED_TYPE>::const_iterator ite = vct.begin();
+
+	    for (int i = 0; i < size; ++i)
+		    it[i] = (size - i) * 5;
+	    prepost_incdec(vct);
+
+	    it = it + 5;
+	    it = 1 + it;
+	    it = it - 4;
+	    std::cout << *(it += 2) << std::endl;
+	    std::cout << *(it -= 1) << std::endl;
+
+	    *(it -= 2) = 42;
+	    *(it += 2) = 21;
+
+	    std::cout << "const_ite +=: " << *(ite += 2) << std::endl;
+	    std::cout << "const_ite -=: " << *(ite -= 2) << std::endl;
+
+	    std::cout << "(it == const_it): " << (ite == it) << std::endl;
+	    std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+	    std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+
+	    std::cout << vct.size() << std::endl;
+    }
+    std::cout << "//////////////////////////////////////////" << std::endl;
+    {
+        const int size = 5;
+	    ft::vector<TESTED_TYPE> vct(size);
+	    ft::vector<TESTED_TYPE>::iterator it = vct.begin();
+	    ft::vector<TESTED_TYPE>::const_iterator ite = vct.begin();
+
+	    for (int i = 0; i < size; ++i)
+		    it[i] = (size - i) * 5;
+	    prepost_incdec2(vct);
+
+	    it = it + 5;
+	    it = 1 + it;
+	    it = it - 4;
+	    std::cout << *(it += 2) << std::endl;
+	    std::cout << *(it -= 1) << std::endl;
+
+	    *(it -= 2) = 42;
+	    *(it += 2) = 21;
+
+	    std::cout << "const_ite +=: " << *(ite += 2) << std::endl;
+	    std::cout << "const_ite -=: " << *(ite -= 2) << std::endl;
+
+	    std::cout << "(it == const_it): " << (ite == it) << std::endl;
+	    std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+	    std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+
+	    std::cout << vct.size() << std::endl;
+    }
+    return (0);
+}
+
 /*
+
         void	checkErase(std::vector<TESTED_TYPE> const &vct,
 					std::vector<TESTED_TYPE>::const_iterator const &it)
         {
@@ -29,8 +140,81 @@
 	        std::cout << "[" << i++ << "] " << "erase: " << it - vct.begin() << std::endl;
 	        std::cout << vct.size() << std::endl;
         }
+*/
 
 
+/*
+int main()
+{
+    
+        {
+	    std::vector<TESTED_TYPE> vct(10);
+
+	    for (unsigned long int i = 0; i < vct.size(); ++i)
+		    vct[i] = std::string((vct.size() - i), i + 65);
+
+	    //printSize(vct);
+
+	    checkErase(vct, vct.erase(vct.begin() + 2));
+
+	    checkErase(vct, vct.erase(vct.begin()));
+	    checkErase(vct, vct.erase(vct.end() + 1));
+
+        
+	    checkErase(vct, vct.erase(vct.begin(), vct.begin() + 3));
+	    checkErase(vct, vct.erase(vct.end() - 3, vct.end() - 1));
+
+	    vct.push_back("Hello");
+	    vct.push_back("Hi there");
+	    //printSize(vct);
+	    checkErase(vct, vct.erase(vct.end() - 3, vct.end()));
+
+	    vct.push_back("ONE");
+	    vct.push_back("TWO");
+	    vct.push_back("THREE");
+	    vct.push_back("FOUR");
+	    //printSize(vct);
+	    checkErase(vct, vct.erase(vct.begin(), vct.end()));
+        
+        }
+
+        std::cout << "////////////////////" << std::endl;
+        
+        {
+	    ft::vector<TESTED_TYPE> vct(10);
+
+	    for (unsigned long int i = 0; i < vct.size(); ++i)
+		    vct[i] = std::string((vct.size() - i), i + 65);
+            
+	    //printSize(vct);
+        
+	    checkErase2(vct, vct.erase(vct.begin() + 2));
+
+	    checkErase2(vct, vct.erase(vct.begin()));
+	    checkErase2(vct, vct.erase(vct.end() + 1));
+        
+    
+	    checkErase2(vct, vct.erase(vct.begin(), vct.begin() + 3));
+        
+	    checkErase2(vct, vct.erase(vct.end() - 3, vct.end() - 1));
+
+	    vct.push_back("Hello");
+	    vct.push_back("Hi there");
+	    //printSize(vct);
+	    checkErase2(vct, vct.erase(vct.end() - 3, vct.end()));
+
+	    vct.push_back("ONE");
+	    vct.push_back("TWO");
+	    vct.push_back("THREE");
+	    vct.push_back("FOUR");
+	    //printSize(vct);
+	    checkErase2(vct, vct.erase(vct.begin(), vct.end()));
+        
+        }
+    return (0);
+}
+*/
+/*
 int main(void)
 {
     */
@@ -311,73 +495,7 @@ int main(void)
   }
   */
  /*
-    {
-        {
-	    std::vector<TESTED_TYPE> vct(10);
 
-	    for (unsigned long int i = 0; i < vct.size(); ++i)
-		    vct[i] = std::string((vct.size() - i), i + 65);
-
-	    //printSize(vct);
-
-	    checkErase(vct, vct.erase(vct.begin() + 2));
-
-	    checkErase(vct, vct.erase(vct.begin()));
-	    checkErase(vct, vct.erase(vct.end() + 1));
-
-        
-	    checkErase(vct, vct.erase(vct.begin(), vct.begin() + 3));
-	    checkErase(vct, vct.erase(vct.end() - 3, vct.end() - 1));
-
-	    vct.push_back("Hello");
-	    vct.push_back("Hi there");
-	    //printSize(vct);
-	    checkErase(vct, vct.erase(vct.end() - 3, vct.end()));
-
-	    vct.push_back("ONE");
-	    vct.push_back("TWO");
-	    vct.push_back("THREE");
-	    vct.push_back("FOUR");
-	    //printSize(vct);
-	    checkErase(vct, vct.erase(vct.begin(), vct.end()));
-        
-        }
-
-        std::cout << "////////////////////" << std::endl;
-        
-        {
-	    ft::vector<TESTED_TYPE> vct(10);
-
-	    for (unsigned long int i = 0; i < vct.size(); ++i)
-		    vct[i] = std::string((vct.size() - i), i + 65);
-            
-	    //printSize(vct);
-        
-	    checkErase2(vct, vct.erase(vct.begin() + 2));
-
-	    checkErase2(vct, vct.erase(vct.begin()));
-	    checkErase2(vct, vct.erase(vct.end() + 1));
-        
-    
-	    checkErase2(vct, vct.erase(vct.begin(), vct.begin() + 3));
-        
-	    checkErase2(vct, vct.erase(vct.end() - 3, vct.end() - 1));
-
-	    vct.push_back("Hello");
-	    vct.push_back("Hi there");
-	    //printSize(vct);
-	    checkErase2(vct, vct.erase(vct.end() - 3, vct.end()));
-
-	    vct.push_back("ONE");
-	    vct.push_back("TWO");
-	    vct.push_back("THREE");
-	    vct.push_back("FOUR");
-	    //printSize(vct);
-	    checkErase2(vct, vct.erase(vct.begin(), vct.end()));
-        
-        }
-    }
-    return (0);
 }
 
 */
@@ -488,6 +606,7 @@ int		main(void)
 	return (0);
 }
 */
+/*
 #define TESTED_TYPE int
 
 int		main(void)
@@ -573,6 +692,8 @@ int		main(void)
 	std::cout << *it-- << std::endl;
 	std::cout << *--it << std::endl;
     }
+    
 	return (0);
 }
+*/
 

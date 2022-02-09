@@ -1,8 +1,12 @@
 #ifndef STACK_HPP
 # define STACK_HPP
 
-# include <iterator>
+# include "lexicographical_compare.hpp"
+# include "iterator.hpp"
+# include "enable_if.hpp"
+# include "is_integral.hpp"
 # include "vector.hpp"
+
 
 namespace ft
 {
@@ -16,7 +20,7 @@ namespace ft
         protected:
             Container                               c;
         public:
-            explicit                                stack(const Container& = Container()) {}
+            explicit                                stack(const Container&lala = Container()) :c(lala) {}
             bool                                    empty() const { return c.empty(); }
             size_type                               size() const { return c.size(); }
             value_type&                             top() { return c.back(); }

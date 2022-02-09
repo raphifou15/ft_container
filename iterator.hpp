@@ -161,6 +161,7 @@ namespace ft
                 tmp.current = this->current + n;
                 return *tmp.current;
             }
+            
         private:
             pointer current;
     };
@@ -196,6 +197,7 @@ namespace ft
         return (x.base() <= y.base());
     }
 
+
     template <class Iterator>
     typename random_access_iterator<Iterator>::difference_type operator-( const random_access_iterator<Iterator>& x, const random_access_iterator<Iterator>& y)
     {
@@ -207,6 +209,61 @@ namespace ft
     {
         return random_access_iterator<Iterator> (x.base() + n);
     }
+
+//////////////////////////////////////////////////////// right left begin
+
+    template <class IteratorL, class IteratorR>
+    bool operator==( const random_access_iterator<IteratorL>& x, const random_access_iterator<IteratorR>& y)
+    {
+        return (x.base() == y.base());
+    }
+
+    template <class IteratorL, class IteratorR>
+    bool operator!=( const random_access_iterator<IteratorL>& x, const random_access_iterator<IteratorR>& y)
+    {
+        return (x.base() != y.base());
+    }
+
+    template <class IteratorL, class IteratorR>
+    bool operator<( const random_access_iterator<IteratorL>& x, const random_access_iterator<IteratorR>& y)
+    {
+        return (x.base() < y.base());
+    }
+
+    template <class IteratorL, class IteratorR>
+    bool operator>( const random_access_iterator<IteratorL>& x, const random_access_iterator<IteratorR>& y)
+    {
+        return (x.base() > y.base());
+    }
+
+    template <class IteratorL, class IteratorR>
+    bool operator>=( const random_access_iterator<IteratorL>& x, const random_access_iterator<IteratorR>& y)
+    {
+        return (x.base() >= y.base());
+    }
+
+    template <class IteratorL, class IteratorR>
+    bool operator<=( const random_access_iterator<IteratorL>& x, const random_access_iterator<IteratorR>& y)
+    {
+        return (x.base() <= y.base());
+    }
+
+    template <class IteratorL, class IteratorR>
+    typename random_access_iterator<IteratorL>::difference_type operator-( const random_access_iterator<IteratorL>& x, const random_access_iterator<IteratorR>& y)
+    {
+        return (x.base() - y.base());
+    }
+
+    template <class IteratorL, class IteratorR>
+    random_access_iterator<IteratorL> operator+( typename random_access_iterator<IteratorL>::difference_type n, const random_access_iterator<IteratorR>& x)
+    {
+        return random_access_iterator<IteratorL> (x.base() + n);
+    }
+
+
+///////////////////////////////  right left end
+
+
 
     // 24.3.4, iterator operations:
     template <class InputIterator, class Distance>
@@ -356,7 +413,52 @@ namespace ft
         return reverse_iterator<Iterator> (x.base() - n);
     }
     
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////// right left begin
 
+
+
+    template <class IteratorL, class IteratorR>
+    bool operator==( const reverse_iterator<IteratorL>& x, const reverse_iterator<IteratorR>& y) // Returns: x.current == y.current
+    {
+        return (x.base() == y.base());
+    }
+    template <class IteratorL, class IteratorR>
+    bool operator<( const reverse_iterator<IteratorL>& x, const reverse_iterator<IteratorR>& y) // Returns: x.current > y.current
+    {
+        return (x.base() > y.base());
+    }
+    template <class IteratorL, class IteratorR>
+    bool operator!=( const reverse_iterator<IteratorL>& x, const reverse_iterator<IteratorR>& y) // Returns: x.current != y.current
+    {
+        return (x.base() != y.base());
+    }
+    template <class IteratorL, class IteratorR>
+    bool operator>( const reverse_iterator<IteratorL>& x, const reverse_iterator<IteratorR>& y) // Returns: x.current < y.current
+    {
+        return (x.base() < y.base());
+    }
+    template <class IteratorL, class IteratorR>
+    bool operator>=( const reverse_iterator<IteratorL>& x, const reverse_iterator<IteratorR>& y) // Returns: x.current <= y.current
+    {
+        return (x.base() <= y.base());
+    }
+    template <class IteratorL, class IteratorR>
+    bool operator<=( const reverse_iterator<IteratorL>& x, const reverse_iterator<IteratorR>& y) // Returns: x.current >= y.current
+    {
+        return (x.base() >= y.base());
+    }
+    template <class IteratorL, class IteratorR>
+    typename reverse_iterator<IteratorL>::difference_type operator-( const reverse_iterator<IteratorL>& x, const reverse_iterator<IteratorR>& y) // Returns: y.current - x.current
+    {
+        return (y.base() - x.base());
+    }  
+    template <class IteratorL, class IteratorR>
+    reverse_iterator<IteratorL> operator+( typename reverse_iterator<IteratorL>::difference_type n, const reverse_iterator<IteratorR>& x) // Returns: reverse_iterator<Iterator> (x.current - n)
+    {
+        return reverse_iterator<IteratorL> (x.base() - n);
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// right left end
 
 
 
