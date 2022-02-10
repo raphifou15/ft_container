@@ -9,13 +9,288 @@
 #include <list>
 //#include <type_traits>
 #include <iostream>
+# include <stdexcept>
 #define TESTED_TYPE int
 
 #define COLOR_GRAY  "\e[1;30m"
 #define COLOR_GREEN  "\e[0;32m"
+#define COLOR_BLUE	"\e[0;34m"
 #define COLOR_END  "\e[0m"
 
+int main()
+{
+	{
+		std::vector<int>			test(3, 3);
 
+		std::cout << "self assignation test\n";
+		std::vector<std::vector<int> >	self_assign;
+		std::vector<std::vector<int> >	*ptr = &self_assign;
+		std::vector<std::vector<int> >	*ptr2 = &self_assign;
+
+		self_assign.assign(4, test);
+		*ptr = *ptr2;
+
+		std::cout << COLOR_GREEN << std::boolalpha << (*ptr == *ptr2) << COLOR_END << '\n' ;
+		//	self_assign = self_assign; //compiler doesn't like it!
+
+		std::cout << COLOR_BLUE << "test 2" << COLOR_END << std::endl;
+
+		std::vector<std::vector<int> > JOHN;
+		std::vector<std::vector<int> > BOB(5, test);
+		std::cout << "BOB(5, test(test, 5)) : \n";
+		for (size_t i = 0; i < BOB.size(); i++)
+		{
+			for (size_t j = 0; j < BOB[i].size(); j++)
+				std::cout << BOB[i][j] << ' ';
+			std::cout << '\n';
+		}
+		std::vector<std::vector<int> > MIKE(BOB);
+
+		// CTORs
+		std::cout << COLOR_BLUE << "test 3" << COLOR_END << std::endl;
+		std::cout << "\nCTORS\n";
+		std::cout << "Empty is empty ? " << std::boolalpha << JOHN.empty() << '\n';
+		std::cout << "BOB is empty? " << BOB.empty() << '\n';
+
+		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
+		std::cout << "Size of BOB " << BOB.size() << std::endl;
+		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
+		// RESIZE
+		std::cout << COLOR_BLUE << "test 4" << COLOR_END << std::endl;
+		size_t	bob_resize = 2;
+		std::cout << "\nRESIZE\n";
+		BOB.resize(bob_resize);
+		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
+		if (JOHN.capacity() >= JOHN.size())
+			std::cout << "Capacity of JOHN is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 53\n";
+		std::cout << "Size of BOB " << BOB.size() << std::endl;
+		if (BOB.capacity() >= bob_resize)
+			std::cout << "Capacity of BOB is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 58\n";
+		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
+		if (MIKE.capacity() >= MIKE.size())
+			std::cout << "Capacity of MIKE is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 63\n";
+
+		size_t	mike_resize = 9;
+		bob_resize = 0;
+	
+		BOB.resize(bob_resize);
+		std::cout << "BOB is empty now ? " << BOB.empty() << '\n';
+		MIKE.resize(mike_resize, test);
+		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
+		if (JOHN.capacity() >= JOHN.size())
+			std::cout << "Capacity of JOHN is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 86\n";
+		std::cout << "Size of BOB " << BOB.size() << std::endl;
+		if (BOB.capacity() >= bob_resize)
+			std::cout << "Capacity of BOB is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 91\n";
+		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
+		if (MIKE.capacity() >= mike_resize)
+			std::cout << "Capacity of MIKE is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 96\n";
+		for (size_t i = 0; i < MIKE.size(); i++)
+		{
+			for (size_t j = 0; j < MIKE[i].size(); j++)
+			{
+				std::cout << MIKE[i][j] << ' ';
+			}
+			std::cout << std::endl;
+		}
+		// RESERVE
+		std::cout << COLOR_BLUE << "test 5" << COLOR_END << std::endl;
+		std::cout << "\nRESERVE\n";
+
+		size_t	john_reserve = 0;
+		size_t	bob_reserve = 3;
+		size_t	mike_reserve = 4;
+
+		JOHN.reserve(john_reserve);
+		BOB.reserve(bob_reserve);
+		MIKE.reserve(mike_reserve);
+		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
+		if (JOHN.capacity() >= john_reserve)
+			std::cout << "Capacity of JOHN is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 120\n";
+		std::cout << "Size of BOB " << BOB.size() << std::endl;
+		if (BOB.capacity() >= bob_reserve)
+			std::cout << "Capacity of BOB is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 125\n";
+		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
+		if (MIKE.capacity() >= mike_reserve)
+			std::cout << "Capacity of MIKE is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 130\n";
+		for (size_t i = 0; i < MIKE.size(); i++)
+		{
+			for (size_t j = 0; j < MIKE[i].size(); j++)
+				std::cout << MIKE[i][j] << ' ';
+			std::cout << std::endl;
+		}
+		//AT
+		std::cout << COLOR_BLUE << "test 6" << COLOR_END << std::endl;
+		std::cout << "\nAT\n";
+		
+		try
+		{
+			std::cout << MIKE.at(2).front() << '\n';
+			std::cout << MIKE.at(87).back() << '\n';
+		}
+		catch (std::out_of_range& oor)
+		{
+			(void)oor;
+			std::cout << "OOR error caught\n";
+		}
+		
+	}
+
+	std::cout << COLOR_BLUE << std::endl << "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" << COLOR_END << std::endl; 
+	
+	{
+		ft::vector<int>			test(3, 3);
+
+		std::cout << "self assignation test\n";
+		ft::vector<ft::vector<int> >	self_assign;
+		ft::vector<ft::vector<int> >	*ptr = &self_assign;
+		ft::vector<ft::vector<int> >	*ptr2 = &self_assign;
+
+		self_assign.assign(4, test);
+		*ptr = *ptr2;
+
+		std::cout << COLOR_GREEN << std::boolalpha << (*ptr == *ptr2) << COLOR_END << '\n' ;
+		
+		//	self_assign = self_assign; //compiler doesn't like it!
+		std::cout << COLOR_BLUE << "test 2" << COLOR_END << std::endl;
+
+		ft::vector<ft::vector<int> > JOHN;
+		ft::vector<ft::vector<int> > BOB(5, test);
+		std::cout << "BOB(5, test(test, 5)) : \n";
+		for (size_t i = 0; i < BOB.size(); i++)
+		{
+			for (size_t j = 0; j < BOB[i].size(); j++)
+				std::cout << BOB[i][j] << ' ';
+			std::cout << '\n';
+		}
+		ft::vector<ft::vector<int> > MIKE(BOB);
+		// CTORs
+		std::cout << COLOR_BLUE << "test 3" << COLOR_END << std::endl;
+		std::cout << "\nCTORS\n";
+		std::cout << "Empty is empty ? " << std::boolalpha << JOHN.empty() << '\n';
+		std::cout << "BOB is empty? " << BOB.empty() << '\n';
+
+		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
+		std::cout << "Size of BOB " << BOB.size() << std::endl;
+		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
+				// RESIZE
+		std::cout << COLOR_BLUE << "test 4" << COLOR_END << std::endl;
+		size_t	bob_resize = 2;
+		std::cout << "\nRESIZE\n";
+		BOB.resize(bob_resize);
+		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
+		if (JOHN.capacity() >= JOHN.size())
+			std::cout << "Capacity of JOHN is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 53\n";
+		std::cout << "Size of BOB " << BOB.size() << std::endl;
+		if (BOB.capacity() >= bob_resize)
+			std::cout << "Capacity of BOB is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 58\n";
+		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
+		if (MIKE.capacity() >= MIKE.size())
+			std::cout << "Capacity of MIKE is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 63\n";
+
+		size_t	mike_resize = 9;
+		bob_resize = 0;
+	
+		BOB.resize(bob_resize);
+		std::cout << "BOB is empty now ? " << BOB.empty() << '\n';
+		MIKE.resize(mike_resize, test);
+		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
+		if (JOHN.capacity() >= JOHN.size())
+			std::cout << "Capacity of JOHN is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 86\n";
+		std::cout << "Size of BOB " << BOB.size() << std::endl;
+		if (BOB.capacity() >= bob_resize)
+			std::cout << "Capacity of BOB is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 91\n";
+		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
+		if (MIKE.capacity() >= mike_resize)
+			std::cout << "Capacity of MIKE is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 96\n";
+		for (size_t i = 0; i < MIKE.size(); i++)
+		{
+			for (size_t j = 0; j < MIKE[i].size(); j++)
+			{
+				std::cout << MIKE[i][j] << ' ';
+			}
+			std::cout << std::endl;
+		}
+		// RESERVE
+		std::cout << COLOR_BLUE << "test 5" << COLOR_END << std::endl;
+		std::cout << "\nRESERVE\n";
+
+		size_t	john_reserve = 0;
+		size_t	bob_reserve = 3;
+		size_t	mike_reserve = 4;
+
+		JOHN.reserve(john_reserve);
+		BOB.reserve(bob_reserve);
+		MIKE.reserve(mike_reserve);
+		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
+		if (JOHN.capacity() >= john_reserve)
+			std::cout << "Capacity of JOHN is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 120\n";
+		std::cout << "Size of BOB " << BOB.size() << std::endl;
+		if (BOB.capacity() >= bob_reserve)
+			std::cout << "Capacity of BOB is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 125\n";
+		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
+		if (MIKE.capacity() >= mike_reserve)
+			std::cout << "Capacity of MIKE is sufficient\n";
+		else
+			std::cerr << "THERE IS A PROBLEM ON LINE 130\n";
+		for (size_t i = 0; i < MIKE.size(); i++)
+		{
+			for (size_t j = 0; j < MIKE[i].size(); j++)
+				std::cout << MIKE[i][j] << ' ';
+			std::cout << std::endl;
+		}
+		//AT
+		std::cout << COLOR_BLUE << "test 6" << COLOR_END << std::endl;
+		std::cout << "\nAT\n";
+		try
+		{
+			std::cout << MIKE.at(2).front() << '\n';
+			std::cout << MIKE.at(87).back() << '\n';
+		}
+		catch (std::out_of_range& oor)
+		{
+			(void)oor;
+			std::cout << "OOR error caught\n";
+		}
+	}
+	return (0);
+}
+
+/*
 void	prepost_incdec(std::vector<TESTED_TYPE> &vct)
 {
 	std::vector<TESTED_TYPE>::iterator it = vct.begin();
@@ -61,7 +336,9 @@ void	prepost_incdec2(ft::vector<TESTED_TYPE> &vct)
 	std::cout << *it_tmp << " | " << *it << std::endl;
 	std::cout << "###############################################" << std::endl;
 }
+*/
 
+/*
 int main()
 {
     {
@@ -123,7 +400,7 @@ int main()
     }
     return (0);
 }
-
+*/
 /*
 
         void	checkErase(std::vector<TESTED_TYPE> const &vct,

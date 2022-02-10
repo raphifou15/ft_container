@@ -94,8 +94,9 @@ namespace ft
 			}
 			~vector()
 			{
-			  //std::cout << "memory destroy" << std::endl;
-			  this->_alloc.deallocate(this->_memory, this->_capacity);
+				for (size_t i = 0; i < this->_size; i++)
+					this->_alloc.destroy(&this->_memory[i]);
+				this->_alloc.deallocate(this->_memory, this->_capacity);
 			}
         
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& x)
@@ -241,7 +242,7 @@ namespace ft
 					lala += (convert.str() + ") >= this->size() (which is ");
 					convert2 << this->_size;
 					lala += (convert2.str() + ")");
-					throw std::length_error(lala);
+					throw std::out_of_range(lala);
 				}
 				else
 					return (this->_memory[n]);
@@ -258,25 +259,25 @@ namespace ft
 					lala += (convert.str() + ") >= this->size() (which is ");
 					convert2 << this->_size;
 					lala += (convert2.str() + ")");
-					throw std::length_error(lala);
+					throw std::out_of_range(lala);
 				}
 				else
 					return (this->_memory[n]);
 			}
 			reference				front()
 			{
-			 return (this->_memory[0]);
+			 	return (*(this->_memory));
 			 //appeler cette fonction sur un vector vide cause des comportements indefinis.
 			}
 
 			const_reference			front() const
 			{
-				return (this->_memory[0]);
+				return (*(this->_memory));
 			 	//appeler cette fonction sur un vector vide cause des comportements indefinis.
 			}
 			reference				back()
 			{
-				return (this->_memory[this->_size - 1]);
+				return (*(this->_memory + this->_size - 1));
 				//appeler cette fonction sur un vector vide cause des comportements indefinis.
 			}
 			const_reference			back() const
@@ -388,13 +389,16 @@ namespace ft
 				for (iterator it = this->begin(); it != position; it++)
 					range1++;
 				target = range1;
-				for (; range1 < (this->size() - 1); range1++)
+
+				for (; range1 < this->size(); range1++)
 				{
 					this->_alloc.destroy(&this->_memory[range1]);
-					this->_alloc.construct(&this->_memory[range1], this->_memory[range1 + 1]);
+					if (range1 < (this->size() - 1))
+						this->_alloc.construct(&this->_memory[range1], *(this->_memory + range1 + 1));
 				}
-				this->_size--;
-				return (iterator(&this->_memory[target]));
+				if (target < this->_size)
+					this->_size--;
+				return (position);
 			}
 
 			iterator				erase(iterator first, iterator last)
@@ -407,13 +411,14 @@ namespace ft
 				for (iterator ite = first; ite != last; ite++)
 					n++;
 				target = range1;
-				for (size_type range2 = range1; range2 < range1 + n; range2++)
+				for (size_type range2 = range1; range2 < (range1 + n); range2++)
 					this->_alloc.destroy(&this->_memory[range2]);
-				for (; range1 < (this->size() - n); range1++)
+				for (; range1 < (this->size() - n -1); range1++)
 				{
 					this->_alloc.construct(&this->_memory[range1], this->_memory[range1 + n]);
 				}
-				this->_size -= n;
+				if (target < this->_size)
+					this->_size -= n;
 				return (iterator(&this->_memory[target]));
 			}
 
