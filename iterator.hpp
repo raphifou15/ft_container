@@ -447,6 +447,7 @@ namespace ft
     {
         return (x.base() >= y.base());
     }
+    
     template <class IteratorL, class IteratorR>
     typename reverse_iterator<IteratorL>::difference_type operator-( const reverse_iterator<IteratorL>& x, const reverse_iterator<IteratorR>& y) // Returns: y.current - x.current
     {

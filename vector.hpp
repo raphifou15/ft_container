@@ -86,9 +86,9 @@ namespace ft
 					this->_alloc.construct(&this->_memory[i], *first);
 			}
 		
-			vector(const vector<T,Allocator>& x) : _memory(x._memory), _size(x._size), _capacity(x._capacity)
+			vector(const vector<T,Allocator>& x) : _memory(NULL), _size(x._size), _capacity(x._size)
 			{
-				this->_memory = this->_alloc.allocate(_capacity);
+				this->_memory = this->_alloc.allocate(this->_capacity);
 				for (size_type i = 0; i < this->_size; i++)
 					this->_alloc.construct(&this->_memory[i], x._memory[i]);
 			}
@@ -102,7 +102,12 @@ namespace ft
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& x)
 			{
 				this->clear();
-				this->resize(x._size);
+				this->_alloc.deallocate(this->_memory, this->_capacity);
+				this->_memory = NULL;
+				this->_size = x._size;
+				this->_capacity = (this->_capacity >= x._capacity) ? this->_capacity + 0 : x._capacity;
+				this->_alloc = x._alloc;
+				this->_memory = this->_alloc.allocate(this->_capacity);
 				for (size_type i = 0; i < this->_size; i++)
 					this->_alloc.construct(&this->_memory[i], x._memory[i]);
 				return *this;
@@ -195,8 +200,14 @@ namespace ft
 				}
 				if (sz > this->size())
 				{
-					if (sz > this->_capacity)
-							this->reserve(sz);
+					if ((sz > this->_capacity) && sz < (this->_capacity * 2))
+					{
+							this->reserve(this->_capacity * 2);
+					}
+					else if (sz > this->_capacity)
+					{
+						this->reserve(sz);
+					}
 					for (; this->_size < sz; this->_size++)
 						this->_alloc.construct(&this->_memory[this->_size], c);
 				}
@@ -321,18 +332,20 @@ namespace ft
 			
 			void					insert(iterator position, size_type n, const T& x)
 			{
+				if (n <= 0)
+					return ;
 				size_type range1 = 0;
 				size_type range2 = this->size();
 				for (iterator it = this->begin(); it != position; it++)
 					range1++;
 				if (this->_capacity <= (this->_size + n))
 				{
-					if ((this->_capacity * 2) > this->max_size())
+					if ((this->_size * 2) > this->max_size())
 						reserve(this->max_size());
-					else if ((this->_capacity * 2) < (this->_size + n))
+					else if ((this->_size * 2) < (this->_size + n))
 						reserve(n + this->size());
 					else
-						reserve(this->_capacity * 2);
+						reserve(this->_size * 2);
 				}
 				for (; range2 > range1; range2--)
 				{
@@ -361,12 +374,12 @@ namespace ft
 					n++;
 				if (this->_capacity <= (this->_size + n))
 				{
-					if ((this->_capacity * 2) > this->max_size())
+					if ((this->_size * 2) > this->max_size())
 						reserve(this->max_size());
-					else if ((this->_capacity * 2) < (this->_size + n))
+					else if ((this->_size * 2) < (this->_size + n))
 						reserve(n + this->size());
 					else
-						reserve(this->_capacity * 2);
+						reserve(this->_size * 2);
 				}
 				for (; range2 > range1; range2--)
 				{
@@ -411,15 +424,22 @@ namespace ft
 				for (iterator ite = first; ite != last; ite++)
 					n++;
 				target = range1;
-				for (size_type range2 = range1; range2 < (range1 + n); range2++)
+				for (size_type range2 = range1; (range2 < (range1 + n) && (range2 < this->_size)); range2++)
 					this->_alloc.destroy(&this->_memory[range2]);
-				for (; range1 < (this->size() - n -1); range1++)
+				for (; range1 < (this->size()); range1++)
 				{
-					this->_alloc.construct(&this->_memory[range1], this->_memory[range1 + n]);
+					if (n != 0)
+					{
+						if (this->size() > (range1 + n))
+						{
+							this->_alloc.construct(&this->_memory[range1], this->_memory[range1 + n]);
+							this->_alloc.destroy(&this->_memory[range1 + n]);
+						}
+					}
 				}
 				if (target < this->_size)
 					this->_size -= n;
-				return (iterator(&this->_memory[target]));
+				return (first);
 			}
 
 			void					swap(vector<T,Allocator>& x)
