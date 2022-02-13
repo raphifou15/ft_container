@@ -1,4 +1,6 @@
 #include "stack.hpp"
+#include "map.hpp"
+#include "pair.hpp"
 #include "vector.hpp"
 #include "lexicographical_compare.hpp"
 #include "iterator.hpp"
