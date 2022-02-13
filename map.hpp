@@ -19,35 +19,35 @@ namespace ft
     {
         public:
     //     // types:
-        typedef Key                         key_type;
-        typedef T                           mapped_type;
-        typedef ft::pair<const Key, T>      value_type;
-        typedef Compare                     key_compare;
-        typedef Allocator                   allocator_type;
-    //     typedef typename Allocator::reference reference;
-    //     typedef typename Allocator::const_reference const_reference;
+        typedef Key                                 key_type;
+        typedef T                                   mapped_type;
+        typedef ft::pair<const Key, T>              value_type;
+        typedef Compare                             key_compare;
+        typedef Allocator                           allocator_type;
+        typedef typename Allocator::reference       reference;
+        typedef typename Allocator::const_reference const_reference;
     //     typedef implementation defined iterator; // See 23.1
     //     typedef implementation defined const_iterator; // See 23.1
     //     typedef implementation defined size_type; // See 23.1
     //     typedef implementation defined difference_type;// See 23.1
-    //     typedef typename Allocator::pointer pointer;
-    //     typedef typename Allocator::const_pointer const_pointer;
+        typedef typename Allocator::pointer         pointer;
+        typedef typename Allocator::const_pointer   const_pointer;
     //     typedef std::reverse_iterator<iterator> reverse_iterator;
     //     typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
-    //     class value_compare : public binary_function<value_type,value_type,bool>
-    //     {
-    //         friend class map;
-    //         protected:
-    //         Compare comp;
-    //         value_compare(Compare c) : comp(c) {}
-    //         public:
-    //         bool operator()(const value_type& x, const value_type& y) const
-    //         {
-    //             return comp(x.first, y.first);
-    //         }
-    //     };
+        class value_compare : public std::binary_function<value_type,value_type,bool>
+        {
+            friend class map;
+            protected:
+            Compare comp;
+            value_compare(Compare c) : comp(c) {}
+            public:
+            bool operator()(const value_type& x, const value_type& y) const
+            {
+                return comp(x.first, y.first);
+            }
+        };
     //     // 23.3.1.1 construct/copy/destroy:
-    //     explicit map(const Compare& comp = Compare(), const Allocator& = Allocator());
+        explicit map(const Compare& comp = Compare(), const Allocator& = Allocator());
     //     template <class InputIterator> map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator());
     //     map(const map<Key,T,Compare,Allocator>& x);
     //     ~map();
