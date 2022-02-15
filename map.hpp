@@ -48,6 +48,9 @@ namespace ft
         };
     //     // 23.3.1.1 construct/copy/destroy:
         explicit map(const Compare& comp = Compare(), const Allocator& = Allocator());
+        /*{
+            construit une map vide en utilisant l'obget de comparaison ainsi que l'allocation.
+        }*/
     //     template <class InputIterator> map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator());
     //     map(const map<Key,T,Compare,Allocator>& x);
     //     ~map();
@@ -89,7 +92,10 @@ namespace ft
     //     const_iterator upper_bound(const key_type& x) const;
     //     pair<iterator,iterator> equal_range(const key_type& x);
     //     pair<const_iterator,const_iterator> equal_range(const key_type& x) const;
+    private:
+        rb_tree <value_type, key_compare>
     };
+
     // template <class Key, class T, class Compare, class Allocator>
     // bool operator==(const map<Key,T,Compare,Allocator>& x,
     // const map<Key,T,Compare,Allocator>& y);
