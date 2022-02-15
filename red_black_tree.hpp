@@ -54,7 +54,13 @@ template <class T, class Compare, class Node = Node<T>, class Allocator = std::a
 class RedBlackTree
 {
   // mettre en place des typedef pour faciliter l'ecriture.
-  typedef T   value_type; //cette value sera ma paire;
+  typedef T                                   value_type; //cette value sera ma paire;
+  typedef Compare                             key_compare; // cette value me permet d'utiliser les foncions de la classe compare
+  typedef Node                                type_node; 
+  typedef typename Allocator::reference       reference;
+  typedef typename Allocator::const_reference const_reference;
+  typedef typename Allocator::pointer         pointer;
+  typedef typename Allocator::const_pointer   const_pointer;
   
 };
 
