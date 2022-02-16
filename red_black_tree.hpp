@@ -1,22 +1,24 @@
 #ifndef RED_BLACK_TREE
 # define RED_BLACK_TREE
 
-# define BLACK 0;
-# define RED   1;
+# define BLACK 0
+# define RED   1
 
 # include <memory>
 # include <iostream>
 # include <stdexcept>
 # include <sstream>
+# include "map.hpp"
 # include "pair.hpp"
 
-
-
-// code inspirer de la documentation https://www.programiz.com/dsa/red-black-tree
-template <class T> // T = pair
-class Node
+namespace ft
 {
-    public:
+
+  // code inspirer de la documentation https://www.programiz.com/dsa/red-black-tree
+  template <class T> // T = pair
+  class Node
+  {
+      public:
         T       data;   // pair
         Node    *parent; // noeud parent
         Node    *left; // noeud droit
@@ -55,13 +57,27 @@ class RedBlackTree
 {
   // mettre en place des typedef pour faciliter l'ecriture.
   typedef T                                   value_type; //cette value sera ma paire;
-  typedef Compare                             key_compare; // cette value me permet d'utiliser les foncions de la classe compare
-  typedef Node                                type_node; 
+  typedef Compare                             value_compare; // cette value me permet d'utiliser les foncions de la classe compare
   typedef typename Allocator::reference       reference;
   typedef typename Allocator::const_reference const_reference;
   typedef typename Allocator::pointer         pointer;
   typedef typename Allocator::const_pointer   const_pointer;
   
-};
+  private:
+    Allocator	_alloc;
+    Node      _node;
+    Compare   _cmp;
+    pointer   _root;
+    pointer   _last;
 
+  public:
+  RedBlackTree(value_compare const &lala = value_compare()) : _cmp(lala) 
+  {
+    //this->_root = this->_alloc().allocate(1); // allocation d'un element de type Node;
+    //this->_alloc.construct(this->_root, this->_node); // le premier element est constuit sur un node root qui sera en faite le NIL 
+    //this->_last = this->_root; // tous les element de mon rbt pointe sur un meme element.
+  }
+  
+};
+}
 #endif

@@ -5,7 +5,10 @@
 # include <iostream>
 # include <stdexcept>
 # include <sstream>
+# include <algorithm>
+# include <sys/cdefs.h>
 # include "pair.hpp"
+# include "red_black_tree.hpp"
 # include "lexicographical_compare.hpp"
 # include "iterator.hpp"
 # include "reverse_iterator.hpp"
@@ -46,14 +49,14 @@ namespace ft
                 return comp(x.first, y.first);
             }
         };
+        private:
+            RedBlackTree<value_type, value_compare>   _rb;
+        public:
     //     // 23.3.1.1 construct/copy/destroy:
-        explicit map(const Compare& comp = Compare(), const Allocator& = Allocator());
-        /*{
-            construit une map vide en utilisant l'obget de comparaison ainsi que l'allocation.
-        }*/
+        explicit map(const Compare& comp = Compare(), const Allocator& = Allocator()) : _rb(value_compare(comp)) {}
     //     template <class InputIterator> map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator());
     //     map(const map<Key,T,Compare,Allocator>& x);
-    //     ~map();
+        ~map(){}
     //     map<Key,T,Compare,Allocator>& operator=(const map<Key,T,Compare,Allocator>& x);
     //     // iterators:
     //     iterator begin();
@@ -92,8 +95,7 @@ namespace ft
     //     const_iterator upper_bound(const key_type& x) const;
     //     pair<iterator,iterator> equal_range(const key_type& x);
     //     pair<const_iterator,const_iterator> equal_range(const key_type& x) const;
-    private:
-        rb_tree <value_type, key_compare>
+
     };
 
     // template <class Key, class T, class Compare, class Allocator>

@@ -18,7 +18,7 @@
 #define COLOR_GREEN  "\e[0;32m"
 #define COLOR_BLUE	"\e[0;34m"
 #define COLOR_END  "\e[0m"
-
+/*
 int main()
 {
 	{
@@ -291,7 +291,7 @@ int main()
 	}
 	return (0);
 }
-
+*/
 /*
 void	prepost_incdec(std::vector<TESTED_TYPE> &vct)
 {
@@ -976,3 +976,9 @@ int		main(void)
 }
 */
 
+int main(void)
+{
+	ft::map<int, int> lala;
+	std::cout << "salut" << std::endl;
+	return (0);
+}
