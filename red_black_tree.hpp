@@ -31,7 +31,7 @@ namespace ft
     // faire un constructeur normale avec des bonnes valeurs
     Node(T const & va ) : data(va), parent(NULL), left(NULL), right(NULL), color(RED) {}
     // constructeur par copie pour effectuer les donnees
-    Node(Node const &copie) : data(copie.va), parent(copie.parent), left(copie.left), right(copie.right), color(copie.color) {}
+    Node(Node const &copie) : data(copie.data), parent(copie.parent), left(copie.left), right(copie.right), color(copie.color) {}
     // constructeur par assignation
     Node &operator=(const Node &lala)
     {
@@ -48,11 +48,17 @@ namespace ft
      {
        return (this->data == lala.data);
      }
+
+    /*std::ostream&   operator<<(std::ostream & ostream, Node const &i)
+    {
+      ostream << i.data;
+      return (ostream);
+    }*/
 };
 
 // trouver un moyen de faire passer la classe de comparaison.
 
-template <class T, class Compare, class Node = Node<T>, class Allocator = std::allocator<Node>>
+template <class T, class Compare, class Node = Node<T>, class Allocator = std::allocator<Node> >
 class RedBlackTree
 {
   // mettre en place des typedef pour faciliter l'ecriture.
@@ -65,19 +71,46 @@ class RedBlackTree
   
   private:
     Allocator	_alloc;
-    Node      _node;
+    Node      *_nodeEnd;
+    Node      *_nodeRoot;
     Compare   _cmp;
-    pointer   _root;
-    pointer   _last;
+    //typename Allocator::size_type	_capacity;
 
   public:
   RedBlackTree(value_compare const &lala = value_compare()) : _cmp(lala) 
   {
-    //this->_root = this->_alloc().allocate(1); // allocation d'un element de type Node;
-    //this->_alloc.construct(this->_root, this->_node); // le premier element est constuit sur un node root qui sera en faite le NIL 
-    //this->_last = this->_root; // tous les element de mon rbt pointe sur un meme element.
+    this->_nodeEnd = this->_alloc.allocate(1); // allocation d'un element de type Node;
+    this->_alloc.construct(this->_nodeEnd, Node()); // creation d'un node vide;
+    this->_nodeRoot = this->_nodeEnd; // le dernier element et le meme que le premier;
+    //this->_capacity = 1;
   }
-  
+  ~RedBlackTree()
+  {
+    this->_alloc.destroy(this->_nodeEnd);
+    this->_alloc.deallocate(this->_nodeEnd, 1);
+  };
+
+  // getter
+  Node *  getRoot(void) const {return this->_nodeRoot;}
+
+  //
+
+  void  displayAllNode(Node *node)
+  {
+    if (node != NULL)
+    {
+      std::cout << node->data.first << std::endl;
+      std::cout << node->data.second << std::endl;
+      std::cout << node->parent << std::endl;
+      std::cout << node->left << std::endl;
+      std::cout << node->right << std::endl;
+      std::cout << node->color << std::endl;
+    }
+    if (node->left)
+     return  displayAllNode(node->left);
+    if (node->right)
+     return  displayAllNode(node->right);
+  }
 };
 }
 #endif

@@ -1,6 +1,8 @@
 #ifndef PAIR
 # define PAIR
 
+# include <iostream>
+# include <memory>
 namespace ft
 {
     template <class T1, class T2>
@@ -12,7 +14,8 @@ namespace ft
         T2 second;
         pair() : first(), second() {}
         pair(const T1& x, const T2& y) : first(x), second(y) {}
-        template<class U, class V> pair(const pair<U, V> &p) : first(p.first), second(p.second) {}
+        template<class U, class V>
+        pair(const pair<U, V> &p) : first(p.first), second(p.second) {}
         pair& operator=(const pair& p)
         {
             this->first = p.first;
@@ -55,5 +58,7 @@ namespace ft
         return pair<T1, T2>(x, y);
     }
 }
+
+
 
 #endif

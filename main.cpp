@@ -979,6 +979,7 @@ int		main(void)
 int main(void)
 {
 	ft::map<int, int> lala;
-	std::cout << "salut" << std::endl;
+	lala.display_element();
+	//std::cout << "salut" << std::endl;
 	return (0);
 }

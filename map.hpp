@@ -74,7 +74,10 @@ namespace ft
     //     // 23.3.1.2 element access:
     //     T& operator[](const key_type& x);
     //     // modifiers:
-    //     pair<iterator, bool> insert(const value_type& x);
+        pair<iterator, bool> insert(const value_type& x)
+        {
+            //faire une insertion d'un element
+        }
     //     iterator insert(iterator position, const value_type& x);
     //     template <class InputIterator> void insert(InputIterator first, InputIterator last);
     //     void erase(iterator position);
@@ -95,6 +98,11 @@ namespace ft
     //     const_iterator upper_bound(const key_type& x) const;
     //     pair<iterator,iterator> equal_range(const key_type& x);
     //     pair<const_iterator,const_iterator> equal_range(const key_type& x) const;
+
+    void    display_element(void)
+    {
+        this->_rb.displayAllNode(this->_rb.getRoot());
+    }
 
     };
 
