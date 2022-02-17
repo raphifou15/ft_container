@@ -27,9 +27,9 @@ namespace ft
 
     // initialisation de node a 0
     // creer un truc qui vq me renvoyer NILL;
-    Node() : data(), parent(NULL), left(NULL), right(NULL), color(BLACK) {}
+    Node(void) : data(), parent(NULL), left(NULL), right(NULL), color(BLACK) {}
     // faire un constructeur normale avec des bonnes valeurs
-    Node(T const & va ) : data(va), parent(NULL), left(NULL), right(NULL), color(RED) {}
+    Node(T const & va, Node *parent = NULL, Node *left = NULL, Node *right = NULL, int color = RED) : data(va), parent(parent), left(left), right(right), color(color) {}
     // constructeur par copie pour effectuer les donnees
     Node(Node const &copie) : data(copie.data), parent(copie.parent), left(copie.left), right(copie.right), color(copie.color) {}
     // constructeur par assignation
@@ -86,18 +86,80 @@ class RedBlackTree
   }
   ~RedBlackTree()
   {
+    destroyAllElements(this->_nodeRoot);
     this->_alloc.destroy(this->_nodeEnd);
     this->_alloc.deallocate(this->_nodeEnd, 1);
   };
+
+  void  destroyAllElements(Node *lala)
+  {
+    if (lala->left != this->_nodeEnd)
+      destroyAllElements(lala->left);
+    if (lala->right != this->_nodeEnd)
+      destroyAllElements(lala->right);
+    if (lala != this->_nodeEnd)
+    {
+      this->_alloc.destroy(lala);
+      this->_alloc.deallocate(lala, 1);
+    }
+  }
 
   // getter
   Node *  getRoot(void) const {return this->_nodeRoot;}
 
   //
 
+
+///////////////////////////////////////////////////////////////////////
+  void  insert(const value_type &x)
+  {
+    Node *lala = this->_alloc.allocate(1);
+    this->_alloc.construct(lala, Node(x, this->_nodeEnd, this->_nodeEnd, this->_nodeEnd, BLACK));
+    if (this->_nodeRoot == this->_nodeEnd)
+      this->_nodeRoot = lala;
+    else
+    {
+      lala->color = RED;
+      insert2(x, lala);
+    }
+  }
+
+  void  insert2(const value_type &x, Node *lala)
+  {
+    Node *begin = this->_nodeRoot;
+    while (1)
+    {
+      if (this->_cmp(x, begin->data))
+      {
+        if (begin->left != this->_nodeEnd)
+          begin = begin->left;
+        else
+        {
+          begin->left = lala;
+          lala->parent = begin;
+          return ;
+        }
+      }
+      else
+      {
+        if (begin->right != this->_nodeEnd)
+          begin = begin->right;
+        else
+        {
+          begin->right = lala;
+          lala->parent = begin;
+          return ;
+        }
+      }
+    }
+  }
+
+
   void  displayAllNode(Node *node)
   {
-    if (node != NULL)
+    if (node->left != this->_nodeEnd)
+      displayAllNode(node->left);
+    if (node != this->_nodeEnd)
     {
       std::cout << node->data.first << std::endl;
       std::cout << node->data.second << std::endl;
@@ -105,12 +167,14 @@ class RedBlackTree
       std::cout << node->left << std::endl;
       std::cout << node->right << std::endl;
       std::cout << node->color << std::endl;
+      std::cout << "///////////////" << std::endl;
     }
-    if (node->left)
-     return  displayAllNode(node->left);
-    if (node->right)
-     return  displayAllNode(node->right);
+    if (node->right != this->_nodeEnd)
+      displayAllNode(node->right);
   }
+
+////////////////////////////////////////////////////////////////////////////
+
 };
 }
 #endif
