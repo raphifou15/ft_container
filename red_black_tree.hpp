@@ -137,6 +137,12 @@ class RedBlackTree
         {
           begin->left = lala;
           lala->parent = begin;
+          if (begin->color == BLACK)
+            return ;
+          else
+          {
+            checkColorOncle(begin, begin->left);
+          }
           return ;
         }
       }
@@ -148,8 +154,69 @@ class RedBlackTree
         {
           begin->right = lala;
           lala->parent = begin;
+          if (begin->color == BLACK)
+            return ;
+          else
+          {
+            checkColorOncle(begin, begin->right);
+          }
           return ;
         }
+      }
+    }
+  }
+
+
+  void  checkColorOncle(Node *begin, Node *child)
+  {
+    if (begin->parent->left == begin)
+    {
+      if (begin->parent->right == this->_nodeEnd)
+      {
+        rotationBalance(child)
+        return ;
+      }
+      if (begin->parent->right->color == RED)
+      {
+        begin->color = BLACK;
+        begin->parent->right->color = BLACK;
+        if (begin->parent->parent != this->_nodeRoot)
+          begin->parent->parent->color = (begin->parent->parent->color == RED) ? BLACK : RED;
+      }
+      else
+      {
+        
+      }
+    }
+    else
+    {
+      if (begin->parent->left == this->_nodeEnd)
+      {
+        rotationBalance(child);
+        return ;
+      }
+      if (begin->parent->left->color == RED)
+      {
+        begin->color = BLACK;
+        begin->parent->left->color = BLACK;
+        if (begin->parent->parent != this->_nodeRoot)
+          begin->parent->parent->color = (begin->parent->parent->color == RED) ? BLACK : RED;
+      }
+      else
+      {
+
+      }
+    }
+  }
+
+  void  rotationBalance(Node *child)
+  {
+    if (this->_cmp(child->parent->data, child->data))
+    {
+      if (this->_cmp(child->parent->data, child->parent->parent->data))
+      {
+        //child->parent->right = this->_nodeEnd;
+        //child->parent = child->parent->parent;
       }
     }
   }
@@ -161,12 +228,12 @@ class RedBlackTree
       displayAllNode(node->left);
     if (node != this->_nodeEnd)
     {
-      std::cout << node->data.first << std::endl;
-      std::cout << node->data.second << std::endl;
-      std::cout << node->parent << std::endl;
-      std::cout << node->left << std::endl;
-      std::cout << node->right << std::endl;
-      std::cout << node->color << std::endl;
+      std::cout << "clef = " << node->data.first << std::endl;
+      std::cout << "value = " << node->data.second << std::endl;
+      std::cout << "parent = "<< node->parent << std::endl;
+      std::cout << "left = "<< node->left << std::endl;
+      std::cout << "right = "<< node->right << std::endl;
+      std::cout << "color = "<< node->color << std::endl;
       std::cout << "///////////////" << std::endl;
     }
     if (node->right != this->_nodeEnd)
