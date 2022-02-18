@@ -984,6 +984,7 @@ int main(void)
 	lala.insert(ft::pair<int,int>(7,1));
 	lala.insert(ft::pair<int,int>(15,1));
 	lala.insert(ft::pair<int,int>(16,1));
+	//lala.insert(ft::pair<int,int>(30,1));
 	lala.display_element();
 	//std::cout << "salut" << std::endl;
 	return (0);

@@ -115,6 +115,7 @@ class RedBlackTree
   {
     Node *lala = this->_alloc.allocate(1);
     this->_alloc.construct(lala, Node(x, this->_nodeEnd, this->_nodeEnd, this->_nodeEnd, BLACK));
+
     if (this->_nodeRoot == this->_nodeEnd)
       this->_nodeRoot = lala;
     else
@@ -127,6 +128,7 @@ class RedBlackTree
   void  insert2(const value_type &x, Node *lala)
   {
     Node *begin = this->_nodeRoot;
+
     while (1)
     {
       if (this->_cmp(x, begin->data))
@@ -141,7 +143,7 @@ class RedBlackTree
             return ;
           else
           {
-            checkColorOncle(begin, begin->left);
+            redRedProblem(begin, begin->left); // si le parent est rouge
           }
           return ;
         }
@@ -158,7 +160,7 @@ class RedBlackTree
             return ;
           else
           {
-            checkColorOncle(begin, begin->right);
+            redRedProblem(begin, begin->right); // si le parent est rouge
           }
           return ;
         }
@@ -167,17 +169,60 @@ class RedBlackTree
   }
 
 
+  void  redRedProblem(Node *p, Node *c) // p = parent c = child
+  {
+    (void)c;
+    Node *gP = p->parent;
+
+    if (p == gP->left) // le noeud du parrent est celui de gauche du grand pere
+    {
+      if (gP->right == this->_nodeEnd) //// il faudra faire une rotation et recolorer
+        return;
+      if (gP->right->color == BLACK)  //// il faudra faire une rotation et recolorer
+        return;
+      if (gP->right->color == RED)
+      {
+        p->color = BLACK;
+        gP->right->color = BLACK;
+        if(gP != this->_nodeRoot)
+        {
+          (gP->color == RED) ? gP->color = BLACK : gP->color = RED;
+        }
+        return ;
+      }
+    }
+    else // le noeud du parrent est celui de droite du grand pere
+    {
+      if (gP->left == this->_nodeEnd) //// il faudra faire une rotation et recolorer
+        return;
+      if (gP->left->color == BLACK)  //// il faudra faire une rotation et recolorer
+        return;
+      if (gP->left->color == RED)
+      {
+        p->color = BLACK;
+        gP->left->color = BLACK;
+        if(gP != this->_nodeRoot)
+        {
+          (gP->color == RED) ? gP->color = BLACK : gP->color = RED;
+        }
+        return ;
+      }
+    }
+  }
+
+/*
   void  checkColorOncle(Node *begin, Node *child)
   {
     if (begin->parent->left == begin)
     {
       if (begin->parent->right == this->_nodeEnd)
       {
-        rotationBalance(child)
+        rotationBalance(child);
         return ;
       }
       if (begin->parent->right->color == RED)
       {
+        std::cout << "lala2\n" << std::endl;
         begin->color = BLACK;
         begin->parent->right->color = BLACK;
         if (begin->parent->parent != this->_nodeRoot)
@@ -197,10 +242,16 @@ class RedBlackTree
       }
       if (begin->parent->left->color == RED)
       {
+        
         begin->color = BLACK;
         begin->parent->left->color = BLACK;
         if (begin->parent->parent != this->_nodeRoot)
+        {
+          std::cout << "lala" << begin->parent->parent->color << std::endl;
+          std::cout << begin->parent->data.first << std::endl;
           begin->parent->parent->color = (begin->parent->parent->color == RED) ? BLACK : RED;
+          std::cout << "lala" << begin->parent->parent->color << std::endl;
+        }
       }
       else
       {
@@ -211,17 +262,44 @@ class RedBlackTree
 
   void  rotationBalance(Node *child)
   {
-    if (this->_cmp(child->parent->data, child->data))
+    Node  *p = child->parent;
+    Node  *gP = child->parent->parent;
+    if (this->_cmp(p->data, child->data))
     {
-      if (this->_cmp(child->parent->data, child->parent->parent->data))
+      if (this->_cmp(p->data, gP->data))
       {
-        //child->parent->right = this->_nodeEnd;
-        //child->parent = child->parent->parent;
+        child = leftRightRotation(child, p, gP);
+        p = leftLeftRotation(child);
+        p->color = BLACK;
+        p->right->color = RED;
       }
     }
   }
 
+  Node  *leftLeftRotation(Node *child)
+  {
+    Node *p = child->parent;
+    Node *gP = child->parent->parent;
+    Node *aGP = child->parent->parent->parent;
 
+    (aGP->left == gP) ? aGP->left = p : aGP->right = p;
+    p->parent = gP->parent;
+    p->right = gP;
+    gP->parent = p;
+    gP->left = this->_nodeEnd;
+    return (p);
+  }
+
+  Node *leftRightRotation(Node *child, Node *p, Node *gP)
+  {
+    gP->left = child;
+    child->parent = gP;
+    child->left = p;
+    p->parent = child;
+    p->right = this->_nodeEnd;
+    return (p);
+  }
+*/
   void  displayAllNode(Node *node)
   {
     if (node->left != this->_nodeEnd)
@@ -230,6 +308,7 @@ class RedBlackTree
     {
       std::cout << "clef = " << node->data.first << std::endl;
       std::cout << "value = " << node->data.second << std::endl;
+      std::cout << "mon noeud " << node << std::endl;
       std::cout << "parent = "<< node->parent << std::endl;
       std::cout << "left = "<< node->left << std::endl;
       std::cout << "right = "<< node->right << std::endl;
@@ -239,9 +318,7 @@ class RedBlackTree
     if (node->right != this->_nodeEnd)
       displayAllNode(node->right);
   }
-
 ////////////////////////////////////////////////////////////////////////////
-
 };
 }
 #endif
