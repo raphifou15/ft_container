@@ -107,10 +107,8 @@ class RedBlackTree
   // getter
   Node *  getRoot(void) const {return this->_nodeRoot;}
 
-  //
 
-
-///////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////// debut de l'insertion red black three ///////////////////////
   void  insert(const value_type &x)
   {
     Node *lala = this->_alloc.allocate(1);
@@ -189,7 +187,6 @@ class RedBlackTree
       }
       if (gP->right->color == BLACK)  //// il faudra faire une rotation et recolorer
       {
-        std::cout << "je viens ici " << std::endl;
         if (this->_cmp(p->data, c->data))
         {
           c = leftRightRotation(c, p, gP);
@@ -213,7 +210,6 @@ class RedBlackTree
         {
           Node *lala = NULL;
           i = 0;
-          std::cout << "lala" << std::endl;
           checkRedRedProblem(this->_nodeRoot, &i, &lala);
           if (lala != NULL)
           {
@@ -238,7 +234,6 @@ class RedBlackTree
       }
       if (gP->left->color == BLACK)  //// il faudra faire une rotation et recolorer
       {
-        std::cout << "chuchuliga" << std::endl;
         if (this->_cmp(c->data, p->data))
         {
           c = RightLeftRotation(c, p, gP);
@@ -283,7 +278,6 @@ class RedBlackTree
     {
       if (node->color == 1 && node->parent->color == 1)
       {
-          std::cout << "je suis passer par ici ici" << std::endl;
           *i = 1;
           *lala = node;
           return ;
@@ -353,7 +347,7 @@ class RedBlackTree
     c->right = p;
     return (p);
   }
-
+//////////////////////////////////////////////////////////// fin de l'insertion red black three //////////////////////
 /*
   void  checkColorOncle(Node *begin, Node *child)
   {
