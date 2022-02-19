@@ -70,7 +70,7 @@ namespace ft
     //     // capacity:
     //     bool empty() const;
     //     size_type size() const;
-    //     size_type max_size() const;
+    // size_type max_size() const;
     //     // 23.3.1.2 element access:
     //     T& operator[](const key_type& x);
     //     // modifiers:
