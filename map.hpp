@@ -30,8 +30,8 @@ namespace ft
         typedef Allocator                           allocator_type;
         typedef typename Allocator::reference       reference;
         typedef typename Allocator::const_reference const_reference;
-        typedef ft::treeIterator<ft::Node<T> >      iterator;// See 23.1
-    //    typedef ft::treeIterator<const Node<const T> > const_iterator; // See 23.1
+        typedef ft::treeIterator<value_type, ft::Node<value_type> >   iterator;// See 23.1
+        typedef ft::treeIterator<const value_type, Node<value_type> > const_iterator; // See 23.1
     //     typedef implementation defined size_type; // See 23.1
     //     typedef implementation defined difference_type;// See 23.1
         typedef typename Allocator::pointer         pointer;
@@ -78,9 +78,11 @@ namespace ft
     //     // 23.3.1.2 element access:
     //     T& operator[](const key_type& x);
     //     // modifiers:
-    /*    pair<iterator, bool> insert(const value_type& x)
+    /*
+        pair<iterator, bool> insert(const value_type& x)
         {
             this->_rb.insert(x);
+            return ();
             //faire une insertion d'un element
             // dans un premier temps rechercher si la clef existe ou non si elle existe deja ne pas inserer d'element nouveau.
             // dans un second temps inserer le nouvel element.

@@ -8,6 +8,7 @@
 #include "is_integral.hpp"
 #include <stack>
 #include <vector>
+#include <map>
 #include <list>
 //#include <type_traits>
 #include <iostream>
@@ -979,23 +980,24 @@ int		main(void)
 int main(void)
 {
 	ft::map<int, int> lala;
+	//lala.insert(ft::pair<int,int>(10,1));
 	ft::map<int, int>::iterator it = lala.begin();
-	(void)it;
-	/*
-	lala.insert(ft::pair<int,int>(10,1));
-	lala.insert(ft::pair<int,int>(18,1));
-	lala.insert(ft::pair<int,int>(7,1));
-	lala.insert(ft::pair<int,int>(15,1));
-	lala.insert(ft::pair<int,int>(16,1));
-	lala.insert(ft::pair<int,int>(30,1));
-	lala.insert(ft::pair<int,int>(25,1));
-	lala.insert(ft::pair<int,int>(40,1));
-	lala.insert(ft::pair<int,int>(60,1));
-	lala.insert(ft::pair<int,int>(2,1));
-	lala.insert(ft::pair<int,int>(1,1));
-	lala.insert(ft::pair<int,int>(70,1));
-	*/
-	lala.display_element();
+	ft::map<int, int>::iterator ot = lala.begin();
+	it = ot;
+	std::cout << (*it).first << std::endl;
+	// lala.insert(ft::pair<int,int>(10,1));
+	// lala.insert(ft::pair<int,int>(18,1));
+	// lala.insert(ft::pair<int,int>(7,1));
+	// lala.insert(ft::pair<int,int>(15,1));
+	// lala.insert(ft::pair<int,int>(16,1));
+	// lala.insert(ft::pair<int,int>(30,1));
+	// lala.insert(ft::pair<int,int>(25,1));
+	// lala.insert(ft::pair<int,int>(40,1));
+	// lala.insert(ft::pair<int,int>(60,1));
+	// lala.insert(ft::pair<int,int>(2,1));
+	// lala.insert(ft::pair<int,int>(1,1));
+	// lala.insert(ft::pair<int,int>(70,1));
+	//lala.display_element();
 	//std::cout << "salut" << std::endl;
 	return (0);
 }

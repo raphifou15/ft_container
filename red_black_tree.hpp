@@ -9,6 +9,7 @@
 # include <stdexcept>
 # include <sstream>
 # include "map.hpp"
+# include "bidirectional_iterator.hpp"
 # include "pair.hpp"
 
 namespace ft
@@ -104,6 +105,8 @@ class RedBlackTree
     }
   }
 
+
+
   // getter
   Node  * getRoot(void) const {return this->_nodeRoot;}
   Node  * get_begin(void) const
@@ -111,7 +114,15 @@ class RedBlackTree
     //Node *  node = this->_nodeRoot;
     if (this->_nodeRoot == this->_nodeEnd)
       return (this->_nodeRoot);
+    return (this->_nodeRoot);
   }
+
+
+
+
+
+
+
 
 /////////////////////////////////////////////////////////////////////// debut de l'insertion red black three ///////////////////////
   void  insert(const value_type &x)

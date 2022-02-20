@@ -6,7 +6,7 @@
 
 namespace ft
 {
-    template<class T>
+    template<class T, class Node>
     class treeIterator : public iterator<bidirectional_iterator_tag, T>
     {
         public:
@@ -17,18 +17,23 @@ namespace ft
         typedef typename ft::iterator<bidirectional_iterator_tag, T>::reference          reference;
         typedef typename ft::iterator<bidirectional_iterator_tag, T>::iterator_category  iterator_category;
 
-        treeIterator(): current(NULL){}
-        explicit treeIterator(pointer x) : current(x){}
-        template <class U> treeIterator(const treeIterator<U>& u)
+        treeIterator(void): current(NULL){}
+        explicit treeIterator(Node *const &lala): current(lala){}
+        template <class U> treeIterator(const treeIterator<U, Node>& u){ this->current = u.base();}
+        template <class U> treeIterator &operator=(const treeIterator<U, Node>& u)
         {
             this->current = u.base();
+            return (*this);
         }
-        pointer     base() const
+        Node *  base() const { return this->current;}
+        ~treeIterator(){}
+        reference operator*() const
         {
-            return this->current;
+            return  (this->current->data);
         }
+
         private:
-            pointer current;
+            Node *current;
     };
 }
 
