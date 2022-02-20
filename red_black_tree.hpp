@@ -93,9 +93,9 @@ class RedBlackTree
 
   void  destroyAllElements(Node *lala)
   {
-    if (lala->left != this->_nodeEnd)
+    if (lala->left != NULL && lala->left != this->_nodeEnd)
       destroyAllElements(lala->left);
-    if (lala->right != this->_nodeEnd)
+    if (lala->right != NULL && lala->right != this->_nodeEnd)
       destroyAllElements(lala->right);
     if (lala != this->_nodeEnd)
     {
@@ -105,8 +105,13 @@ class RedBlackTree
   }
 
   // getter
-  Node *  getRoot(void) const {return this->_nodeRoot;}
-
+  Node  * getRoot(void) const {return this->_nodeRoot;}
+  Node  * get_begin(void) const
+  {
+    //Node *  node = this->_nodeRoot;
+    if (this->_nodeRoot == this->_nodeEnd)
+      return (this->_nodeRoot);
+  }
 
 /////////////////////////////////////////////////////////////////////// debut de l'insertion red black three ///////////////////////
   void  insert(const value_type &x)
@@ -440,7 +445,7 @@ class RedBlackTree
 */
   void  displayAllNode(Node *node)
   {
-    if (node->left != this->_nodeEnd)
+    if (node->left != NULL && node->left != this->_nodeEnd)
       displayAllNode(node->left);
     if (node != this->_nodeEnd)
     {
@@ -453,7 +458,7 @@ class RedBlackTree
       std::cout << "color = "<< node->color << std::endl;
       std::cout << "///////////////" << std::endl;
     }
-    if (node->right != this->_nodeEnd)
+    if (node->right != NULL && node->right != this->_nodeEnd)
       displayAllNode(node->right);
   }
 ////////////////////////////////////////////////////////////////////////////

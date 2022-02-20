@@ -7,6 +7,7 @@
 # include <sstream>
 # include <algorithm>
 # include <sys/cdefs.h>
+# include "bidirectional_iterator.hpp"
 # include "pair.hpp"
 # include "red_black_tree.hpp"
 # include "lexicographical_compare.hpp"
@@ -29,8 +30,8 @@ namespace ft
         typedef Allocator                           allocator_type;
         typedef typename Allocator::reference       reference;
         typedef typename Allocator::const_reference const_reference;
-    //     typedef implementation defined iterator; // See 23.1
-    //     typedef implementation defined const_iterator; // See 23.1
+        typedef ft::treeIterator<ft::Node<T> >      iterator;// See 23.1
+    //    typedef ft::treeIterator<const Node<const T> > const_iterator; // See 23.1
     //     typedef implementation defined size_type; // See 23.1
     //     typedef implementation defined difference_type;// See 23.1
         typedef typename Allocator::pointer         pointer;
@@ -59,7 +60,10 @@ namespace ft
         ~map(){}
     //     map<Key,T,Compare,Allocator>& operator=(const map<Key,T,Compare,Allocator>& x);
     //     // iterators:
-    //     iterator begin();
+        iterator begin()
+        {
+            return (iterator(this->_rb.get_begin()));
+        }
     //     const_iterator begin() const;
     //     iterator end();
     //     const_iterator end() const;
@@ -76,16 +80,19 @@ namespace ft
     //     // modifiers:
     /*    pair<iterator, bool> insert(const value_type& x)
         {
+            this->_rb.insert(x);
             //faire une insertion d'un element
             // dans un premier temps rechercher si la clef existe ou non si elle existe deja ne pas inserer d'element nouveau.
             // dans un second temps inserer le nouvel element.
         }
     */
+    
         void    insert(const value_type& x)
         {
             //fausse fonction a effacer par la suite utiliser pour faire marcher le rbtree;
             this->_rb.insert(x);
         }
+    
     //     iterator insert(iterator position, const value_type& x);
     //     template <class InputIterator> void insert(InputIterator first, InputIterator last);
     //     void erase(iterator position);

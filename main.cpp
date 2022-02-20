@@ -979,6 +979,9 @@ int		main(void)
 int main(void)
 {
 	ft::map<int, int> lala;
+	ft::map<int, int>::iterator it = lala.begin();
+	(void)it;
+	/*
 	lala.insert(ft::pair<int,int>(10,1));
 	lala.insert(ft::pair<int,int>(18,1));
 	lala.insert(ft::pair<int,int>(7,1));
@@ -991,6 +994,7 @@ int main(void)
 	lala.insert(ft::pair<int,int>(2,1));
 	lala.insert(ft::pair<int,int>(1,1));
 	lala.insert(ft::pair<int,int>(70,1));
+	*/
 	lala.display_element();
 	//std::cout << "salut" << std::endl;
 	return (0);
