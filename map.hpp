@@ -56,48 +56,95 @@ namespace ft
         public:
     //     // 23.3.1.1 construct/copy/destroy:
         explicit map(const Compare& comp = Compare(), const Allocator& = Allocator()) : _rb(value_compare(comp)) {}
-    //     template <class InputIterator> map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator());
-    //     map(const map<Key,T,Compare,Allocator>& x);
+        template <class InputIterator>
+        map(InputIterator first, InputIterator last, const Compare&comp = Compare(), const Allocator& = Allocator()) : _rb(value_compare(comp))
+        {
+            insert(first, last);
+        }
+        map(const map<Key,T,Compare,Allocator>& x): _rb(value_compare(key_compare())){ insert(x.begin(), x.end()); }
         ~map(){}
-    //     map<Key,T,Compare,Allocator>& operator=(const map<Key,T,Compare,Allocator>& x);
-    //     // iterators:
+        map<Key,T,Compare,Allocator>& operator=(const map<Key,T,Compare,Allocator>& x)
+        {
+            this->_rb.destroyAllElements(this->_rb.getRoot());
+            insert(x.begin(), x.end());
+            return (*this);
+        }
+    // iterators:
         iterator begin()
         {
             return (iterator(this->_rb.get_begin(), this->_rb.get_endl_node(), this->_rb.getRoot()));
         }
-    //     const_iterator begin() const;
-    //     iterator end();
-    //     const_iterator end() const;
-    //     reverse_iterator rbegin();
-    //     const_reverse_iterator rbegin() const;
-    //     reverse_iterator rend();
-    //     const_reverse_iterator rend() const;
-    //     // capacity:
+
+        const_iterator begin() const
+        {
+            return (const_iterator(this->_rb.get_begin(), this->_rb.get_endl_node(), this->_rb.getRoot()));
+        }
+
+        iterator end()
+        {
+            return (iterator(this->_rb.get_endl_node(), this->_rb.get_endl_node(), this->_rb.getRoot()));
+        }
+
+        const_iterator end() const
+        {
+            return (const_iterator(this->_rb.get_endl_node(), this->_rb.get_endl_node(), this->_rb.getRoot()));
+        }
+
+        reverse_iterator rbegin()
+        {
+            return (reverse_iterator(end()));
+        }
+
+        const_reverse_iterator rbegin() const
+        {
+            return (const_reverse_iterator(end()));
+        }
+
+        reverse_iterator rend()
+        {
+            return (reverse_iterator(begin()));
+        }
+
+        const_reverse_iterator rend() const
+        {
+            return (const_reverse_iterator(begin()));
+        }
+
+        // capacity:
     //     bool empty() const;
     //     size_type size() const;
     // size_type max_size() const;
     //     // 23.3.1.2 element access:
     //     T& operator[](const key_type& x);
-    //     // modifiers:
-    /*
+
+        // modifiers:
         pair<iterator, bool> insert(const value_type& x)
         {
+            iterator it = find(x.first);
+            if (it != iterator(this->_rb.get_endl_node(), this->_rb.get_endl_node(), this->_rb.getRoot()))
+                return (make_pair(it, false));
             this->_rb.insert(x);
-            return ();
+            it = find(x.first);
+            return (make_pair(it, true));
             //faire une insertion d'un element
             // dans un premier temps rechercher si la clef existe ou non si elle existe deja ne pas inserer d'element nouveau.
             // dans un second temps inserer le nouvel element.
         }
-    */
     
-        void    insert(const value_type& x)
+        iterator insert(iterator , const value_type& x)
         {
-            //fausse fonction a effacer par la suite utiliser pour faire marcher le rbtree;
-            this->_rb.insert(x);
+            insert(x);
+            return (find(x.first));
         }
-    
-    //     iterator insert(iterator position, const value_type& x);
-    //     template <class InputIterator> void insert(InputIterator first, InputIterator last);
+        template <class InputIterator>  void insert(InputIterator first, InputIterator last)
+        {
+            for (; first != last; first++)
+            {
+                iterator it = find((*first).first);
+                if (it == iterator(this->_rb.get_endl_node(), this->_rb.get_endl_node(), this->_rb.getRoot()))
+                    insert(*first);
+            }
+        }
     //     void erase(iterator position);
     //     size_type erase(const key_type& x);
     //     void erase(iterator first, iterator last);

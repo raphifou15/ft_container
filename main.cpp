@@ -980,6 +980,7 @@ int		main(void)
 int main(void)
 {
 	ft::map<int, int> lala;
+	ft::map<int, int> lili;
 	lala.insert(ft::pair<int,int>(10,1));
 	lala.insert(ft::pair<int,int>(7,1));
 	lala.insert(ft::pair<int,int>(18,1));
@@ -994,7 +995,8 @@ int main(void)
 	lala.insert(ft::pair<int,int>(70,1));
 	lala.insert(ft::pair<int,int>(17,1));
 	lala.insert(ft::pair<int,int>(65,1));*/
-	/*ft::map<int, int>::iterator it = lala.begin();
+	ft::map<int, int>::iterator it;
+	/*
 	const ft::map<int, int>::iterator ot = lala.begin();
 	if (it != ot)
 		return (0);
@@ -1009,7 +1011,9 @@ int main(void)
 		std::cout << (*it).first << std::endl;
 		--it;
 	}*/
-	lala.find(10);
+	lili = lala;
+	it = lili.find(85);
+	std::cout << it->first << std::endl;
 	//lala.display_element();
 	//std::cout << "salut" << std::endl;
 	return (0);

@@ -88,9 +88,14 @@ class RedBlackTree
   ~RedBlackTree()
   {
     destroyAllElements(this->_nodeRoot);
+    destroy_lastElement();
+  };
+  
+  void  destroy_lastElement(void)
+  {
     this->_alloc.destroy(this->_nodeEnd);
     this->_alloc.deallocate(this->_nodeEnd, 1);
-  };
+  }
 
   void  destroyAllElements(Node *lala)
   {
@@ -131,12 +136,13 @@ class RedBlackTree
     while (node != this->_nodeEnd)
     {
       if (node->data.first == x.first)
-      {
         return (node);
-        std::cout << node->data.first << "  lala " << std::endl;
-      }
+      if (this->_cmp(x, node->data))
+        node = node->left;
+      else
+        node = node->right;
     }
-    return this->_nodeRoot;
+    return this->_nodeEnd;
   }
 
 
