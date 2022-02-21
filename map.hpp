@@ -23,21 +23,22 @@ namespace ft
     {
         public:
     //     // types:
-        typedef Key                                 key_type;
-        typedef T                                   mapped_type;
-        typedef ft::pair<const Key, T>              value_type;
-        typedef Compare                             key_compare;
-        typedef Allocator                           allocator_type;
-        typedef typename Allocator::reference       reference;
-        typedef typename Allocator::const_reference const_reference;
-        typedef ft::treeIterator<value_type, ft::Node<value_type> >   iterator;// See 23.1
-        typedef ft::treeIterator<const value_type, Node<value_type> > const_iterator; // See 23.1
-    //     typedef implementation defined size_type; // See 23.1
-    //     typedef implementation defined difference_type;// See 23.1
-        typedef typename Allocator::pointer         pointer;
-        typedef typename Allocator::const_pointer   const_pointer;
-    //     typedef std::reverse_iterator<iterator> reverse_iterator;
-    //     typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+        typedef Key                                                     key_type;
+        typedef T                                                       mapped_type;
+        typedef ft::pair<const Key, T>                                  value_type;
+        typedef Compare                                                 key_compare;
+        typedef Allocator                                               allocator_type;
+        typedef typename Allocator::reference                           reference;
+        typedef typename Allocator::const_reference                     const_reference;
+        typedef ft::treeIterator<value_type, ft::Node<value_type> >     iterator;// See 23.1
+        typedef ft::treeIterator<const value_type, Node<value_type> >   const_iterator; // See 23.1
+        typedef typename Allocator::size_type                           size_type; // See 23.1
+        typedef typename Allocator::difference_type                     difference_type;// See 23.1
+        typedef typename Allocator::pointer                             pointer;
+        typedef typename Allocator::const_pointer                       const_pointer;
+        typedef std::reverse_iterator<iterator>                         reverse_iterator;
+        typedef std::reverse_iterator<const_iterator>                   const_reverse_iterator;
+
         class value_compare : public std::binary_function<value_type,value_type,bool>
         {
             friend class map;
@@ -62,7 +63,7 @@ namespace ft
     //     // iterators:
         iterator begin()
         {
-            return (iterator(this->_rb.get_begin()));
+            return (iterator(this->_rb.get_begin(), this->_rb.get_endl_node(), this->_rb.getRoot()));
         }
     //     const_iterator begin() const;
     //     iterator end();
@@ -106,7 +107,10 @@ namespace ft
     //     key_compare key_comp() const;
     //     value_compare value_comp() const;
     //     // 23.3.1.3 map operations:
-    //     iterator find(const key_type& x);
+        iterator find(const key_type& x)
+        {
+            return iterator(this->_rb.find(make_pair(x, 0)), this->_rb.get_endl_node(), this->_rb.getRoot()); 
+        }
     //     const_iterator find(const key_type& x) const;
     //     size_type count(const key_type& x) const;
     //     iterator lower_bound(const key_type& x);

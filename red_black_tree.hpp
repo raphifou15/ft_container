@@ -109,16 +109,35 @@ class RedBlackTree
 
   // getter
   Node  * getRoot(void) const {return this->_nodeRoot;}
+  Node  * get_endl_node(void) const { return this->_nodeEnd;}
+  //
   Node  * get_begin(void) const
   {
-    //Node *  node = this->_nodeRoot;
+    Node *  node = this->_nodeRoot;
     if (this->_nodeRoot == this->_nodeEnd)
       return (this->_nodeRoot);
-    return (this->_nodeRoot);
+    while (node->left != this->_nodeEnd)
+      node = node->left;
+    return (node);
   }
 
-
-
+  
+  Node  *find(T x)
+  {
+    Node *node = this->_nodeRoot;
+    
+    if (node->data.first == this->_nodeEnd->data.first)
+      return (node);
+    while (node != this->_nodeEnd)
+    {
+      if (node->data.first == x.first)
+      {
+        return (node);
+        std::cout << node->data.first << "  lala " << std::endl;
+      }
+    }
+    return this->_nodeRoot;
+  }
 
 
 
@@ -277,8 +296,6 @@ class RedBlackTree
           checkRedRedProblem(this->_nodeRoot, &i, &lala);
           if (lala != NULL)
           {
-            std::cout << lala->parent->data.first << std::endl;
-            std::cout << lala->data.first << std::endl;
             redRedProblem(lala->parent, lala);
           }
         }
