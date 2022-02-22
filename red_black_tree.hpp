@@ -137,7 +137,7 @@ class RedBlackTree
   {
     Node *node = this->_nodeRoot;
     
-    if (node->data.first == this->_nodeEnd->data.first)
+    if (node == this->_nodeEnd)
       return (node);
     while (node != this->_nodeEnd)
     {
@@ -392,6 +392,94 @@ class RedBlackTree
     c->right = p;
     return (p);
   }
+
+
+///////////////////////////////////////////////////////////deletion in red_black_tree //////////////////
+
+void  erase(const value_type &x)
+{
+    Node *node = this->_nodeRoot;
+
+    if (node->data.first == this->_nodeEnd->data.first)
+      return  ;
+    while (node != this->_nodeEnd)
+    {
+      if (node->data.first == x.first)
+      {
+        erase2(node);
+        return  ;
+      }
+      if (this->_cmp(x, node->data))
+        node = node->left;
+      else
+        node = node->right;
+    }
+    return  ;
+}
+
+void  erase2(Node *node)
+{
+  if (node->left == this->_nodeEnd && node->right == this->_nodeEnd)
+  {
+    if (node->parent->left == node)
+      node->parent->left = this->_nodeEnd;
+    else
+      node->parent->right = this->_nodeEnd;
+    this->_alloc.destroy(node);
+    this->_alloc.deallocate(node, 1);
+    return ;
+  }
+  if (second_case(node) == 1)
+    return;
+// premier cas si le dernier noeud a effacer est rouge
+
+  ////////////////////////////////////////////////
+}
+
+
+///////////////////////////////////////////////////
+///////////////////case/////////////////////////
+//////////////////////////////////////////////////
+
+bool  second_case(Node *node)
+{
+  Node *c;
+  Node *tmp = node;
+  c = (node->left != this->_nodeEnd) ? node->left : node->right;
+  if (c->color == RED && c->left == this->_nodeEnd && c->right == this->_nodeEnd)
+  {
+    node = c;
+    if (tmp->parent->left == tmp)
+      tmp->parent->left = node;
+    else
+      tmp->parent->right = node;
+    node->parent = tmp->parent;
+    node->color = tmp->color;
+    this->_alloc.destroy(tmp);
+    this->_alloc.deallocate(tmp, 1); 
+    return (1);
+  }
+  return (0);
+}
+
+
+
+
+
+
+
+
+////////////////////////////////////////////
+///////////////////////////////////////// fin deletion in red_black_tree ///////////////////////////////
+
+
+
+
+
+
+
+
+
 //////////////////////////////////////////////////////////// fin de l'insertion red black three //////////////////////
 /*
   void  checkColorOncle(Node *begin, Node *child)

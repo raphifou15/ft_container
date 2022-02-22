@@ -36,8 +36,8 @@ namespace ft
         typedef typename Allocator::difference_type                     difference_type;// See 23.1
         typedef typename Allocator::pointer                             pointer;
         typedef typename Allocator::const_pointer                       const_pointer;
-        typedef std::reverse_iterator<iterator>                         reverse_iterator;
-        typedef std::reverse_iterator<const_iterator>                   const_reverse_iterator;
+        typedef ft::reverse_iterator<iterator>                         reverse_iterator;
+        typedef ft::reverse_iterator<const_iterator>                   const_reverse_iterator;
 
         class value_compare : public std::binary_function<value_type,value_type,bool>
         {
@@ -120,7 +120,7 @@ namespace ft
 
         T& operator[](const key_type& x)
         {
-            return (find(x)->second);
+            return (*((insert(ft::make_pair(x, T()))).first)).second;
         }
 
         // modifiers:
@@ -152,13 +152,20 @@ namespace ft
             }
         }
     //     void erase(iterator position);
-    //     size_type erase(const key_type& x);
+        size_type erase(const key_type& x)
+        {
+            this->_rb.erase(ft::make_pair(x, mapped_type()));
+            return (1);
+        }
     //     void erase(iterator first, iterator last);
     //     void swap(map<Key,T,Compare,Allocator>&);
     //     void clear();
+
+
     //     // observers:
-    //     key_compare key_comp() const;
+        key_compare key_comp() const;
     //     value_compare value_comp() const;
+
     //     // 23.3.1.3 map operations:
         iterator find(const key_type& x)
         {
