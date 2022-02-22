@@ -111,21 +111,27 @@ namespace ft
         }
 
         // capacity:
-    //     bool empty() const;
-    //     size_type size() const;
-    // size_type max_size() const;
+
+        bool empty() const{ return (this->_rb.size() != 0) ? 0 : 1; }
+        size_type size() const { return (this->_rb.size());}
+        size_type max_size() const { return (this->_rb.maxSize());}
+
     //     // 23.3.1.2 element access:
-    //     T& operator[](const key_type& x);
+
+        T& operator[](const key_type& x)
+        {
+            return (find(x)->second);
+        }
 
         // modifiers:
         pair<iterator, bool> insert(const value_type& x)
         {
             iterator it = find(x.first);
             if (it != iterator(this->_rb.get_endl_node(), this->_rb.get_endl_node(), this->_rb.getRoot()))
-                return (make_pair(it, false));
+                return (ft::make_pair(it, false));
             this->_rb.insert(x);
             it = find(x.first);
-            return (make_pair(it, true));
+            return (ft::make_pair(it, true));
             //faire une insertion d'un element
             // dans un premier temps rechercher si la clef existe ou non si elle existe deja ne pas inserer d'element nouveau.
             // dans un second temps inserer le nouvel element.
@@ -156,7 +162,7 @@ namespace ft
     //     // 23.3.1.3 map operations:
         iterator find(const key_type& x)
         {
-            return iterator(this->_rb.find(make_pair(x, 0)), this->_rb.get_endl_node(), this->_rb.getRoot()); 
+            return iterator(this->_rb.find(ft::make_pair(x, mapped_type())), this->_rb.get_endl_node(), this->_rb.getRoot()); 
         }
     //     const_iterator find(const key_type& x) const;
     //     size_type count(const key_type& x) const;

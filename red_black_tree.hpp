@@ -69,8 +69,10 @@ class RedBlackTree
   typedef typename Allocator::const_reference const_reference;
   typedef typename Allocator::pointer         pointer;
   typedef typename Allocator::const_pointer   const_pointer;
+  typedef typename Allocator::size_type       size_type;
   
   private:
+    size_type _capacity;
     Allocator	_alloc;
     Node      *_nodeEnd;
     Node      *_nodeRoot;
@@ -80,10 +82,10 @@ class RedBlackTree
   public:
   RedBlackTree(value_compare const &lala = value_compare()) : _cmp(lala) 
   {
+    this->_capacity = 0;
     this->_nodeEnd = this->_alloc.allocate(1); // allocation d'un element de type Node;
     this->_alloc.construct(this->_nodeEnd, Node()); // creation d'un node vide;
     this->_nodeRoot = this->_nodeEnd; // le dernier element et le meme que le premier;
-    //this->_capacity = 1;
   }
   ~RedBlackTree()
   {
@@ -113,6 +115,10 @@ class RedBlackTree
 
 
   // getter
+
+  size_type size(void) const {return this->_capacity;}
+  size_type maxSize(void) const {return this->_alloc.max_size();}
+
   Node  * getRoot(void) const {return this->_nodeRoot;}
   Node  * get_endl_node(void) const { return this->_nodeEnd;}
   //
@@ -154,7 +160,7 @@ class RedBlackTree
   {
     Node *lala = this->_alloc.allocate(1);
     this->_alloc.construct(lala, Node(x, this->_nodeEnd, this->_nodeEnd, this->_nodeEnd, BLACK));
-
+    this->_capacity += 1;
     if (this->_nodeRoot == this->_nodeEnd)
       this->_nodeRoot = lala;
     else
