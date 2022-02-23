@@ -419,48 +419,114 @@ void  erase(const value_type &x)
 
 void  erase2(Node *node)
 {
-  if (node->left == this->_nodeEnd && node->right == this->_nodeEnd)
-  {
-    if (node->parent->left == node)
-      node->parent->left = this->_nodeEnd;
-    else
-      node->parent->right = this->_nodeEnd;
-    this->_alloc.destroy(node);
-    this->_alloc.deallocate(node, 1);
-    return ;
-  }
-  if (second_case(node) == 1)
-    return;
-// premier cas si le dernier noeud a effacer est rouge
+  // premier cas si le dernier noeud a effacer est rouge
+  // 1 regarder quel est le plus petit noeud en partant sur la droite;
 
+  Node  *tmp = node;
+  Node  *small = find_smallest_node_subtree_right(node);
+  Node  *last = find_last_elem_subtree_right(small);
+
+  std::cout << tmp->data.first << std::endl;
+  std::cout << small->data.first << std::endl;
+  std::cout << last->data.first << std::endl;
+
+  if (last->color == RED)
+  {
+    if (last == small && last == tmp && small == tmp)
+    {
+      destroy_last_node(node);
+      return ;
+    }
+    if (tmp != last && tmp != small && small == last)
+    {
+      last = swap_internal_node_second(tmp, small);
+      destroy_last_node(last);
+      return ;
+    }
+    if (tmp != last && tmp != small && small != last)
+    {
+      small = swap_internal_node_second(tmp, small);
+      last = swap_internal_node_second(small, last);
+      destroy_last_node(last);
+    }
+  }
   ////////////////////////////////////////////////
 }
 
+void  destroy_last_node(Node *node)
+{
+  if (node->parent->left == node)
+    node->parent->left = this->_nodeEnd;
+  else
+    node->parent->right = this->_nodeEnd;
+  this->_alloc.destroy(node);
+  this->_alloc.deallocate(node, 1);
+}
+
+Node  *swap_internal_node_second(Node *node1, Node *node2)
+{
+  Node *tmp = node1;
+  Node  *r  = node2->right;
+  Node  *l  = node2->left;
+  Node  *p  = node2->parent;
+  bool  color = node2->color;
+  bool  rl;                                      ///// right = 1 left = 0;
+
+  rl = (node2->parent->right == node2) ? 1 : 0;
+  node1 = node2;
+  
+  node1->color = tmp->color;
+  node1->parent = tmp->parent;
+  if (node1->parent != this->_nodeEnd)
+  {
+    if (node1->parent->left == tmp)
+      node1->parent->left = node1;
+    else
+      node1->parent->right = node1;
+  }
+  node1->right = (node1 != tmp->right) ? tmp->right : tmp;
+  node1->left = (node1 != tmp->left) ? tmp->left : tmp;
+
+  (node1->right != this->_nodeEnd) ? node1->right->parent = node1 : 0;
+  (node1->left != this->_nodeEnd) ? node1->left->parent = node1 : 0;
+
+  if (tmp == this->_nodeRoot)
+    this->_nodeRoot = node1;
+
+  tmp->parent = p;
+  if (tmp == p)
+    tmp->parent = node1;
+  (rl == 1) ? tmp->parent->right = tmp : tmp->parent->left = tmp;
+
+  tmp->right = r;
+  (r != this->_nodeEnd) ? r->parent = tmp : 0;
+  tmp->left = l;
+  (l != this->_nodeEnd) ? l->parent = tmp : 0;
+  tmp->color = color;
+  return (tmp);
+}
+
+Node *find_smallest_node_subtree_right(Node *node)
+{
+  if (node->right != this->_nodeEnd)
+    node = node->right;
+  while (node->left != this->_nodeEnd)
+    node = node->left;
+  return (node);
+}
+
+Node *find_last_elem_subtree_right(Node *node)
+{
+  if (node->right == this->_nodeEnd)
+    return (node);
+  else
+    return (node->right);
+}
 
 ///////////////////////////////////////////////////
 ///////////////////case/////////////////////////
 //////////////////////////////////////////////////
 
-bool  second_case(Node *node)
-{
-  Node *c;
-  Node *tmp = node;
-  c = (node->left != this->_nodeEnd) ? node->left : node->right;
-  if (c->color == RED && c->left == this->_nodeEnd && c->right == this->_nodeEnd)
-  {
-    node = c;
-    if (tmp->parent->left == tmp)
-      tmp->parent->left = node;
-    else
-      tmp->parent->right = node;
-    node->parent = tmp->parent;
-    node->color = tmp->color;
-    this->_alloc.destroy(tmp);
-    this->_alloc.deallocate(tmp, 1); 
-    return (1);
-  }
-  return (0);
-}
 
 
 
@@ -571,24 +637,39 @@ bool  second_case(Node *node)
     return (p);
   }
 */
-  void  displayAllNode(Node *node)
+  void  displayAllNode(Node *node, int n)
   {
     if (node->left != NULL && node->left != this->_nodeEnd)
-      displayAllNode(node->left);
+      displayAllNode(node->left , n + 1);
     if (node != this->_nodeEnd)
     {
-      std::cout << "clef = " << node->data.first << std::endl;
-      std::cout << "value = " << node->data.second << std::endl;
-      std::cout << "mon noeud " << node << std::endl;
-      std::cout << "parent = "<< node->parent << std::endl;
-      std::cout << "left = "<< node->left << std::endl;
-      std::cout << "right = "<< node->right << std::endl;
-      std::cout << "color = "<< node->color << std::endl;
-      std::cout << "///////////////" << std::endl;
+      std::string spaces((20 * n), ' ');
+      std::cout << spaces << "clef = " << node->data.first << std::endl;
+      std::cout << spaces << "value = " << node->data.second << std::endl;
+      std::cout << spaces << "mon noeud " << node << std::endl;
+      std::cout << spaces << "parent = "<< node->parent << std::endl;
+      std::cout << spaces << "left = "<< node->left << std::endl;
+      std::cout << spaces << "right = "<< node->right << std::endl;
+      if (node->color == RED)
+        std::cout << spaces << "\e[0;31m" << "color = "<< node->color << "\e[0m"  << std::endl;
+      else
+        std::cout << spaces << "\e[0;32m" << "color = "<< node->color << "\e[0m"  << std::endl;
+      std::cout << spaces << "///////////////" << std::endl;
     }
     if (node->right != NULL && node->right != this->_nodeEnd)
-      displayAllNode(node->right);
+      displayAllNode(node->right, n + 1);
   }
+
+
+   void change_color(Node *node, const value_type &x, bool color)
+   {
+    if (node->left != NULL && node->left != this->_nodeEnd)
+      change_color(node->left, x, color);
+    if (node != this->_nodeEnd && node->data.first == x.first)
+      node->color = color;
+    if (node->right != NULL && node->right != this->_nodeEnd)
+      change_color(node->right, x, color);
+   }
 ////////////////////////////////////////////////////////////////////////////
 };
 }

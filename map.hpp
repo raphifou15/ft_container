@@ -180,11 +180,14 @@ namespace ft
     //     pair<iterator,iterator> equal_range(const key_type& x);
     //     pair<const_iterator,const_iterator> equal_range(const key_type& x) const;
 
-    void    display_element(void)
-    {
-        this->_rb.displayAllNode(this->_rb.getRoot());
-    }
-
+        void    display_element(void)
+        {
+            this->_rb.displayAllNode(this->_rb.getRoot(), 0);
+        }
+        void    change_color(const key_type& x, bool color)
+        {
+            this->_rb.change_color(this->_rb.getRoot(), ft::make_pair(x, mapped_type()), color);
+        }
     };
 
     // template <class Key, class T, class Compare, class Allocator>
