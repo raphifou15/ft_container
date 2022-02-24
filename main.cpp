@@ -979,31 +979,74 @@ int		main(void)
 
 int main(void)
 {
+	
+	
 	ft::map<int, std::string> lala;
 	//ft::map<int, int> lili;
 	// lala.insert(ft::pair<int,std::string>(85,"neuf"));
-	 lala.insert(ft::pair<int,std::string>(10,"dix"));
+	lala.insert(ft::pair<int,std::string>(10,"dix"));
+	lala.insert(ft::pair<int,std::string>(5,"cinq"));
+	lala.insert(ft::pair<int,std::string>(30,"trente"));
+	lala.insert(ft::pair<int,std::string>(1,"un"));
+	lala.insert(ft::pair<int,std::string>(7,"sept"));
+	lala.insert(ft::pair<int,std::string>(25,"vingt-cinq"));
+	lala.insert(ft::pair<int,std::string>(40,"quarante"));
+	lala.insert(ft::pair<int,std::string>(20,"vingt"));
+	lala.insert(ft::pair<int,std::string>(28,"vingt-huit"));
 	//lala.insert(ft::pair<int,std::string>(7,"sept"));
-	 lala.insert(ft::pair<int,std::string>(5,"cinq"));
+	 
 	// lala.insert(ft::pair<int,std::string>(2,"deux"));
 	
-	lala.insert(ft::pair<int,std::string>(20,"vingt"));
-	lala.insert(ft::pair<int,std::string>(30,"trente"));
+
+
+	// lala.insert(ft::pair<int,std::string>(15,"quinze"));
+	 
 	// lala.insert(ft::pair<int,std::string>(9,"neuf"));
 	
-	// lala.insert(ft::pair<int,std::string>(25,"vingt-cinq"));
-	// lala.insert(ft::pair<int,std::string>(40,"quarante"));
+	
+
+
 	// lala.insert(ft::pair<int,std::string>(35,"trente-cinq"));
 	// lala.insert(ft::pair<int,std::string>(38,"trente-huit"));
-	lala.insert(ft::pair<int,std::string>(15,"quinze"));
+	
 	//ft::map<int, int>::iterator it;
 	
-	//lala.erase(10);
-	lala.change_color(20, 1);
-	lala.change_color(15, 0);
+	
+	lala.change_color(1, 0);
+	lala.change_color(7, 0);
+	// lala.change_color(15,0);
+	lala.change_color(20, 0);
+	lala.change_color(28, 0);
+	lala.change_color(25, 1);
 	lala.change_color(30, 0);
+	//lala.change_color(40, 0);
+	lala.erase(1);
 	lala.display_element();
 	
 	//std::cout << "salut" << std::endl;
+	
 	return (0);
 }
+
+/*
+int main(void)
+{
+	ft::map<int, int> lala;
+	
+
+	lala.insert(ft::pair<int, int>(10,1));
+	lala.insert(ft::pair<int, int>(5,1));
+	lala.insert(ft::pair<int, int>(30,1));
+	lala.insert(ft::pair<int, int>(20,1));
+	lala.insert(ft::pair<int, int>(40,1));
+	//lala.insert(ft::pair<int, int>(38,1));
+	ft::map<int,int>::iterator it = lala.begin();
+	for (int i = 0; i < 20; i++)
+	{
+		std::cout << (*it).first << std::endl;
+		it++;
+	}
+	lala.display_element();
+	return (0);
+}
+*/
