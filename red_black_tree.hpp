@@ -101,12 +101,14 @@ class RedBlackTree
 
   void  destroyAllElements(Node *lala)
   {
-    if (lala->left != NULL && lala->left != this->_nodeEnd)
+    if (lala != NULL && lala != this->_nodeEnd && lala->left != NULL && lala->left != this->_nodeEnd)
       destroyAllElements(lala->left);
-    if (lala->right != NULL && lala->right != this->_nodeEnd)
+    if (lala != NULL && lala != this->_nodeEnd && lala->right != NULL && lala->right != this->_nodeEnd)
       destroyAllElements(lala->right);
     if (lala != this->_nodeEnd)
     {
+      if (lala == this->_nodeRoot)
+        this->_nodeRoot = this->_nodeEnd;
       this->_alloc.destroy(lala);
       this->_alloc.deallocate(lala, 1);
     }
@@ -133,7 +135,7 @@ class RedBlackTree
   }
 
   
-  Node  *find(T x)
+  Node  *find(T x) const
   {
     Node *node = this->_nodeRoot;
     
@@ -426,9 +428,9 @@ void  erase2(Node *node)
   Node  *small = find_smallest_node_subtree_right(node);
   Node  *last = find_last_elem_subtree_right(small);
 
-  std::cout << tmp->data.first << std::endl;
-  std::cout << small->data.first << std::endl;
-  std::cout << last->data.first << std::endl;
+  // std::cout << tmp->data.first << std::endl;
+  // std::cout << small->data.first << std::endl;
+  // std::cout << last->data.first << std::endl;
 
   if (last->color == RED)
   {
@@ -509,6 +511,18 @@ void  erase2(Node *node)
 
   //}
   ////////////////////////////////////////////////
+}
+
+void  swap(RedBlackTree &lala)
+{
+  Node *tmp_root = this->_nodeRoot;
+  Node *tmp_end = this->_nodeEnd;
+
+  this->_nodeRoot = lala._nodeRoot;
+  this->_nodeEnd = lala._nodeEnd;
+  
+  lala._nodeRoot = tmp_root;
+  lala._nodeEnd = tmp_end;
 }
 
 void  db_black_problem(Node *dbp, int x)

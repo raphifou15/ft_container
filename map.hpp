@@ -151,32 +151,89 @@ namespace ft
                     insert(*first);
             }
         }
-    //     void erase(iterator position);
+
+        void erase(iterator position)
+        {
+            this->_rb.erase(*position);
+        }
+
         size_type erase(const key_type& x)
         {
             this->_rb.erase(ft::make_pair(x, mapped_type()));
             return (1);
         }
-    //     void erase(iterator first, iterator last);
-    //     void swap(map<Key,T,Compare,Allocator>&);
-    //     void clear();
+
+        void erase(iterator first, iterator last)
+        {
+            while (first != last)
+            {
+                iterator position = first;
+                std::cout << (*first).first << std::endl;
+                first++;
+                std::cout << "\e[0;34m" << (*first).first << std::endl;
+                std::cout << "\e[0;34m" << "LALA" << "\e[0m" << std::endl;
+                this->_rb.erase(*position);
+            }
+        }
+        void swap(map<Key,T,Compare,Allocator> &lala)
+        {
+            this->_rb.swap(lala._rb);
+        }
+        void clear(void)
+        {
+            this->_rb.destroyAllElements(this->_rb.getRoot());
+        }
 
 
     //     // observers:
-        key_compare key_comp() const;
-    //     value_compare value_comp() const;
+        key_compare key_comp() const
+        {
+            return (key_compare());
+        }
+        
+        value_compare value_comp() const
+        {
+            return value_compare(key_compare());
+        }
+        
 
     //     // 23.3.1.3 map operations:
         iterator find(const key_type& x)
         {
             return iterator(this->_rb.find(ft::make_pair(x, mapped_type())), this->_rb.get_endl_node(), this->_rb.getRoot()); 
         }
-    //     const_iterator find(const key_type& x) const;
-    //     size_type count(const key_type& x) const;
-    //     iterator lower_bound(const key_type& x);
-    //     const_iterator lower_bound(const key_type& x) const;
-    //     iterator upper_bound(const key_type& x);
-    //     const_iterator upper_bound(const key_type& x) const;
+        const_iterator find(const key_type& x) const
+        {
+            return const_iterator(this->_rb.find(ft::make_pair(x, mapped_type())), this->_rb.get_endl_node(), this->_rb.getRoot());
+        }
+
+        size_type count(const key_type& x) const
+        {
+            const_iterator it = find(x);
+            return ((*it).first);
+        }
+
+        iterator lower_bound(const key_type& x)
+        {
+            return (find(x));
+        }
+
+        const_iterator lower_bound(const key_type& x) const
+        {
+            return (find(x));
+        }
+        
+        iterator upper_bound(const key_type& x)
+        {
+            iterator it = lower_bound(x);
+            return (it);
+        }
+        const_iterator upper_bound(const key_type& x) const
+        {
+            const iterator it = lower_bound(x);
+            return (it);
+        }
+    
     //     pair<iterator,iterator> equal_range(const key_type& x);
     //     pair<const_iterator,const_iterator> equal_range(const key_type& x) const;
 

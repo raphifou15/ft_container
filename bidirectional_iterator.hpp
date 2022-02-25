@@ -17,7 +17,7 @@ namespace ft
         typedef typename ft::iterator<bidirectional_iterator_tag, T>::reference          reference;
         typedef typename ft::iterator<bidirectional_iterator_tag, T>::iterator_category  iterator_category;
 
-        treeIterator(void): current(NULL), _node_endl(NULL){}
+        treeIterator(void): current(NULL), _node_endl(NULL), _node_root(NULL){}
         explicit treeIterator(Node *const &lala, Node *const &lala2, Node *const &lala3): current(lala), _node_endl(lala2), _node_root(lala3){}
         template <class U> treeIterator(const treeIterator<U, Node>& u)
         {
@@ -47,18 +47,22 @@ namespace ft
         treeIterator    operator++()
         {
             Node *max = max_node();
+            
+             std::cout << "\e[0;34m" << "lili" << "\e[0m" << std::endl;
             if (this->current == this->_node_endl)
-            {
+            {   
                 this->current = max;
                 if (this->current->left != this->_node_endl)
                     this->current = this->current->left;
                 return *this;
             }
+            std::cout << "\e[0;34m" << "lili" << "\e[0m" << std::endl;
             if (this->current == max)
             {
                 this->current = this->_node_endl;
                 return *this;
             }
+             std::cout << "\e[0;34m" << "lili" << "\e[0m" << std::endl;
             if (this->current->right != this->_node_endl)
             {
                 if (this->current->right->left != this->_node_endl)
@@ -135,10 +139,13 @@ namespace ft
             Node    *max_node(void)
             {
                 Node *node = this->_node_root;
-                if (node == this->_node_endl)
+                if (node == NULL || node == this->_node_endl)
                     return (node);
-                while (node->right != this->_node_endl)
+                while (node->right == NULL || node->right != this->_node_endl)
+                {            
                     node = node->right;
+                    std::cout << "\e[0;34m" << node->data.first << "\e[0m" << std::endl;
+                }
                 return (node);
             }
         
