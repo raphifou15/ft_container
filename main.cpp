@@ -983,23 +983,37 @@ int main(void)
 	
 	ft::map<int, std::string> lala;
 	//ft::map<int, int> lili;
-	// lala.insert(ft::pair<int,std::string>(85,"neuf"));
-	lala.insert(ft::pair<int,std::string>(10,"dix"));
-	lala.insert(ft::pair<int,std::string>(5,"cinq"));
+	lala.insert(ft::pair<int,std::string>(50,"cinquante"));
 	lala.insert(ft::pair<int,std::string>(30,"trente"));
-	lala.insert(ft::pair<int,std::string>(1,"un"));
-	lala.insert(ft::pair<int,std::string>(7,"sept"));
-	lala.insert(ft::pair<int,std::string>(25,"vingt-cinq"));
-	lala.insert(ft::pair<int,std::string>(40,"quarante"));
-	lala.insert(ft::pair<int,std::string>(20,"vingt"));
-	lala.insert(ft::pair<int,std::string>(28,"vingt-huit"));
+	lala.insert(ft::pair<int,std::string>(65,"soixante-cinq"));
+	lala.insert(ft::pair<int,std::string>(15,"quinze"));
+	lala.insert(ft::pair<int,std::string>(35,"trente-cinq"));
+	lala.insert(ft::pair<int,std::string>(55,"cinquante-cinq"));
+	lala.insert(ft::pair<int,std::string>(70,"soixante-dix"));
+	lala.insert(ft::pair<int,std::string>(68,"soixante-huit"));
+	lala.insert(ft::pair<int,std::string>(80,"quatre-vingts"));
+
+	lala.change_color(65, 0);
+	lala.change_color(70, 1);
+	lala.change_color(15, 0);
+	lala.change_color(35, 0);
+	lala.change_color(68, 0);
+	lala.change_color(80, 0);
+	lala.insert(ft::pair<int,std::string>(90,"quatre-vingt-dix"));
+	// lala.insert(ft::pair<int,std::string>(85,"neuf"));
+	// lala.insert(ft::pair<int,std::string>(10,"dix"));
+	// lala.insert(ft::pair<int,std::string>(5,"cinq"));
+	// lala.insert(ft::pair<int,std::string>(30,"trente"));
+	// lala.insert(ft::pair<int,std::string>(1,"un"));
+	// lala.insert(ft::pair<int,std::string>(7,"sept"));
+
+	// lala.insert(ft::pair<int,std::string>(40,"quarante"));
+	
+	// lala.insert(ft::pair<int,std::string>(28,"vingt-huit"));
 	//lala.insert(ft::pair<int,std::string>(7,"sept"));
 	 
 	// lala.insert(ft::pair<int,std::string>(2,"deux"));
 	
-
-
-	// lala.insert(ft::pair<int,std::string>(15,"quinze"));
 	 
 	// lala.insert(ft::pair<int,std::string>(9,"neuf"));
 	
@@ -1012,15 +1026,23 @@ int main(void)
 	//ft::map<int, int>::iterator it;
 	
 	
-	lala.change_color(1, 0);
-	lala.change_color(7, 0);
+	//lala.change_color(1, 0);
+	//lala.change_color(7, 0);
 	// lala.change_color(15,0);
-	lala.change_color(20, 0);
-	lala.change_color(28, 0);
-	lala.change_color(25, 1);
-	lala.change_color(30, 0);
+	//lala.change_color(20, 0);
+	//lala.change_color(28, 0);
+	//lala.change_color(25, 1);
+	//lala.change_color(30, 0);
 	//lala.change_color(40, 0);
-	lala.erase(1);
+	lala.erase(55);
+	lala.erase(30);
+	lala.erase(90);
+	lala.erase(80);
+	lala.erase(50);
+	lala.erase(35);
+	lala.erase(15);
+	lala.erase(65);
+	lala.erase(68);
 	lala.display_element();
 	
 	//std::cout << "salut" << std::endl;

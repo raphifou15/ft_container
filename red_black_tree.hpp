@@ -551,14 +551,15 @@ void  db_black_problem(Node *dbp, int x)
       return ;
     }
   }
-  if ((p->color == BLACK && cibling->color == BLACK && cibling->right->color == BLACK && cibling->left->color == RED) ||
-      (p->color == BLACK && cibling->color == BLACK && cibling->right->color == RED && cibling->left->color == BLACK))
+ 
+  if ((cibling->color == BLACK && cibling->right->color == BLACK && cibling->left->color == RED) ||
+      (cibling->color == BLACK && cibling->right->color == RED && cibling->left->color == BLACK))
    {
-     Node *red = (cibling->right->color == RED) ? cibling->right : cibling->left;
-     Node *black = (cibling->right->color == BLACK) ? cibling->right : cibling->left;
-     if ((this->_cmp(dbp->data, red->data) && this->_cmp(red->data, black->data)) ||
-        (this->_cmp(red->data, dbp->data) && this->_cmp(black->data, red->data)))
-     {
+    Node *red = (cibling->right->color == RED) ? cibling->right : cibling->left;
+    Node *black = (cibling->right->color == BLACK) ? cibling->right : cibling->left;
+    if ((this->_cmp(p->data, dbp->data) && cibling->right->color == RED) ||
+        (this->_cmp(dbp->data, p->data) && cibling->left->color == RED))
+    {
       red->color = BLACK;
       cibling->color = RED;
       red->parent = p;
@@ -570,9 +571,57 @@ void  db_black_problem(Node *dbp, int x)
         cibling->parent = red;
         cibling->left = cc;
         cc->parent = cibling;
-      } 
-     }
-     return ;
+        db_black_problem(dbp, x);
+        return ;
+      }
+      if (this->_cmp(cibling->data, red->data))
+      {
+        Node *cc = red->left;
+        red->left = cibling;
+        cibling->parent = red;
+        cibling->right = cc;
+        cc->parent = cibling;
+        db_black_problem(dbp, x);
+        return ;
+      }
+    }
+    if ((this->_cmp(p->data, dbp->data) && cibling->left->color == RED) ||
+        (this->_cmp(dbp->data, p->data) && cibling->right->color == RED))
+    {
+      if (p->color == RED)
+      {
+        p->color = BLACK;
+        cibling->color = RED;
+      }
+
+      (p == this->_nodeRoot) ? cibling->parent = this->_nodeEnd : cibling->parent = p->parent;
+      (p == this->_nodeRoot) ? this->_nodeRoot = cibling : 0;
+      if (p->parent != this->_nodeEnd)
+        (p->parent->left == p) ? p->parent->left = cibling : p->parent->right = cibling;
+      // pas sur du tout pour cela on verra //
+      p->parent = cibling;
+      
+      if (this->_cmp(p->data, dbp->data))
+      {
+        cibling->right = p;
+        p->left = black;
+        black->parent = p;
+        red->color = BLACK;
+        if (x == 0)
+          destroy_last_node(dbp);
+        return ;
+      }
+      else
+      {
+        cibling->left = p;
+        p->right = black;
+        black->parent = p;
+        red->color = BLACK;
+        if (x == 0)
+          destroy_last_node(dbp);
+        return ;
+      }
+    }
    }
 }
 /*
