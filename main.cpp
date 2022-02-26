@@ -1243,7 +1243,7 @@ int main (void)
   return 0;
 }
 */
-
+/*
 int main (void)
 {
   ft::map<char,int> mymap;
@@ -1259,12 +1259,72 @@ int main (void)
   itup=mymap.upper_bound ('d');   // itup points to e (not d!)
 
   mymap.erase(itlow,itup);        // erases [itlow,itup)
-/*
+
   // print content:
   for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
     std::cout << it->first << " => " << it->second << '\n';
-*/
+
   return 0;
 
 }
+*/
+/*
+int main(void)
+{
+	std::map<char,int> mymap;
+	std::map<char,int>::iterator it = mymap.begin();
+	mymap['c'] = 5;
+	mymap['b'] = 5;
+	mymap['d'] = 5;
+	++it;
 
+	std::cout << (*it).first << std::endl;
+
+	++it;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+
+	return (0);
+}
+*/
+/*
+int main (void)
+{
+  ft::map<char,int> mymap;
+
+  mymap['a']=10;
+  mymap['b']=20;
+  mymap['c']=30;
+
+  ft::pair<ft::map<char,int>::iterator,ft::map<char,int>::iterator> ret;
+  ret = mymap.equal_range('b');
+
+  std::cout << "lower bound points to: ";
+  std::cout << ret.first->first << " => " << ret.first->second << '\n';
+
+  std::cout << "upper bound points to: ";
+  std::cout << ret.second->first << " => " << ret.second->second << '\n';
+
+  return 0;
+}
+*/
+
+int main ()
+{
+  ft::map<char,int> foo,bar;
+  foo['a']=100;
+  foo['b']=200;
+  bar['a']=10;
+  bar['z']=1000;
+
+  // foo ({{a,100},{b,200}}) vs bar ({a,10},{z,1000}}):
+  if (foo==bar) std::cout << "foo and bar are equal\n";
+  if (foo!=bar) std::cout << "foo and bar are not equal\n";
+  if (foo< bar) std::cout << "foo is less than bar\n";
+  if (foo> bar) std::cout << "foo is greater than bar\n";
+  if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+  if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+
+  return 0;
+}

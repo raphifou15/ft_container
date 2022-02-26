@@ -164,11 +164,15 @@ class RedBlackTree
     this->_alloc.construct(lala, Node(x, this->_nodeEnd, this->_nodeEnd, this->_nodeEnd, BLACK));
     this->_capacity += 1;
     if (this->_nodeRoot == this->_nodeEnd)
+    {
       this->_nodeRoot = lala;
+      this->_nodeEnd->left = this->_nodeRoot;
+    }
     else
     {
       lala->color = RED;
       insert2(x, lala);
+      this->_nodeEnd->left = this->_nodeRoot;
     }
   }
 
@@ -404,11 +408,13 @@ void  erase(const value_type &x)
 
     if (node->data.first == this->_nodeEnd->data.first)
       return  ;
+    this->_capacity -= 1;
     while (node != this->_nodeEnd)
     {
       if (node->data.first == x.first)
       {
         erase2(node);
+        this->_nodeEnd->left = this->_nodeRoot;
         return  ;
       }
       if (this->_cmp(x, node->data))
@@ -416,6 +422,7 @@ void  erase(const value_type &x)
       else
         node = node->right;
     }
+    this->_nodeEnd->left = this->_nodeRoot;
     return  ;
 }
 

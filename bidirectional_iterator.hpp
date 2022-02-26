@@ -44,11 +44,11 @@ namespace ft
             return &(operator*());
         }
 
-        treeIterator    operator++()
+        treeIterator&    operator++()
         {
-            Node *max = max_node();
+           Node *max = max_node();
+           
             
-             std::cout << "\e[0;34m" << "lili" << "\e[0m" << std::endl;
             if (this->current == this->_node_endl)
             {   
                 this->current = max;
@@ -56,13 +56,13 @@ namespace ft
                     this->current = this->current->left;
                 return *this;
             }
-            std::cout << "\e[0;34m" << "lili" << "\e[0m" << std::endl;
+
             if (this->current == max)
             {
                 this->current = this->_node_endl;
                 return *this;
             }
-             std::cout << "\e[0;34m" << "lili" << "\e[0m" << std::endl;
+
             if (this->current->right != this->_node_endl)
             {
                 if (this->current->right->left != this->_node_endl)
@@ -80,6 +80,7 @@ namespace ft
                     this->current = this->current->parent;
                 this->current = this->current->parent;
             }
+            
             return *this;
         }
 
@@ -90,7 +91,7 @@ namespace ft
             return tmp;
         }
 
-        treeIterator    operator--()
+        treeIterator&    operator--()
         {
             Node *min = min_node();
 
@@ -138,22 +139,22 @@ namespace ft
 
             Node    *max_node(void)
             {
-                Node *node = this->_node_root;
-                if (node == NULL || node == this->_node_endl)
-                    return (node);
-                while (node->right == NULL || node->right != this->_node_endl)
+                Node *node = this->_node_endl->left;
+
+                if (node == NULL)
+                    return this->_node_endl;
+                while (node->right != this->_node_endl)
                 {            
                     node = node->right;
-                    std::cout << "\e[0;34m" << node->data.first << "\e[0m" << std::endl;
                 }
                 return (node);
             }
         
             Node    *min_node(void)
             {
-                Node *node = this->_node_root;
-                if (node == this->_node_endl)
-                    return (node);
+                Node *node = this->_node_endl->left;
+                if (node == NULL)
+                    return (this->_node_endl);
                 while (node->left != this->_node_endl)
                     node = node->left;
                 return (node);
@@ -190,3 +191,6 @@ namespace ft
 }
 
 #endif
+
+
+
