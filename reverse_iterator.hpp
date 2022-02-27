@@ -3,6 +3,7 @@
 
 # include <cstddef>
 # include <string>
+# include <iostream>
 # include "iterator.hpp"
 # include "is_integral.hpp"
 # include "enable_if.hpp"
@@ -20,11 +21,18 @@ namespace ft
             typedef typename iterator_traits<Iterator>::reference       reference;
             typedef typename iterator_traits<Iterator>::pointer         pointer;
 
-            reverse_iterator(): current(NULL){}
+            reverse_iterator(): current(){}
             explicit reverse_iterator(Iterator x): current(x){} // Effects: Initializes current with x
-            template <class U> reverse_iterator(const reverse_iterator<U>& u) {current = u.base();} // Effects: Initializes current with u.current
+            template <class U> reverse_iterator(const reverse_iterator<U>& u) {current = u.base(); std::cout << "mli" << std::endl;} // Effects: Initializes current with u.current
             Iterator base() const {return this->current;} // explicit Returns: current
 
+    /*
+
+        operator reverse_iterator<const Iterator>(void) const {
+            std::cout << "coucou4444" << std::endl;
+			return reverse_iterator<const Iterator>(this->current); 
+		}
+*/
             reference operator*() const // Effects: Iterator tmp = current; return *--tmp;
             {
                 iterator_type tmp = this->current;

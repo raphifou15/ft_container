@@ -17,24 +17,38 @@ namespace ft
         typedef typename ft::iterator<bidirectional_iterator_tag, T>::reference          reference;
         typedef typename ft::iterator<bidirectional_iterator_tag, T>::iterator_category  iterator_category;
 
-        treeIterator(void): current(NULL), _node_endl(NULL), _node_root(NULL){}
-        explicit treeIterator(Node *const &lala, Node *const &lala2, Node *const &lala3): current(lala), _node_endl(lala2), _node_root(lala3){}
-        template <class U> treeIterator(const treeIterator<U, Node>& u)
+        
+
+        explicit treeIterator(Node *const &lala, Node *const &lala2, Node *const &lala3): current(lala), _node_endl(lala2), _node_root(lala3){ std::cout << "ici" << std::endl;}
+        treeIterator(void): current(NULL), _node_endl(NULL), _node_root(NULL){ std::cout << "lili lala" << std::endl; }
+        template <class U> 
+        treeIterator(const treeIterator<U, Node>& u)
         {
+            std::cout << "mli33" << std::endl;
             this->current = u.base();
             this->_node_endl = u.base2();
             this->_node_root = u.base3();
         }
-        template <class U> treeIterator &operator=(const treeIterator<U, Node>& u)
-        {
-            this->current = u.base();
-            return (*this);
-        }
+         template <class U> treeIterator &operator=(const treeIterator<U, Node>& u)
+         {
+             std::cout << "mli222" << std::endl;
+
+             this->current = u.base();
+             this->_node_endl = u.base2();
+             this->_node_root = u.base3();
+             return (*this);
+         }
+        /*
+        operator treeIterator<const T, Node>(void) const {
+            std::cout << "coucou" << std::endl;
+			return treeIterator<const T, Node>(this->current, this->_node_endl, this->_node_root); 
+		}
+        */
 
         Node *  base() const { return this->current;}
         Node *  base2() const { return this->_node_endl;}
         Node *  base3() const { return this->_node_root;}
-        ~treeIterator(){}
+        ~treeIterator(){ std::cout << "treeiterator dtor called" <<std::endl;}
         reference operator*() const
         {
             return  (this->current->data);
@@ -150,9 +164,12 @@ namespace ft
                 return (node);
             }
         
+
+
             Node    *min_node(void)
             {
                 Node *node = this->_node_endl->left;
+
                 if (node == NULL)
                     return (this->_node_endl);
                 while (node->left != this->_node_endl)

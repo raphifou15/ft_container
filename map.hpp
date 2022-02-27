@@ -30,8 +30,8 @@ namespace ft
         typedef Allocator                                               allocator_type;
         typedef typename Allocator::reference                           reference;
         typedef typename Allocator::const_reference                     const_reference;
-        typedef ft::treeIterator<value_type, ft::Node<value_type> >     iterator;// See 23.1
-        typedef ft::treeIterator<const value_type, Node<value_type> >   const_iterator; // See 23.1
+        typedef ft::treeIterator<ft::pair<const Key, T>, ft::Node<value_type> >     iterator;// See 23.1
+        typedef ft::treeIterator< const ft::pair<const Key, T>, ft::Node<value_type> > const_iterator; // See 23.1
         typedef typename Allocator::size_type                           size_type; // See 23.1
         typedef typename Allocator::difference_type                     difference_type;// See 23.1
         typedef typename Allocator::pointer                             pointer;
@@ -72,6 +72,7 @@ namespace ft
     // iterators:
         iterator begin()
         {
+             std::cout << "je suis appeler" << std::endl;
             return (iterator(this->_rb.get_begin(), this->_rb.get_endl_node(), this->_rb.getRoot()));
         }
 
@@ -82,31 +83,37 @@ namespace ft
 
         iterator end()
         {
+            std::cout << "lala2" << std::endl;
             return (iterator(this->_rb.get_endl_node(), this->_rb.get_endl_node(), this->_rb.getRoot()));
         }
 
         const_iterator end() const
         {
+            std::cout << "lolo2" << std::endl;
             return (const_iterator(this->_rb.get_endl_node(), this->_rb.get_endl_node(), this->_rb.getRoot()));
         }
 
         reverse_iterator rbegin()
         {
+            std::cout << "lala" << std::endl;
             return (reverse_iterator(end()));
         }
 
         const_reverse_iterator rbegin() const
         {
+            std::cout << "lolo" << std::endl;
             return (const_reverse_iterator(end()));
         }
 
         reverse_iterator rend()
         {
+             std::cout << "je suis appeler" << std::endl;
             return (reverse_iterator(begin()));
         }
 
         const_reverse_iterator rend() const
         {
+           
             return (const_reverse_iterator(begin()));
         }
 
@@ -212,23 +219,50 @@ namespace ft
 
         iterator lower_bound(const key_type& x)
         {
-            return (find(x));
+            const Compare& comp = Compare();
+            iterator it = begin();
+            iterator ite = end();
+            for (;it != ite; it++)
+            {
+                if (comp((*it).first, x))
+                    ;
+                else
+                    break;
+            }
+            return (it);
         }
 
         const_iterator lower_bound(const key_type& x) const
         {
-            return (find(x));
+            const Compare& comp = Compare();
+            const_iterator it = begin();
+            const_iterator ite = end();
+            for (;it != ite; it++)
+            {
+                if (comp((*it).first, x))
+                    ;
+                else
+                    break;
+            }
+            return (it);
         }
         
         iterator upper_bound(const key_type& x)
         {
-            iterator it = lower_bound(x);
-            return (++it);
+            iterator    ite = end();
+            iterator    it = lower_bound(x);
+
+            if (it != ite && (*it).first == x)
+                return (++it);
+            return (it);
         }
         const_iterator upper_bound(const key_type& x) const
         {
+            const_iterator  ite = end();
             const_iterator it = lower_bound(x);
-            return (++it);
+            if (it != ite && (*it).first == x)
+                return (++it);
+            return (it);
         }
     
         pair<iterator,iterator> equal_range(const key_type& x)

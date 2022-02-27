@@ -6,6 +6,7 @@
 #include "iterator.hpp"
 #include "enable_if.hpp"
 #include "is_integral.hpp"
+#include "reverse_iterator.hpp"
 #include <stack>
 #include <vector>
 #include <map>
@@ -1309,7 +1310,7 @@ int main (void)
   return 0;
 }
 */
-
+/*
 int main ()
 {
   ft::map<char,int> foo,bar;
@@ -1327,4 +1328,74 @@ int main ()
   if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
 
   return 0;
+}
+*/
+/*
+int main (void)
+{
+  ft::map<char,int> mymap;
+
+  mymap['x'] = 100;
+  mymap['y'] = 200;
+  mymap['z'] = 300;
+
+  // show content:
+  ft::map<char,int>::reverse_iterator rit;
+  for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
+    std::cout << rit->first << " => " << rit->second << '\n';
+
+  return 0;
+}
+*/
+
+int main ()
+{
+	ft::map<char,int> mymap;
+/*
+	mymap['x'] = 100;
+	mymap['y'] = 200;
+	mymap['z'] = 300;
+	*/
+
+	//ft::map<char,int> const copy =mymap;
+	// show content:
+/*
+	std::map<char,int>::reverse_iterator rit;
+	for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
+    	std::cout << rit->first << " => " << rit->second << '\n';
+*/
+/*
+	for (ft::map<char,int>::const_reverse_iterator it=mymap.rbegin(); it!=mymap.rend(); it++)
+    	std::cout << it->first << " => " << it->second << '\n';
+*/
+	std::cout << "creating const reverse iterator" << std::endl;
+	ft::map<const char,int>::reverse_iterator it = mymap.rbegin();
+	it++;
+
+//	ft::map<const char,int>::reverse_iterator it2(mymap.rbegin()); it2++;
+/*
+	map<char, int>::const_reverse_iterator it = mymap.rbegin();
+	map<char, int>::const_reverse_iterator ti = mymap.rend();
+
+	it++;
+	++it;
+	it--;
+	--it;
+
+	ti--;
+	--ti;
+	++ti;
+	ti++;
+
+	ti = it;
+
+	map<char, int>::reverse_iterator end = mymap.rend();
+	while(it != end)
+	{
+    	cout << it->first << " => " << it->second << '\n';
+		it++;
+	}
+
+*/
+	return 0;
 }

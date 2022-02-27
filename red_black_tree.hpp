@@ -111,6 +111,7 @@ class RedBlackTree
         this->_nodeRoot = this->_nodeEnd;
       this->_alloc.destroy(lala);
       this->_alloc.deallocate(lala, 1);
+      this->_capacity -= 1;
     }
   }
 
@@ -467,57 +468,6 @@ void  erase2(Node *node)
     db_black_problem(last, 0);
   }
 
-     //first case easy
-    
-    // Node *cibling;
-    // cibling = (last->parent->left == last) ? last->parent->right : last->parent->left;
-    // if (last->parent->color == RED && cibling->color == BLACK && cibling->left->color == BLACK && cibling->right->color == BLACK)
-    // {
-    //   destroy_last_node(last);
-    //   cibling->parent->color = BLACK;
-    //   cibling->color = RED;
-    // }
-    // if (last->parent->color == BLACK && cibling->color == BLACK && cibling->left->color == BLACK && cibling->right->color == BLACK)
-    // {
-    //   destroy_last_node(last);
-    //   cibling->color = RED;
-    //   db_black_problem(cibling->parent);
-    // }
-
-    // if (last->parent->color == BLACK && cibling->color == RED)
-    // {
-    //   if (cibling->parent->right == cibling)
-    //   {
-    //     Node *p = cibling->parent;
-    //     Node *cc = cibling->left;
-    //     destroy_last_node(last);
-    //     cibling->color = BLACK;
-    //     p->color = RED;
-    //     p->right = cc;
-    //     cc->parent = p;
-    //     cibling->parent = p->parent;
-    //     cibling->left = p;
-    //     p->parent = cibling;
-    //     (cibling->parent->left == p) ? cibling->parent->left = cibling : cibling->parent->right = cibling;
-    //     db_black_problem(p->left);
-    //   }
-      /*
-      Node * p = cibling->parent;
-      Node *tmp = (cibling->parent->left == cibling) ? cibling->right : cibling->left;
-      destroy_last_node(last);
-      cibling->color = BLACK;
-      cibling->parent->color = RED;
-      if (p->right == cibling)
-        p->right = tmp;
-      tmp->parent = p;
-      cibling->parent = p->parent;
-      cibling->left = 
-      (cibling->parent->right == p) ? cibling->parent->right = cibling : cibling->parent->left = cibling;
-      p->parent = cibling;
-      */
-
-  //}
-  ////////////////////////////////////////////////
 }
 
 void  swap(RedBlackTree &lala)
@@ -645,17 +595,7 @@ void  db_black_problem(Node *dbp, int x)
     }
    }
 }
-/*
-  if (db_problem == this->_nodeRoot)
-    return ;
-  Node *cibling = (db_problem->parent->left == db_problem) ? db_problem->parent->right : db_problem->parent->left;
 
-  if (db_problem->parent == BLACK)
-  {
-    cibling->color = RED;
-    db_black_problem(db_problem->parent);
-  }
-*/
 
 void  destroy_last_node(Node *node)
 {
