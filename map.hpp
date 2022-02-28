@@ -15,12 +15,12 @@
 # include "reverse_iterator.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
-                    # include <map>
+
 namespace ft
 {
     // template <class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
     template <class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
-    class map : std::map<Key, T, Compare, Allocator>
+    class map
     {
         public:
     //     // types:

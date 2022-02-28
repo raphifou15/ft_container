@@ -36,6 +36,7 @@ namespace ft
                 this->current = u.base();
                 return (*this);
             }
+
             ~random_access_iterator(){}
 
             reference operator*() const
