@@ -19,36 +19,33 @@ namespace ft
 
         
 
-        explicit treeIterator(Node *const &lala, Node *const &lala2, Node *const &lala3): current(lala), _node_endl(lala2), _node_root(lala3){ std::cout << "ici" << std::endl;}
-        treeIterator(void): current(NULL), _node_endl(NULL), _node_root(NULL){ std::cout << "lili lala" << std::endl; }
-        template <class U> 
-        treeIterator(const treeIterator<U, Node>& u)
+        explicit treeIterator(Node *const &lala, Node *const &lala2, Node *const &lala3): current(lala), _node_endl(lala2), _node_root(lala3){}
+        treeIterator(void): current(NULL), _node_endl(NULL), _node_root(NULL){}
+       /* template <class U> */
+        treeIterator(const treeIterator& u)
         {
-            std::cout << "mli33" << std::endl;
+            
             this->current = u.base();
             this->_node_endl = u.base2();
             this->_node_root = u.base3();
         }
          template <class U> treeIterator &operator=(const treeIterator<U, Node>& u)
          {
-             std::cout << "mli222" << std::endl;
-
              this->current = u.base();
              this->_node_endl = u.base2();
              this->_node_root = u.base3();
              return (*this);
          }
-        /*
+        
         operator treeIterator<const T, Node>(void) const {
-            std::cout << "coucou" << std::endl;
 			return treeIterator<const T, Node>(this->current, this->_node_endl, this->_node_root); 
 		}
-        */
+        
 
         Node *  base() const { return this->current;}
         Node *  base2() const { return this->_node_endl;}
         Node *  base3() const { return this->_node_root;}
-        ~treeIterator(){ std::cout << "treeiterator dtor called" <<std::endl;}
+        ~treeIterator(){}
         reference operator*() const
         {
             return  (this->current->data);

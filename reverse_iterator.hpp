@@ -23,7 +23,7 @@ namespace ft
 
             reverse_iterator(): current(){}
             explicit reverse_iterator(Iterator x): current(x){} // Effects: Initializes current with x
-            template <class U> reverse_iterator(const reverse_iterator<U>& u) {current = u.base(); std::cout << "mli" << std::endl;} // Effects: Initializes current with u.current
+            template <class U> reverse_iterator(const reverse_iterator<U>& u) {current = u.base();} // Effects: Initializes current with u.current
             Iterator base() const {return this->current;} // explicit Returns: current
 
     /*

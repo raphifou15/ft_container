@@ -1,5 +1,5 @@
-#ifndef MAP
-# define MAP
+#ifndef MAP_HPP
+# define MAP_HPP
 
 # include <memory>
 # include <iostream>
@@ -15,11 +15,12 @@
 # include "reverse_iterator.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
-
+                    # include <map>
 namespace ft
 {
+    // template <class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
     template <class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
-    class map
+    class map : std::map<Key, T, Compare, Allocator>
     {
         public:
     //     // types:
@@ -30,8 +31,8 @@ namespace ft
         typedef Allocator                                               allocator_type;
         typedef typename Allocator::reference                           reference;
         typedef typename Allocator::const_reference                     const_reference;
-        typedef ft::treeIterator<ft::pair<const Key, T>, ft::Node<value_type> >     iterator;// See 23.1
-        typedef ft::treeIterator< const ft::pair<const Key, T>, ft::Node<value_type> > const_iterator; // See 23.1
+        typedef ft::treeIterator<value_type, ft::Node<value_type> >     iterator;// See 23.1
+        typedef ft::treeIterator< const value_type, ft::Node<value_type> > const_iterator; // See 23.1
         typedef typename Allocator::size_type                           size_type; // See 23.1
         typedef typename Allocator::difference_type                     difference_type;// See 23.1
         typedef typename Allocator::pointer                             pointer;
@@ -54,10 +55,11 @@ namespace ft
         private:
             RedBlackTree<value_type, value_compare>   _rb;
         public:
-    //     // 23.3.1.1 construct/copy/destroy:
-        explicit map(const Compare& comp = Compare(), const Allocator& = Allocator()) : _rb(value_compare(comp)) {}
+    //// 23.3.1.1 construct/copy/destroy:
+        explicit map(const Compare& comp = Compare(), const Allocator& = Allocator()) : _rb(value_compare(comp)) {
+        }
         template <class InputIterator>
-        map(InputIterator first, InputIterator last, const Compare&comp = Compare(), const Allocator& = Allocator()) : _rb(value_compare(comp))
+        map(InputIterator first, InputIterator last, const Compare&comp = Compare(), const Allocator& = Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) : _rb(value_compare(comp))
         {
             insert(first, last);
         }
@@ -72,7 +74,6 @@ namespace ft
     // iterators:
         iterator begin()
         {
-             std::cout << "je suis appeler" << std::endl;
             return (iterator(this->_rb.get_begin(), this->_rb.get_endl_node(), this->_rb.getRoot()));
         }
 
@@ -83,31 +84,26 @@ namespace ft
 
         iterator end()
         {
-            std::cout << "lala2" << std::endl;
             return (iterator(this->_rb.get_endl_node(), this->_rb.get_endl_node(), this->_rb.getRoot()));
         }
 
         const_iterator end() const
         {
-            std::cout << "lolo2" << std::endl;
             return (const_iterator(this->_rb.get_endl_node(), this->_rb.get_endl_node(), this->_rb.getRoot()));
         }
 
         reverse_iterator rbegin()
         {
-            std::cout << "lala" << std::endl;
             return (reverse_iterator(end()));
         }
 
         const_reverse_iterator rbegin() const
         {
-            std::cout << "lolo" << std::endl;
             return (const_reverse_iterator(end()));
         }
 
         reverse_iterator rend()
         {
-             std::cout << "je suis appeler" << std::endl;
             return (reverse_iterator(begin()));
         }
 
@@ -149,7 +145,7 @@ namespace ft
             insert(x);
             return (find(x.first));
         }
-        template <class InputIterator>  void insert(InputIterator first, InputIterator last)
+        template <class InputIterator>  void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
         {
             for (; first != last; first++)
             {
@@ -166,17 +162,25 @@ namespace ft
 
         size_type erase(const key_type& x)
         {
-            this->_rb.erase(ft::make_pair(x, mapped_type()));
-            return (1);
+            //display_element();
+            //std::cout << "\n\n\n\n\n\n" << std::endl;
+            bool tf = this->_rb.erase(ft::make_pair(x, mapped_type()));
+            //display_element();
+            //std::cout << "\n\n\n\n\n\n" << std::endl;
+            return (tf);
         }
 
         void erase(iterator first, iterator last)
         {
             while (first != last)
             {
+                //display_element();
+                //std::cout << "\n\n\n\n\n\n" << std::endl;
                 iterator position = first;
-                first++;
+                ++first;
                 this->_rb.erase(*position);
+                //display_element();
+                //std::cout << "\n\n\n\n\n\n" << std::endl;
             }
         }
         void swap(map<Key,T,Compare,Allocator> &lala)
@@ -214,7 +218,9 @@ namespace ft
         size_type count(const key_type& x) const
         {
             const_iterator it = find(x);
-            return ((*it).first);
+            const_iterator et = end();
+            return (it == et) ? 0 : 1;
+            //return ((*it).first);
         }
 
         iterator lower_bound(const key_type& x)

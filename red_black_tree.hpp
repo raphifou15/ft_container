@@ -403,20 +403,28 @@ class RedBlackTree
 
 ///////////////////////////////////////////////////////////deletion in red_black_tree //////////////////
 
-void  erase(const value_type &x)
+bool  erase(const value_type &x)
 {
     Node *node = this->_nodeRoot;
 
     if (node->data.first == this->_nodeEnd->data.first)
-      return  ;
-    this->_capacity -= 1;
+      return  0;
+    if (this->_capacity == 1)
+    {
+      destroy_last_node(node);
+      this->_capacity -= 1;
+      this->_nodeRoot = this->_nodeEnd;
+      return 1;
+    }
+    
     while (node != this->_nodeEnd)
     {
       if (node->data.first == x.first)
       {
         erase2(node);
+        this->_capacity -= 1;
         this->_nodeEnd->left = this->_nodeRoot;
-        return  ;
+        return  1;
       }
       if (this->_cmp(x, node->data))
         node = node->left;
@@ -424,7 +432,7 @@ void  erase(const value_type &x)
         node = node->right;
     }
     this->_nodeEnd->left = this->_nodeRoot;
-    return  ;
+    return  0;
 }
 
 void  erase2(Node *node)
@@ -436,9 +444,9 @@ void  erase2(Node *node)
   Node  *small = find_smallest_node_subtree_right(node);
   Node  *last = find_last_elem_subtree_right(small);
 
-  // std::cout << tmp->data.first << std::endl;
-  // std::cout << small->data.first << std::endl;
-  // std::cout << last->data.first << std::endl;
+  //std::cout << tmp->data.first << std::endl;
+  //std::cout << small->data.first << std::endl;
+  //std::cout << last->data.first << std::endl;
 
   if (last->color == RED)
   {
@@ -458,6 +466,7 @@ void  erase2(Node *node)
       small = swap_internal_node_second(tmp, small);
       last = swap_internal_node_second(small, last);
       destroy_last_node(last);
+     
       return ;
     }
   }
@@ -474,12 +483,16 @@ void  swap(RedBlackTree &lala)
 {
   Node *tmp_root = this->_nodeRoot;
   Node *tmp_end = this->_nodeEnd;
+  size_type tmp_c = this->_capacity;
+  
 
   this->_nodeRoot = lala._nodeRoot;
   this->_nodeEnd = lala._nodeEnd;
+  this->_capacity = lala._capacity;
   
   lala._nodeRoot = tmp_root;
   lala._nodeEnd = tmp_end;
+  lala._capacity = tmp_c;
 }
 
 void  db_black_problem(Node *dbp, int x)
@@ -506,21 +519,51 @@ void  db_black_problem(Node *dbp, int x)
   }
   if (p->color == BLACK && cibling->color == RED)
   {
+    
     if (p->right == cibling)
     {
       Node *cc = cibling->left;
       //destroy_last_node(last);
-      cibling->color = BLACK;
       p->color = RED;
+      cibling->color = BLACK;
+      cibling->parent = p->parent;
+      if (p != this->_nodeRoot)
+        (cibling->parent->left == p) ? cibling->parent->left = cibling : cibling->parent->right = cibling;
+      else
+        this->_nodeRoot = cibling;
+      p->right = cc;
+      cibling->left = p;
+      cc->parent = p;
+      p->parent = cibling;
+      /*
       p->right = cc;
       cc->parent = p;
       cibling->parent = p->parent;
       cibling->left = p;
       p->parent = cibling;
-      (cibling->parent->left == p) ? cibling->parent->left = cibling : cibling->parent->right = cibling;
+      (cibling->parent->left == p) ? cibling->parent->left = cibling : cibling->parent->right = cibling;*/
       db_black_problem(p->left , x);
+      
       return ;
     }
+    /*
+    if (p->left == cibling)
+    {
+      std::cout << "raphael\n\n\n" << std::endl;
+      Node *cc = cibling->right;
+      //destroy_last_node(last);
+      cibling->color = BLACK;
+      p->color = RED;
+      p->left = cc;
+      cc->parent = p;
+      cibling->parent = p->parent;
+      cibling->right = p;
+      p->parent = cibling;
+      (cibling->parent->right == p) ? cibling->parent->right = cibling : cibling->parent->left = cibling;
+      db_black_problem(p->right , x);
+      return ;
+    }
+    */
   }
  
   if ((cibling->color == BLACK && cibling->right->color == BLACK && cibling->left->color == RED) ||
@@ -564,7 +607,6 @@ void  db_black_problem(Node *dbp, int x)
         p->color = BLACK;
         cibling->color = RED;
       }
-
       (p == this->_nodeRoot) ? cibling->parent = this->_nodeEnd : cibling->parent = p->parent;
       (p == this->_nodeRoot) ? this->_nodeRoot = cibling : 0;
       if (p->parent != this->_nodeEnd)
@@ -594,6 +636,52 @@ void  db_black_problem(Node *dbp, int x)
       }
     }
    }
+    if (cibling->color == BLACK && cibling->left->color == RED && cibling->right->color == RED && dbp->color == BLACK && dbp->right == this->_nodeEnd && dbp->left == this->_nodeEnd)
+    {
+      if (this->_cmp(dbp->data, cibling->data))
+      {
+        Node *cc = cibling->left;
+        destroy_last_node(dbp);
+        p->parent = cibling;
+        p->right = cc;
+        p->left = this->_nodeEnd;
+        cc->parent = p;
+        cibling->left = p;
+        cibling->right->color = BLACK;
+        this->_nodeRoot = cibling;
+        return ;
+      }
+      if (this->_cmp(cibling->data , dbp->data) && p->color == BLACK)
+      {
+        Node *cc = cibling->right;
+        destroy_last_node(dbp);
+        p->parent = cibling;
+        p->left = cc;
+        p->right = this->_nodeEnd;
+        cc->parent = p;
+        cibling->right = p;
+        cibling->left->color = BLACK;
+        this->_nodeRoot = cibling;
+        cc->parent = p;
+        return ;
+      }
+      if (this->_cmp(cibling->data , dbp->data) && p->color == RED)
+      {
+        
+        destroy_last_node(dbp);
+        Node *cc = cibling->right;
+        cibling->parent = p->parent;
+        (cibling->parent->left == p) ? cibling->parent->left = cibling : cibling->parent->right = cibling;
+        cibling->right = p;
+        p->parent = cibling;
+        p->left = cc;
+        cc->parent = p;
+        cibling->color = RED;
+        cibling->left->color = BLACK;
+        cibling->right->color = BLACK;
+        return ;
+      }
+    }
 }
 
 
