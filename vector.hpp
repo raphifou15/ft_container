@@ -374,6 +374,8 @@ namespace ft
 					range1++;
 				for (InputIterator ite = first; ite != last; ite++)
 					n++;
+				if (n == 0)
+					return ;
 				if (this->_capacity <= (this->_size + n))
 				{
 					if ((this->_size * 2) > this->max_size())

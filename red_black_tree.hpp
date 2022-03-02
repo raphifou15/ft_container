@@ -401,15 +401,17 @@ class RedBlackTree
   }
 
 
+
 ///////////////////////////////////////////////////////////deletion in red_black_tree //////////////////
 
 bool  erase(const value_type &x)
 {
     Node *node = this->_nodeRoot;
 
-    if (node->data.first == this->_nodeEnd->data.first)
-      return  0;
-    if (this->_capacity == 1)
+    if (node == this->_nodeEnd)
+      return (0);
+
+    if (this->_capacity == 1 && this->_nodeRoot->data.first == x.first)
     {
       destroy_last_node(node);
       this->_capacity -= 1;
@@ -432,6 +434,7 @@ bool  erase(const value_type &x)
         node = node->right;
     }
     this->_nodeEnd->left = this->_nodeRoot;
+   
     return  0;
 }
 
@@ -448,6 +451,7 @@ void  erase2(Node *node)
   //std::cout << small->data.first << std::endl;
   //std::cout << last->data.first << std::endl;
 
+  
   if (last->color == RED)
   {
     if (last == small && last == tmp && small == tmp)
@@ -475,8 +479,8 @@ void  erase2(Node *node)
     if (tmp != last && tmp != small && small == last)
       last = swap_internal_node_second(tmp, last);
     db_black_problem(last, 0);
+    return ;
   }
-
 }
 
 void  swap(RedBlackTree &lala)
@@ -546,10 +550,10 @@ void  db_black_problem(Node *dbp, int x)
       
       return ;
     }
-    /*
+
     if (p->left == cibling)
     {
-      std::cout << "raphael\n\n\n" << std::endl;
+       
       Node *cc = cibling->right;
       //destroy_last_node(last);
       cibling->color = BLACK;
@@ -563,7 +567,7 @@ void  db_black_problem(Node *dbp, int x)
       db_black_problem(p->right , x);
       return ;
     }
-    */
+  
   }
  
   if ((cibling->color == BLACK && cibling->right->color == BLACK && cibling->left->color == RED) ||
@@ -682,6 +686,7 @@ void  db_black_problem(Node *dbp, int x)
         return ;
       }
     }
+    
 }
 
 
