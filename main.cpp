@@ -1403,10 +1403,17 @@ int main ()
 
 int main(void)
 {
-	ft::map<int,int> lala;
-	for (int i = 0; i < 1000 ; i++)
-	{
-		lala.insert(ft::pair<int, int>(i,1));
-	}
+	ft::map<std::string, std::string> lala;
+	lala["lala"] = "juste";
+	lala["a"] = "juste";
+	lala["aaa"] = "juste";
+	lala["aaa"] = "hola";
+	lala["koko"] = "dodo";
+	lala["ba"] = "lala";
+	lala["bb"] = "lala";
+	lala["bd"];
+	lala["bda"];
+	lala["bnm"];
+	lala.display_element();	
 	return (0);
 }
