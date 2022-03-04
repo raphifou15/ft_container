@@ -1400,20 +1400,238 @@ int main ()
 	return 0;
 }
 */
+/*
+int main(void)
+{
+*/	
+	// ft::map<int, int> lala;
+	// lala[50];
+	// lala[0];
+	// lala[100];
+	// lala.change_color(0, 0);
+	// lala.change_color(100, 0);
+	// lala.change_color(50, 0);
+	// lala[-50];
+	// lala[25];
+	// lala[75];
+	// lala[150];
+	// lala.change_color(-50, 0);
+	// lala.change_color(25, 0);
+	// lala.change_color(75, 0);
+	// lala.change_color(150, 0);
+	// lala[-100];
+	// lala[-25];
+	// lala[12];
+	// lala[33];
+	// lala[63];
+	// lala[84];
+	// lala[200];
+	// lala[125];
+	// lala.change_color(-100, 0);
+	// lala.change_color(-25, 0);
+	// lala.change_color(12, 0);
+	// lala.change_color(33, 0);
+	// lala.change_color(63, 0);
+	// lala.change_color(84, 0);
+	// lala.change_color(200, 0);
+	// lala.change_color(125, 0);
+	// lala.erase(200);
+	// lala.erase(150);
+	// lala.erase(125);
+	// lala.erase(100);
+	// lala.erase(84);
+	// lala.erase(75);
+	// /*lala.erase("bb");
+	// lala.erase("bd");
+	// lala.erase("bda");
+	// lala.erase("hdsh");
+	// lala.erase("a");
+	// lala.erase("f");
+	// lala.erase("koko");*/
+	// /*lala.erase(-100);
+	// lala.erase(50);
+	// lala.erase(63);
+	// lala.erase(75);
+	// lala.erase(84);
+	// lala.erase(100);
+	// lala.erase(25);
+	// lala.erase(33);
+	// lala.erase(125);*/
+	// lala.display_element();
+/*
+	{
+	ft::map<int, std::string> lala;
+	lala[10] = "dix";
+	lala[18] = "dix-huit";
+	lala[7] = "sept";
+	lala[15] = "quize";
+	lala[16] = "seize";
+	lala[30] = "trente";
+	lala[25] = "twenty-five";
+	lala.display_element();
+	}
+std::cout << "--------------------------------------------------------------------------------------------------" << std::endl;
+	{
+	ft::map<int, std::string> lala;
+	lala[10] = "dix";
+	lala[-18] = "moins-dix-huit";
+	lala[17] = "dix-sept";
+	lala[-15] = "moins-quize";
+	lala[-16] = "moins-seize";
+	lala[-30] = "moins-trente";
+	lala[-25] = "-twenty-five";
+	lala.display_element();
+	}
+*/
+/*
+	ft::map<int, int> lala;
+	for (int i = 0; i < 1000000 ; i++)
+	{
+		lala.insert(ft::pair<int, int>(i,i));
+	}
+	for (ft::map<int, int>::iterator it = lala.begin(); it != lala.end(); it++)
+		std::cout << it->first;
+	for (int i = 0 ; i < 1000000 ; i++)
+	{
+		lala.erase(i);
+	}
+*/
+/*
+	return (0);
+}
+*/
+/*
+int main(void)
+{
+	ft::map<int, int> lala;
+
+*/	
+	/*
+	lala[5];
+	lala[10];
+	lala[2];
+	lala[9];
+	lala[30];
+	lala[25];
+	lala[40];
+	lala[35];
+	lala[50];
+	lala[38];
+	//lala[12] = 10;
+	*/
+	//lala.change_color(5, 1);
+/*
+	lala[10];
+	lala[5];
+	lala[20];
+	lala[1];
+	lala[7];
+	lala[15];
+	lala[30];
+	lala[25];
+	lala[40];
+	lala.change_color(7, 0);
+	lala.change_color(1, 0);
+	lala.change_color(20, 0);
+	//lala.change_color(15, 0);
+	lala.change_color(30, 1);
+	lala.change_color(25, 0);
+	lala.change_color(40, 0);
+
+	lala.erase(15);
+*/
+	// lala[10];
+	// lala[5];
+	// lala[20];
+	// lala[0];
+	// lala[7];
+	// lala[25];
+	// lala[40];
+	// lala[-1];
+	// lala[3];
+	// lala.change_color(5, 0);
+	// lala.change_color(0, 1);
+	// lala.change_color(-1, 0);
+	// lala.change_color(3, 0);
+	// lala.change_color(20, 0);
+	// lala.change_color(40, 0);
+/*
+	lala[10];
+	lala[5];
+	lala[30];
+	lala.change_color(5, 0);
+	lala.change_color(30, 0);
+	lala[1];
+	lala[7];
+	lala[25];
+	lala[40];
+	lala.change_color(1, 0);
+	lala.change_color(7, 0);
+	lala.change_color(25, 0);
+	lala.change_color(40, 0);
+	lala[20];
+	lala[28];
+	lala.change_color(25, 1);
+	lala.change_color(20, 0);
+	lala.change_color(28, 0);
+	
+	lala.erase(1);
+
+	lala.display_element();
+	return (0);
+}*/
+
+
+/*
+
+int main (void)
+{
+  ft::map<char,int> mymap;
+  ft::map<char,int>::iterator it;
+
+  // insert some values:
+  mymap['a']=10;
+  mymap['b']=20;
+  mymap['c']=30;
+  mymap['d']=40;
+  mymap['e']=50;
+  mymap['f']=60;
+
+  it=mymap.find('b');
+  std::cout << "found b\n";
+  //mymap.erase (it);                  // erasing by iterator
+  mymap.display_element();
+  mymap.erase ('b');
+  mymap.display_element();
+  std::cout << "erase iterator to b\n";
+  mymap.erase ('c');               // erasing by key
+  
+  std::cout << "erase by key 'c'\n";
+  it=mymap.find ('e');
+  std::cout << "erase by range 'e' to end\n";
+  mymap.erase ( it, mymap.end() );    // erasing by range
+
+  std::cout << " display :\n";
+  // show content:
+  for (it=mymap.begin(); it!=mymap.end(); ++it)
+    std::cout << it->first << " => " << it->second << '\n';
+  return 0;
+  
+}
+
+
+
+*/
+
 
 int main(void)
 {
-	ft::map<std::string, std::string> lala;
-	lala["lala"] = "juste";
-	lala["a"] = "juste";
-	lala["aaa"] = "juste";
-	lala["aaa"] = "hola";
-	lala["koko"] = "dodo";
-	lala["ba"] = "lala";
-	lala["bb"] = "lala";
-	lala["bd"];
-	lala["bda"];
-	lala["bnm"];
-	lala.display_element();	
-	return (0);
+	ft::map<int,int> lala;
+	lala[10];
+	lala[5];
+	lala[20];
+	lala[0];
+
+
+	return 0;
 }

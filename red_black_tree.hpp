@@ -11,6 +11,7 @@
 # include "map.hpp"
 # include "bidirectional_iterator.hpp"
 # include "pair.hpp"
+#include <fstream>
 
 namespace ft
 {
@@ -155,10 +156,25 @@ class RedBlackTree
   }
 
 
+void  swap(RedBlackTree &lala)
+{
+  Node *tmp_root = this->_nodeRoot;
+  Node *tmp_end = this->_nodeEnd;
+  size_type tmp_c = this->_capacity;
+  
 
+  this->_nodeRoot = lala._nodeRoot;
+  this->_nodeEnd = lala._nodeEnd;
+  this->_capacity = lala._capacity;
+  
+  lala._nodeRoot = tmp_root;
+  lala._nodeEnd = tmp_end;
+  lala._capacity = tmp_c;
+}
 
 
 /////////////////////////////////////////////////////////////////////// debut de l'insertion red black three ///////////////////////
+
   void  insert(const value_type &x)
   {
     Node *lala = this->_alloc.allocate(1);
@@ -168,14 +184,160 @@ class RedBlackTree
     {
       this->_nodeRoot = lala;
       this->_nodeEnd->left = this->_nodeRoot;
+    //  checker();
     }
     else
     {
       lala->color = RED;
       insert2(x, lala);
       this->_nodeEnd->left = this->_nodeRoot;
+      //checker();
     }
   }
+/*
+  void  insert2(const value_type &x, Node *node)
+  {
+    Node *exp = this->_nodeRoot; // exp pour explore
+    while (exp != this->_nodeEnd)
+    {
+      if (this->_cmp(x, exp->data))
+      {
+        if (exp->left != this->_nodeEnd)
+          exp = exp->left;
+        else
+        {
+          exp->left = node;
+          node->parent = exp;
+          if (exp->color == BLACK)
+            return ;
+          else
+          {
+            red_conflic(exp->left);
+            return ;
+          }
+        }
+      }
+      else
+      {
+        if (exp->right != this->_nodeEnd)
+          exp = exp->right;
+        else
+        {
+          exp->right = node;
+          node->parent = exp;
+          if (exp->color == BLACK)
+            return ;
+          else
+          {
+            red_conflic(exp->right);
+            return ;
+          }
+        }
+      }
+    }
+  }
+
+  void  red_conflic(Node *c)
+  {
+    int i = 1;
+    Node *p = c->parent;
+    Node *pp = p->parent;
+    Node *cibling = (pp->left == p) ? pp->right : pp->left;
+    while (i > 0)
+    {
+      if (cibling->color == RED && p->color == RED && c->color == RED)
+      {
+        cibling->color = BLACK;
+        p->color = BLACK;
+        pp->color = (pp == this->_nodeRoot) ? BLACK : RED;
+        if (pp->color == BLACK)
+          i = 0;
+        else
+        {
+          c = pp;
+          p = c->parent;
+          if (p == this->_nodeRoot)
+            return;
+          pp = p->parent;
+          cibling = (pp->left == p) ? pp->right : pp->left;
+        }
+      }
+      else if (cibling->color == BLACK && p->color == RED && c->color == RED)
+      {
+        if (pp->left == p)
+        {
+          
+            if (p->right == c)                   // left right rotation;
+            {
+              Node *cc = c->left;
+
+              pp->left = c;
+              p->parent = c;
+              p->right = this->_nodeEnd;
+              p->left = cc;
+              c->parent = pp;
+              c->left = p;
+              (cc != this->_nodeEnd) ? cc->parent = p : 0;
+              p = pp->left;
+              c = p->left;
+            }
+            
+            Node *app = pp->parent;   // left left rotation
+            Node *cc = p->right;
+
+            p->right = pp;
+            if (pp == this->_nodeRoot)
+              this->_nodeRoot = p;
+            else
+              (app->right == pp) ? app->right = p : app->left = p;
+            pp->parent = p;
+            pp->left = cc;
+            cc->parent = pp;
+            p->color = BLACK;
+            pp->color = RED;
+            return ;
+            
+        }
+        else
+        {
+            if (p->left == c)                   // right left rotation;
+            {
+              Node *cc = c->right;
+
+              pp->right = c;
+              p->parent = c;
+              p->left = this->_nodeEnd;
+              p->right = cc;
+              c->parent = pp;
+              c->right = p;
+              (cc != this->_nodeEnd) ? cc->parent = p : 0;
+              p = pp->right;
+              c = p->right;
+            }
+
+            Node *app = pp->parent;   // right right rotation
+            Node *cc = p->left;
+
+            p->left = pp;
+            if (pp == this->_nodeRoot)
+              this->_nodeRoot = p;
+            else
+              (app->left == pp) ? app->left = p : app->right = p;
+            pp->parent = p;
+            pp->right = cc;
+            cc->parent = pp;
+            p->color = BLACK;
+            pp->color = RED;
+            return ;
+        }
+      }
+      else if (p->color == BLACK)
+        i = 0;
+    }
+  }
+
+*/
+
 
   void  insert2(const value_type &x, Node *lala)
   {
@@ -225,13 +387,14 @@ class RedBlackTree
   {
     (void)c;
     Node *gP = p->parent;
-
+    //std::cout << c->data.first << std::endl;
     if (p == gP->left) // le noeud du parrent est celui de gauche du grand pere
     {
       if (gP->right == this->_nodeEnd) //// il faudra faire une rotation et recolorer
       {
         if (this->_cmp(p->data, c->data))
         {
+         
           c = leftRightRotation(c, p, gP);
           p = leftLeftRotation(c, c->parent, c->parent->parent);
         }
@@ -243,6 +406,7 @@ class RedBlackTree
       {
         if (this->_cmp(p->data, c->data))
         {
+          
           c = leftRightRotation(c, p, gP);
           p = leftLeftRotation(c, c->parent, c->parent->parent);
         }
@@ -255,10 +419,14 @@ class RedBlackTree
       {
         p->color = BLACK;
         gP->right->color = BLACK;
-        if(gP != this->_nodeRoot)
+        gP->color = (gP == this->_nodeRoot) ? BLACK : RED;
+        if (gP->color == RED)
         {
-          (gP->color == RED) ? gP->color = BLACK : gP->color = RED;
+          if (gP->parent->color == RED)
+            redRedProblem(gP->parent, gP);
         }
+        return;
+        /*
         int i = 1;
         while(i == 1)
         {
@@ -271,6 +439,7 @@ class RedBlackTree
           }
         }
         return ;
+        */
       }
     }
     else // le noeud du parrent est celui de droite du grand pere
@@ -291,6 +460,7 @@ class RedBlackTree
         if (this->_cmp(c->data, p->data))
         {
           c = RightLeftRotation(c, p, gP);
+          //std::cout << c->data.first << std::endl;
           p = RightRightRotation(c, c->parent, c->parent->parent);
         }
         else
@@ -301,6 +471,17 @@ class RedBlackTree
       }
       if (gP->left->color == RED)
       {
+       //  std::cout << c->data.first << std::endl;
+        p->color = BLACK;
+        gP->left->color = BLACK;
+        gP->color = (gP == this->_nodeRoot) ? BLACK : RED;
+        if (gP->color == RED)
+        {
+          if (gP->parent->color == RED)
+            redRedProblem(gP->parent, gP);
+        }
+        return;
+        /*
         p->color = BLACK;
         gP->left->color = BLACK;
         if(gP != this->_nodeRoot)
@@ -319,6 +500,7 @@ class RedBlackTree
           }
         }
         return ;
+        */
       }
     }
   }
@@ -382,325 +564,289 @@ class RedBlackTree
 
   Node *leftRightRotation(Node *c, Node*p, Node*gP)
   {
+    Node *cc = c->left;
     gP->left = c;
     p->parent = c;
-    p->right = this->_nodeEnd;
+    p->right = cc;
     c->parent = gP;
     c->left = p;
+    (cc != this->_nodeEnd) ? cc->parent = p : 0;
     return (p);
   }
 
   Node  *RightLeftRotation(Node *c, Node *p, Node *gP)
   {
+    Node *cc = c->right;
     gP->right = c;
     p->parent = c;
-    p->left = this->_nodeEnd;
+    p->left = cc;
     c->parent = gP;
     c->right = p;
+    (cc != this->_nodeEnd) ? cc->parent = p : 0;
     return (p);
+    /*
+    Node *cc = c->right;
+
+              pp->right = c;
+              p->parent = c;
+              p->left = this->_nodeEnd;
+              p->right = cc;
+              c->parent = pp;
+              c->right = p;
+              (cc != this->_nodeEnd) ? cc->parent = p : 0;
+              p = pp->right;
+              c = p->right;*/
   }
 
 
 
 ///////////////////////////////////////////////////////////deletion in red_black_tree //////////////////
 
-bool  erase(const value_type &x)
-{
+  bool  erase(const value_type &x)
+  {
     Node *node = this->_nodeRoot;
-
+  //  checker();
     if (node == this->_nodeEnd)
       return (0);
-
-    if (this->_capacity == 1 && this->_nodeRoot->data.first == x.first)
-    {
-      destroy_last_node(node);
-      this->_capacity -= 1;
-      this->_nodeRoot = this->_nodeEnd;
-      return 1;
-    }
-    
     while (node != this->_nodeEnd)
     {
-      if (node->data.first == x.first)
-      {
-        erase2(node);
+      if (x.first == node->data.first)
+      {   
+        erase_element(node);
         this->_capacity -= 1;
         this->_nodeEnd->left = this->_nodeRoot;
-        return  1;
+        
+        return (1);
       }
       if (this->_cmp(x, node->data))
         node = node->left;
       else
         node = node->right;
     }
-    this->_nodeEnd->left = this->_nodeRoot;
-   
-    return  0;
-}
-
-void  erase2(Node *node)
-{
-  // premier cas si le dernier noeud a effacer est rouge
-  // 1 regarder quel est le plus petit noeud en partant sur la droite;
-
-  Node  *tmp = node;
-  Node  *small = find_smallest_node_subtree_right(node);
-  Node  *last = find_last_elem_subtree_right(small);
-
-  //std::cout << tmp->data.first << std::endl;
-  //std::cout << small->data.first << std::endl;
-  //std::cout << last->data.first << std::endl;
-
-  
-  if (last->color == RED)
-  {
-    if (last == small && last == tmp && small == tmp)
-    {
-      destroy_last_node(node);
-      return ;
-    }
-    if (tmp != last && tmp != small && small == last)
-    {
-      last = swap_internal_node_second(tmp, small);
-      destroy_last_node(last);
-      return ;
-    }
-    if (tmp != last && tmp != small && small != last)
-    {
-      small = swap_internal_node_second(tmp, small);
-      last = swap_internal_node_second(small, last);
-      destroy_last_node(last);
-     
-      return ;
-    }
+    return (0);
   }
-  if (last->color == BLACK)
-  {
-    if (tmp != last && tmp != small && small == last)
-      last = swap_internal_node_second(tmp, last);
-    db_black_problem(last, 0);
-    return ;
-  }
-}
 
-void  swap(RedBlackTree &lala)
-{
-  Node *tmp_root = this->_nodeRoot;
-  Node *tmp_end = this->_nodeEnd;
-  size_type tmp_c = this->_capacity;
-  
-
-  this->_nodeRoot = lala._nodeRoot;
-  this->_nodeEnd = lala._nodeEnd;
-  this->_capacity = lala._capacity;
-  
-  lala._nodeRoot = tmp_root;
-  lala._nodeEnd = tmp_end;
-  lala._capacity = tmp_c;
-}
-
-void  db_black_problem(Node *dbp, int x)
-{
-  if (dbp == this->_nodeRoot)
-    return ;
-  Node  *p = dbp->parent;
-  Node  *cibling = (dbp->parent->left == dbp) ? dbp->parent->right : dbp->parent->left;
-  if (p->color == RED && cibling->color == BLACK && cibling->left->color == BLACK && cibling->right->color == BLACK)
+  void  erase_element(Node *node)
   {
-    if (x == 0)
-      destroy_last_node(dbp);
-    p->color = BLACK;
-    cibling->color = RED;
-    return ;
-  }
-  if (p->color == BLACK && cibling->color == BLACK && cibling->left->color == BLACK && cibling->right->color == BLACK)
-  {
-    if (x == 0)
-      destroy_last_node(dbp);
-    cibling->color = RED;
-    db_black_problem(p, x + 1);
-    return ;
-  }
-  if (p->color == BLACK && cibling->color == RED)
-  {
-    
-    if (p->right == cibling)
+    Node  *last = find_last(node);
+    Node  *small = find_small(node);
+    // std::cout << last->data.first << std::endl;
+    // std::cout << small->data.first << std::endl;
+    // std::cout << node->data.first << std::endl;
+    if (last->color == RED)
     {
-      Node *cc = cibling->left;
-      //destroy_last_node(last);
-      p->color = RED;
-      cibling->color = BLACK;
-      cibling->parent = p->parent;
-      if (p != this->_nodeRoot)
-        (cibling->parent->left == p) ? cibling->parent->left = cibling : cibling->parent->right = cibling;
-      else
-        this->_nodeRoot = cibling;
-      p->right = cc;
-      cibling->left = p;
-      cc->parent = p;
-      p->parent = cibling;
-      /*
-      p->right = cc;
-      cc->parent = p;
-      cibling->parent = p->parent;
-      cibling->left = p;
-      p->parent = cibling;
-      (cibling->parent->left == p) ? cibling->parent->left = cibling : cibling->parent->right = cibling;*/
-      db_black_problem(p->left , x);
-      
-      return ;
-    }
-
-    if (p->left == cibling)
-    {
-       
-      Node *cc = cibling->right;
-      //destroy_last_node(last);
-      cibling->color = BLACK;
-      p->color = RED;
-      p->left = cc;
-      cc->parent = p;
-      cibling->parent = p->parent;
-      cibling->right = p;
-      p->parent = cibling;
-      (cibling->parent->right == p) ? cibling->parent->right = cibling : cibling->parent->left = cibling;
-      db_black_problem(p->right , x);
-      return ;
-    }
-  
-  }
- 
-  if ((cibling->color == BLACK && cibling->right->color == BLACK && cibling->left->color == RED) ||
-      (cibling->color == BLACK && cibling->right->color == RED && cibling->left->color == BLACK))
-   {
-    Node *red = (cibling->right->color == RED) ? cibling->right : cibling->left;
-    Node *black = (cibling->right->color == BLACK) ? cibling->right : cibling->left;
-    if ((this->_cmp(p->data, dbp->data) && cibling->right->color == RED) ||
-        (this->_cmp(dbp->data, p->data) && cibling->left->color == RED))
-    {
-      red->color = BLACK;
-      cibling->color = RED;
-      red->parent = p;
-      (p->left == cibling) ? p->left = red : p->right = red;
-      if (this->_cmp(red->data, cibling->data))
+      if (node != last && node != small && small == last)
+        last = transfert(node, small);
+      else if (node != last && node != small && small != last)
       {
-        Node *cc = red->right;
-        red->right = cibling;
-        cibling->parent = red;
-        cibling->left = cc;
-        cc->parent = cibling;
-        db_black_problem(dbp, x);
-        return ;
+        small = transfert(node, small);
+        last = transfert(small, last);
       }
-      if (this->_cmp(cibling->data, red->data))
-      {
-        Node *cc = red->left;
-        red->left = cibling;
-        cibling->parent = red;
-        cibling->right = cc;
-        cc->parent = cibling;
-        db_black_problem(dbp, x);
-        return ;
-      }
+      destroy_last_node(last);
     }
-    if ((this->_cmp(p->data, dbp->data) && cibling->left->color == RED) ||
-        (this->_cmp(dbp->data, p->data) && cibling->right->color == RED))
+    else
     {
-      if (p->color == RED)
+      if (node != last && node != small && small == last)
+        last = transfert(node, last);
+      black_black_conflict(last, 0);
+    }
+  }
+
+  void  black_black_conflict(Node *dbp, int tr) // le parrent de l'element qui vient d'etre suprimmer;
+  {
+    bool  double_black = 1;
+    while (double_black)
+    {
+      Node  *p = dbp->parent;
+      Node  *cibling = NULL;
+
+      if (p != this->_nodeEnd)
+        cibling = (p->left == dbp) ? p->right : p->left;
+
+      if (dbp == this->_nodeRoot)
       {
-        p->color = BLACK;
+        if (tr == 0) destroy_last_node(dbp);
+        if (tr == 0) this->_nodeRoot = this->_nodeEnd;
+        if (tr == 0) this->_nodeEnd->left = this->_nodeRoot;
+        double_black = 0;
+      }
+      else if(cibling != NULL && cibling->color == BLACK && cibling->left->color == BLACK && cibling->right->color == BLACK)
+      {
+        if (tr == 0) destroy_last_node(dbp);
         cibling->color = RED;
+        if (p->color == RED)  
+        {
+          double_black = 0;
+          p->color = BLACK;
+        }
+        else
+          dbp = p;
       }
-      (p == this->_nodeRoot) ? cibling->parent = this->_nodeEnd : cibling->parent = p->parent;
-      (p == this->_nodeRoot) ? this->_nodeRoot = cibling : 0;
-      if (p->parent != this->_nodeEnd)
-        (p->parent->left == p) ? p->parent->left = cibling : p->parent->right = cibling;
-      // pas sur du tout pour cela on verra //
-      p->parent = cibling;
-      
-      if (this->_cmp(p->data, dbp->data))
+      else if (cibling != NULL && cibling->color == RED)
       {
-        cibling->right = p;
-        p->left = black;
-        black->parent = p;
-        red->color = BLACK;
-        if (x == 0)
-          destroy_last_node(dbp);
-        return ;
+        cibling->color = p->color;
+        p->color = RED;
+        //rotation in dbp direction
+        if (this->_cmp(dbp->data, p->data))
+        {
+          Node *cc = cibling->left;
+          cibling->parent = p->parent;
+          if(p->parent != this->_nodeEnd)
+            (p->parent->left == p) ? p->parent->left = cibling : p->parent->right = cibling;
+          cibling->left = p;
+          p->parent = cibling;
+          p->right = cc;
+          if (cc != this->_nodeEnd)
+            cc->parent = p;
+          if (cibling->parent == this->_nodeEnd) this->_nodeRoot = cibling;
+          if (cibling->parent == this->_nodeEnd) this->_nodeEnd->left = this->_nodeRoot;
+          if (tr == 0) tr = -1 ;
+        }
+        else if (this->_cmp(p->data, dbp->data))
+        {
+          Node *cc = cibling->right;
+          cibling->parent = p->parent;
+          if(p->parent != this->_nodeEnd)
+            (p->parent->left == p) ? p->parent->left = cibling : p->parent->right = cibling;
+          cibling->right = p;
+          p->parent = cibling;
+          p->left = cc;
+          if (cc != this->_nodeEnd)
+            cc->parent = p;
+          if (cibling->parent == this->_nodeEnd) this->_nodeRoot = cibling;
+          if (cibling->parent == this->_nodeEnd) this->_nodeEnd->left = this->_nodeRoot;
+          if (tr == 0) tr = -1 ;
+        }
       }
-      else
+      else if (cibling != NULL && cibling->color == BLACK && (cibling->left->color == RED || cibling->right->color == RED))
       {
-        cibling->left = p;
-        p->right = black;
-        black->parent = p;
-        red->color = BLACK;
-        if (x == 0)
-          destroy_last_node(dbp);
-        return ;
-      }
-    }
-   }
-    if (cibling->color == BLACK && cibling->left->color == RED && cibling->right->color == RED && dbp->color == BLACK && dbp->right == this->_nodeEnd && dbp->left == this->_nodeEnd)
-    {
-      if (this->_cmp(dbp->data, cibling->data))
-      {
-        Node *cc = cibling->left;
-        destroy_last_node(dbp);
-        p->parent = cibling;
-        p->right = cc;
-        p->left = this->_nodeEnd;
-        cc->parent = p;
-        cibling->left = p;
-        cibling->right->color = BLACK;
-        this->_nodeRoot = cibling;
-        return ;
-      }
-      if (this->_cmp(cibling->data , dbp->data) && p->color == BLACK)
-      {
-        Node *cc = cibling->right;
-        destroy_last_node(dbp);
-        p->parent = cibling;
-        p->left = cc;
-        p->right = this->_nodeEnd;
-        cc->parent = p;
-        cibling->right = p;
-        cibling->left->color = BLACK;
-        this->_nodeRoot = cibling;
-        cc->parent = p;
-        return ;
-      }
-      if (this->_cmp(cibling->data , dbp->data) && p->color == RED)
-      {
+        Node *far = find_far(cibling);
+        Node *near = find_near(cibling);
+        if (far->color == BLACK && near->color == RED)
+        {
+          near->color = BLACK;
+          cibling->color = RED;
+          if (cibling->parent->right == cibling)
+          {
+            Node  *child = cibling->left;
+            Node  *cc = child->right;
+            Node  *pa = cibling->parent;
+
+            cibling->parent = child;
+            cibling->left = cc;
+            pa->right = child;
+            child->parent = pa;
+            child->right = cibling;
+            if (cc != this->_nodeEnd) cc->parent = cibling;
+          }
+          else
+          {
+            Node  *child = cibling->right;
+            Node  *cc = child->left;
+            Node  *pa = cibling->parent;
+
+            cibling->parent = child;
+            cibling->right = cc;
+            pa->left = child;
+            child->parent = pa;
+            child->left = cibling;
+            if (cc != this->_nodeEnd) cc->parent = cibling;
+          }
+          cibling = (dbp->parent->left == dbp) ? dbp->parent->right : dbp->parent->left;
+          far = find_far(cibling);
+          near = find_near(cibling);
+        }
+        if (far->color == RED)
+        if (far->color == RED)
+        {
+          if (tr == 0) destroy_last_node(dbp);
+          bool  tmp_color = p->color;
+          p->color = cibling->color;
+          cibling->color = tmp_color;
+          if (p->right == cibling)
+          {
+            Node *app = p->parent;
+            Node *cc = cibling->left;
+            if (app != this->_nodeEnd)
+              (app->right == p) ? app->right = cibling : app->left = cibling;
+            cibling->parent = app;
+            cibling->left = p;
+            p->parent = cibling;
+            p->right = cc;
+            if (cc != this->_nodeEnd) cc->parent = p;
+            if (app == this->_nodeEnd) this->_nodeRoot = cibling;
+            if (app == this->_nodeEnd) this->_nodeEnd->left = this->_nodeRoot;
+            far->color = BLACK;
+            double_black = 0;
+          }
+          else
+          {
+            Node *app = p->parent;
+            Node *cc = cibling->right;
+            if (app != this->_nodeEnd)
+              (app->left == p) ? app->left = cibling : app->right = cibling;
+            cibling->parent = app;
+            cibling->right = p;
+            p->parent = cibling;
+            p->left = cc;
+            if (cc != this->_nodeEnd) cc->parent = p;
+            if (app == this->_nodeEnd) this->_nodeRoot = cibling;
+            if (app == this->_nodeEnd) this->_nodeEnd->left = this->_nodeRoot;
+            far->color = BLACK;
+            double_black = 0;
+          }
+          
+        }
+        /*
+        std::cout << " far " << far->data.first << std::endl;
+        std::cout << "dbp " << dbp->data.first << std::endl;
+        std::cout << "parent " << p->data.first << std::endl;
+        std::cout << "cibling "  << cibling->data.first << std::endl;
+        displayAllNode(this->_nodeRoot, 0);*/
+        //if (tr == 0) destroy_last_node(dbp);
+        //displayAllNode(this->_nodeRoot, 0);
         
-        destroy_last_node(dbp);
-        Node *cc = cibling->right;
-        cibling->parent = p->parent;
-        (cibling->parent->left == p) ? cibling->parent->left = cibling : cibling->parent->right = cibling;
-        cibling->right = p;
-        p->parent = cibling;
-        p->left = cc;
-        cc->parent = p;
-        cibling->color = RED;
-        cibling->left->color = BLACK;
-        cibling->right->color = BLACK;
-        return ;
       }
+      tr++;
     }
-    
-}
+  }
+  Node  *find_far(Node *cibling)
+  {
+    return (cibling->parent->right == cibling) ? cibling->right : cibling->left;
+  }
 
+  Node  *find_near(Node *cibling)
+  {
+    return (cibling->parent->right == cibling) ? cibling->left : cibling->right;
+  }
+  Node  *find_last(Node *node)
+  {
+    if (node->right != this->_nodeEnd)
+      node = node->right;
+    while (node->left != this->_nodeEnd)
+      node = node->left;
+    if (node->right != this->_nodeEnd)
+      node = node->right;
+    return (node);
+  }
 
-void  destroy_last_node(Node *node)
-{
-  if (node->parent->left == node)
-    node->parent->left = this->_nodeEnd;
-  else
-    node->parent->right = this->_nodeEnd;
-  this->_alloc.destroy(node);
-  this->_alloc.deallocate(node, 1);
-}
+  Node  *find_small(Node *node)
+  {
+    if (node->right != this->_nodeEnd)
+      node = node->right;
+    while (node->left != this->_nodeEnd)
+      node = node->left;
+    return (node);
+  }
 
-Node  *swap_internal_node_second(Node *node1, Node *node2)
+  void  destroy_last_node(Node *node)
+  {
+    (node->parent->left == node) ? node->parent->left = this->_nodeEnd : node->parent->right = this->_nodeEnd;
+    this->_alloc.destroy(node);
+    this->_alloc.deallocate(node, 1);
+  }
+
+  Node  *transfert(Node *node1, Node *node2)
 {
   Node *tmp = node1;
   Node  *r  = node2->right;
@@ -743,22 +889,404 @@ Node  *swap_internal_node_second(Node *node1, Node *node2)
   return (tmp);
 }
 
-Node *find_smallest_node_subtree_right(Node *node)
-{
-  if (node->right != this->_nodeEnd)
-    node = node->right;
-  while (node->left != this->_nodeEnd)
-    node = node->left;
-  return (node);
-}
+// bool  erase(const value_type &x)
+// {
+//     Node *node = this->_nodeRoot;
 
-Node *find_last_elem_subtree_right(Node *node)
-{
-  if (node->right == this->_nodeEnd)
-    return (node);
-  else
-    return (node->right);
-}
+//     if (node == this->_nodeEnd)
+//       return (0);
+
+//     if (this->_capacity == 1 && this->_nodeRoot->data.first == x.first)
+//     {
+//       destroy_last_node(node);
+//       this->_capacity -= 1;
+//       this->_nodeRoot = this->_nodeEnd;
+//       return 1;
+//     }
+    
+//     while (node != this->_nodeEnd)
+//     {
+//       if (node->data.first == x.first)
+//       {
+//         erase2(node);
+//         this->_capacity -= 1;
+//         this->_nodeEnd->left = this->_nodeRoot;
+//         return  1;
+//       }
+//       if (this->_cmp(x, node->data))
+//         node = node->left;
+//       else
+//         node = node->right;
+//     }
+//     this->_nodeEnd->left = this->_nodeRoot;
+   
+//     return  0;
+// }
+
+// void  erase2(Node *node)
+// {
+//   // premier cas si le dernier noeud a effacer est rouge
+//   // 1 regarder quel est le plus petit noeud en partant sur la droite;
+
+//   Node  *tmp = node;
+//   Node  *small = find_smallest_node_subtree_right(node);
+//   Node  *last = find_last_elem_subtree_right(small);
+
+//   //std::cout << tmp->data.first << std::endl;
+//   //std::cout << small->data.first << std::endl;
+//   //std::cout << last->data.first << std::endl;
+
+  
+//   if (last->color == RED)
+//   {
+//     if (last == small && last == tmp && small == tmp)
+//     {
+//       destroy_last_node(node);
+//       return ;
+//     }
+//     if (tmp != last && tmp != small && small == last)
+//     {
+//       last = swap_internal_node_second(tmp, small);
+//       destroy_last_node(last);
+//       return ;
+//     }
+//     if (tmp != last && tmp != small && small != last)
+//     {
+//       small = swap_internal_node_second(tmp, small);
+//       last = swap_internal_node_second(small, last);
+//       destroy_last_node(last);
+     
+//       return ;
+//     }
+//   }
+//   if (last->color == BLACK)
+//   {
+//     if (tmp != last && tmp != small && small == last)
+//       last = swap_internal_node_second(tmp, last);
+//     //std::cout << last->data.first << " raph" << std::endl;
+//     db_black_problem(last, 0);
+//     return ;
+//   }
+// }
+
+
+
+// void  db_black_problem(Node *dbp, int x)
+// {
+//   if (dbp == this->_nodeRoot)
+//     return ;
+//   //std::cout << dbp->data.first << std::endl;
+//   //std::cout << dbp->left << std::endl;
+//   //std::cout << dbp->right << std::endl;
+//   //std::cout << _nodeEnd << std::endl;
+//   //std::cout << dbp->parent->data.first << " --------"<<std::endl;
+//   Node  *p = dbp->parent;
+//   Node  *cibling = (dbp->parent->left == dbp) ? dbp->parent->right : dbp->parent->left;
+//   //std::cout << cibling->data.first << std::endl;
+//   if (p->color == RED && cibling->color == BLACK && cibling->left->color == BLACK && cibling->right->color == BLACK)
+//   {
+//     if (x == 0)
+//       destroy_last_node(dbp);
+//     p->color = BLACK;
+//     cibling->color = RED;
+//     return ;
+//   }
+//   if (p->color == BLACK && cibling->color == BLACK && cibling->left->color == BLACK && cibling->right->color == BLACK)
+//   {
+//     if (x == 0)
+//       destroy_last_node(dbp);
+//     cibling->color = RED;
+//     //std::cout << "limite" << std::endl;
+//     db_black_problem(p, x + 1);
+//     return ;
+//   }
+//   if (p->color == BLACK && cibling->color == RED)
+//   {
+
+//     if (p->right == cibling)
+//     {
+//       Node *cc = cibling->left;
+//       //destroy_last_node(last);
+//       p->color = RED;
+//       cibling->color = BLACK;
+//       cibling->parent = p->parent;
+//       if (p != this->_nodeRoot)
+//         (cibling->parent->left == p) ? cibling->parent->left = cibling : cibling->parent->right = cibling;
+//       else
+//         this->_nodeRoot = cibling;
+//       p->right = cc;
+//       cibling->left = p;
+//       cc->parent = p;
+//       p->parent = cibling;
+//       /*
+//       p->right = cc;
+//       cc->parent = p;
+//       cibling->parent = p->parent;
+//       cibling->left = p;
+//       p->parent = cibling;
+//       (cibling->parent->left == p) ? cibling->parent->left = cibling : cibling->parent->right = cibling;*/
+//       db_black_problem(p->left , x);
+      
+//       return ;
+//     }
+
+//     if (p->left == cibling)
+//     {
+       
+//       Node *cc = cibling->right;
+//       //destroy_last_node(last);
+//       cibling->color = BLACK;
+//       p->color = RED;
+//       p->left = cc;
+//       cc->parent = p;
+//       cibling->parent = p->parent;
+//       cibling->right = p;
+//       p->parent = cibling;
+//       (cibling->parent->right == p) ? cibling->parent->right = cibling : cibling->parent->left = cibling;
+//       db_black_problem(p->right , x);
+//       return ;
+//     }
+  
+//   }
+  
+//   if ((cibling->color == BLACK && cibling->right->color == BLACK && cibling->left->color == RED) ||
+//       (cibling->color == BLACK && cibling->right->color == RED && cibling->left->color == BLACK))
+//    {
+      
+//     Node *red = (cibling->right->color == RED) ? cibling->right : cibling->left;
+//     Node *black = (cibling->right->color == BLACK) ? cibling->right : cibling->left;
+//     if ((this->_cmp(p->data, dbp->data) && cibling->right->color == RED) ||
+//         (this->_cmp(dbp->data, p->data) && cibling->left->color == RED))
+//     {
+//       red->color = BLACK;
+//       cibling->color = RED;
+//       red->parent = p;
+//       (p->left == cibling) ? p->left = red : p->right = red;
+//       if (this->_cmp(red->data, cibling->data))
+//       {
+//         Node *cc = red->right;
+//         red->right = cibling;
+//         cibling->parent = red;
+//         cibling->left = cc;
+//         cc->parent = cibling;
+//         //db_black_problem(dbp, x);
+//         return ;
+//       }
+//       if (this->_cmp(cibling->data, red->data))
+//       {
+//         Node *cc = red->left;
+//         red->left = cibling;
+//         cibling->parent = red;
+//         cibling->right = cc;
+//         cc->parent = cibling;
+//         db_black_problem(dbp, x);
+//         return ;
+//       }
+//     }
+//     if ((this->_cmp(p->data, dbp->data) && cibling->left->color == RED) ||
+//         (this->_cmp(dbp->data, p->data) && cibling->right->color == RED))
+//     {
+//       std::cout << "lala" <<std::endl;
+//       if (p->color == RED)
+//       {
+//         p->color = BLACK;
+//         cibling->color = RED;
+//       }
+//       (p == this->_nodeRoot) ? cibling->parent = this->_nodeEnd : cibling->parent = p->parent;
+//       (p == this->_nodeRoot) ? this->_nodeRoot = cibling : 0;
+//       if (p->parent != this->_nodeEnd)
+//         (p->parent->left == p) ? p->parent->left = cibling : p->parent->right = cibling;
+//       // pas sur du tout pour cela on verra //
+//       p->parent = cibling;
+      
+//       if (this->_cmp(p->data, dbp->data))
+//       {
+//         cibling->right = p;
+//         p->left = black;
+//         black->parent = p;
+//         red->color = BLACK;
+//         if (x == 0)
+//           destroy_last_node(dbp);
+//         return ;
+//       }
+//       else
+//       {
+//         cibling->left = p;
+//         p->right = black;
+//         black->parent = p;
+//         red->color = BLACK;
+//         if (x == 0)
+//           destroy_last_node(dbp);
+//         return ;
+//       }
+//     }
+//    }
+//   if (cibling->color == BLACK && cibling->left->color == RED && cibling->right->color == RED && dbp->color == BLACK && dbp->right == this->_nodeEnd && dbp->left == this->_nodeEnd)
+//     {
+      
+//       if (this->_cmp(dbp->data, cibling->data))
+//       {
+//         (this->_nodeRoot == p) ? this->_nodeRoot = cibling : 0;
+//         Node *app = p->parent;
+//         Node *cc = cibling->left;
+//         if (x == 0)
+//           destroy_last_node(dbp);
+//         p->parent = cibling;
+//         p->right = cc;
+//         p->left = this->_nodeEnd;
+//         cc->parent = p;
+//         cibling->left = p;
+//         cibling->right->color = BLACK;
+//         cibling->parent = app;
+//         if (app != this->_nodeEnd)
+//           (app->left == p) ? app->left = cibling : app->right = cibling;
+//         return ;
+//       }
+//       if (this->_cmp(cibling->data , dbp->data) && p->color == BLACK)
+//       {
+//         (this->_nodeRoot == p) ? this->_nodeRoot = cibling : 0;
+//         Node *app = p->parent;
+//         Node *cc = cibling->right;
+//         if (x == 0)
+//           destroy_last_node(dbp);
+//         p->parent = cibling;
+//         p->left = cc;
+//         p->right = this->_nodeEnd;
+//         cc->parent = p;
+//         cibling->right = p;
+//         cibling->left->color = BLACK;
+//         cibling->parent = app;
+//         if (app != this->_nodeEnd)
+//           (app->left == p) ? app->left = cibling : app->right = cibling;
+//         return ;
+//       }
+//       if (this->_cmp(cibling->data , dbp->data) && p->color == RED)
+//       {
+//         if (x == 0)
+//           destroy_last_node(dbp);
+//         Node *cc = cibling->right;
+//         cibling->parent = p->parent;
+//         (cibling->parent->left == p) ? cibling->parent->left = cibling : cibling->parent->right = cibling;
+//         cibling->right = p;
+//         p->parent = cibling;
+//         p->left = cc;
+//         cc->parent = p;
+//         cibling->color = RED;
+//         cibling->left->color = BLACK;
+//         cibling->right->color = BLACK;
+//         return ;
+//       }
+//     }
+//     if (cibling->color == BLACK && cibling->left->color == RED && cibling->right->color == RED && dbp->color == BLACK)
+//     {
+//       if (this->_cmp(dbp->data, cibling->data))
+//       {
+//         (this->_nodeRoot == p) ? this->_nodeRoot = cibling : 0;
+//         Node *app = p->parent;
+//         Node *cc = cibling->left;
+//         if (x == 0)
+//           destroy_last_node(dbp);
+//         p->parent = cibling;
+//         p->right = cc;
+//         cc->parent = p;
+//         cibling->left = p;
+//         cibling->parent = app;
+//         cibling->right->color = BLACK;
+//         if (app != this->_nodeEnd)
+//           (app->left == p) ? app->left = cibling : app->right = cibling;
+//         return ;
+//       }
+//       if (this->_cmp(cibling->data, dbp->data))
+//       {
+//         (this->_nodeRoot == p) ? this->_nodeRoot = cibling : 0;
+//         Node *app = p->parent;
+//         Node *cc = cibling->right;
+//         if (x == 0)
+//           destroy_last_node(dbp);
+//         p->parent = cibling;
+//         p->left = cc;
+//         cc->parent = p;
+//         cibling->right = p;
+//         cibling->parent = app;
+//         cibling->left->color = BLACK;
+//         if (app != this->_nodeEnd)
+//           (app->left == p) ? app->left = cibling : app->right = cibling;
+//         return ;
+//       }
+//     }
+  
+// }
+
+
+// void  destroy_last_node(Node *node)
+// {
+//   if (node->parent->left == node)
+//     node->parent->left = this->_nodeEnd;
+//   else
+//     node->parent->right = this->_nodeEnd;
+//   this->_alloc.destroy(node);
+//   this->_alloc.deallocate(node, 1);
+// }
+
+// Node  *swap_internal_node_second(Node *node1, Node *node2)
+// {
+//   Node *tmp = node1;
+//   Node  *r  = node2->right;
+//   Node  *l  = node2->left;
+//   Node  *p  = node2->parent;
+//   bool  color = node2->color;
+//   bool  rl;                                      ///// right = 1 left = 0;
+
+//   rl = (node2->parent->right == node2) ? 1 : 0;
+//   node1 = node2;
+  
+//   node1->color = tmp->color;
+//   node1->parent = tmp->parent;
+//   if (node1->parent != this->_nodeEnd)
+//   {
+//     if (node1->parent->left == tmp)
+//       node1->parent->left = node1;
+//     else
+//       node1->parent->right = node1;
+//   }
+//   node1->right = (node1 != tmp->right) ? tmp->right : tmp;
+//   node1->left = (node1 != tmp->left) ? tmp->left : tmp;
+
+//   (node1->right != this->_nodeEnd) ? node1->right->parent = node1 : 0;
+//   (node1->left != this->_nodeEnd) ? node1->left->parent = node1 : 0;
+
+//   if (tmp == this->_nodeRoot)
+//     this->_nodeRoot = node1;
+
+//   tmp->parent = p;
+//   if (tmp == p)
+//     tmp->parent = node1;
+//   (rl == 1) ? tmp->parent->right = tmp : tmp->parent->left = tmp;
+
+//   tmp->right = r;
+//   (r != this->_nodeEnd) ? r->parent = tmp : 0;
+//   tmp->left = l;
+//   (l != this->_nodeEnd) ? l->parent = tmp : 0;
+//   tmp->color = color;
+//   return (tmp);
+// }
+
+// Node *find_smallest_node_subtree_right(Node *node)
+// {
+//   if (node->right != this->_nodeEnd)
+//     node = node->right;
+//   while (node->left != this->_nodeEnd)
+//     node = node->left;
+//   return (node);
+// }
+
+// Node *find_last_elem_subtree_right(Node *node)
+// {
+//   if (node->right == this->_nodeEnd)
+//     return (node);
+//   else
+//     return (node->right);
+// }
 
 ///////////////////////////////////////////////////
 ///////////////////case/////////////////////////
@@ -874,6 +1402,58 @@ Node *find_last_elem_subtree_right(Node *node)
     return (p);
   }
 */
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+void  checker(void)
+{
+  Node *node = this->_nodeRoot;
+  int i = 0;
+  int lala = 0;
+  while (node != this->_nodeEnd)
+  {
+    i++;
+    node = node->left;
+  }
+  parcour1(this->_nodeRoot, i, &lala);
+  if (lala > 0)
+  {
+    std::cout << "\e[0;34m" << "error l'arbre est desequilibrer" << "\e[0m" << std::endl;
+    displayAllNode(this->_nodeRoot, 0);
+  }
+}
+
+
+void  parcour1(Node *node, int nbr, int *i)
+{
+  (void)i;
+  if (node->left != NULL && node->left != this->_nodeEnd)
+    parcour1(node->left, nbr, i);
+  if (node->left != NULL && node->right != NULL && node->left == this->_nodeEnd && node->right == this->_nodeEnd)
+    {
+      if (parcour2(node, nbr) == 0) 
+        *i += 1;
+    }
+  if (node->right != NULL && node->right != this->_nodeEnd)
+    parcour1(node->right, nbr, i);
+}
+
+bool parcour2(Node *node, int nbr)
+{
+  int i = 0;
+  while (node != this->_nodeEnd)
+  {
+    if (node->color == BLACK)
+      i++;
+    node = node->parent;
+  }
+  return  (i != nbr) ? 0 : 1;
+}
+*/
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   void  displayAllNode(Node *node, int n)
   {
     if (node->left != NULL && node->left != this->_nodeEnd)
@@ -884,9 +1464,9 @@ Node *find_last_elem_subtree_right(Node *node)
       std::cout << spaces << "clef = " << node->data.first << std::endl;
       std::cout << spaces << "value = " << node->data.second << std::endl;
       std::cout << spaces << "mon noeud " << node << std::endl;
-      std::cout << spaces << "parent = "<< node->parent << std::endl;
-      std::cout << spaces << "left = "<< node->left << std::endl;
-      std::cout << spaces << "right = "<< node->right << std::endl;
+      std::cout << spaces << "parent = "<< node->parent->data.first << std::endl;
+      std::cout << spaces << "left = "<< node->left->data.first << std::endl;
+      std::cout << spaces << "right = "<< node->right->data.first << std::endl;
       if (node->color == RED)
         std::cout << spaces << "\e[0;31m" << "color = "<< node->color << "\e[0m"  << std::endl;
       else
@@ -896,7 +1476,6 @@ Node *find_last_elem_subtree_right(Node *node)
     if (node->right != NULL && node->right != this->_nodeEnd)
       displayAllNode(node->right, n + 1);
   }
-
 
    void change_color(Node *node, const value_type &x, bool color)
    {

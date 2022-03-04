@@ -282,12 +282,18 @@ namespace ft
         }
 
         void    display_element(void)
-        {
+           {
             this->_rb.displayAllNode(this->_rb.getRoot(), 0);
         }
+
         void    change_color(const key_type& x, bool color)
         {
             this->_rb.change_color(this->_rb.getRoot(), ft::make_pair(x, mapped_type()), color);
+        }
+
+        void    check(void)
+        {
+            this->_rb.checker();
         }
 
         friend bool operator==(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y)
