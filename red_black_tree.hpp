@@ -116,8 +116,6 @@ class RedBlackTree
     }
   }
 
-
-
   // getter
 
   size_type size(void) const {return this->_capacity;}
@@ -184,160 +182,155 @@ void  swap(RedBlackTree &lala)
     {
       this->_nodeRoot = lala;
       this->_nodeEnd->left = this->_nodeRoot;
-    //  checker();
     }
     else
     {
       lala->color = RED;
-      insert2(x, lala);
+      insert_elem(lala);
       this->_nodeEnd->left = this->_nodeRoot;
-      //checker();
     }
   }
-/*
-  void  insert2(const value_type &x, Node *node)
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////nouvel tentative d'insertion////////////////////////////////////
+
+
+
+  void  insert_elem(Node *node)
   {
-    Node *exp = this->_nodeRoot; // exp pour explore
-    while (exp != this->_nodeEnd)
+    Node  *pr = this->_nodeRoot;
+    while (pr != this->_nodeEnd)
     {
-      if (this->_cmp(x, exp->data))
+      if (this->_cmp(node->data, pr->data))
       {
-        if (exp->left != this->_nodeEnd)
-          exp = exp->left;
-        else
+        if (pr->left == this->_nodeEnd)
         {
-          exp->left = node;
-          node->parent = exp;
-          if (exp->color == BLACK)
-            return ;
-          else
-          {
-            red_conflic(exp->left);
-            return ;
-          }
+          pr->left = node;
+          node->parent = pr;
+          if (pr->color == RED) red_conflict(node);
+          return ;
         }
+        else
+          pr = pr->left;
       }
-      else
+      else if (this->_cmp(pr->data, node->data))
       {
-        if (exp->right != this->_nodeEnd)
-          exp = exp->right;
-        else
+        if (pr->right == this->_nodeEnd)
         {
-          exp->right = node;
-          node->parent = exp;
-          if (exp->color == BLACK)
-            return ;
-          else
-          {
-            red_conflic(exp->right);
-            return ;
-          }
+          pr->right = node;
+          node->parent = pr;
+          if (pr->color == RED) red_conflict(node);
+          return ;
         }
+        pr = pr->right;
       }
     }
   }
 
-  void  red_conflic(Node *c)
+
+
+
+  void  red_conflict(Node *c)
   {
-    int i = 1;
-    Node *p = c->parent;
-    Node *pp = p->parent;
-    Node *cibling = (pp->left == p) ? pp->right : pp->left;
-    while (i > 0)
+    bool  red_problem = 1;
+    while (red_problem)
     {
-      if (cibling->color == RED && p->color == RED && c->color == RED)
+      Node *p = NULL; Node *pp = NULL; Node *pc = NULL;
+      p = c->parent;
+      if (p != this->_nodeEnd) pp = p->parent;
+      if (pp != NULL && pp != this->_nodeEnd)
+        pc = (pp->right == p) ? pp->left : pp->right;
+
+      if((c->color == RED && p->color == BLACK) || c->color == BLACK)
+        red_problem = 0;
+      else if (c->color == RED && p->color == RED && pc->color == RED)
       {
-        cibling->color = BLACK;
         p->color = BLACK;
-        pp->color = (pp == this->_nodeRoot) ? BLACK : RED;
-        if (pp->color == BLACK)
-          i = 0;
-        else
-        {
-          c = pp;
-          p = c->parent;
-          if (p == this->_nodeRoot)
-            return;
-          pp = p->parent;
-          cibling = (pp->left == p) ? pp->right : pp->left;
-        }
+        pc->color = BLACK;
+        pp->color = (this->_nodeRoot == pp)? BLACK : RED;
+        c = pp;
       }
-      else if (cibling->color == BLACK && p->color == RED && c->color == RED)
+      else if (c->color == RED && p->color == RED && pc->color == BLACK)
       {
         if (pp->left == p)
         {
-          
-            if (p->right == c)                   // left right rotation;
-            {
-              Node *cc = c->left;
-
-              pp->left = c;
-              p->parent = c;
-              p->right = this->_nodeEnd;
-              p->left = cc;
-              c->parent = pp;
-              c->left = p;
-              (cc != this->_nodeEnd) ? cc->parent = p : 0;
-              p = pp->left;
-              c = p->left;
-            }
-            
-            Node *app = pp->parent;   // left left rotation
-            Node *cc = p->right;
-
-            p->right = pp;
-            if (pp == this->_nodeRoot)
-              this->_nodeRoot = p;
-            else
-              (app->right == pp) ? app->right = p : app->left = p;
-            pp->parent = p;
-            pp->left = cc;
-            cc->parent = pp;
-            p->color = BLACK;
-            pp->color = RED;
-            return ;
-            
+          if (p->right == c)
+          {
+            Node *cc = c->left;
+            pp->left = c;
+            p->parent = c;
+            p->right = cc;
+            c->parent = pp;
+            c->left = p;
+            if (cc != this->_nodeEnd) cc->parent = p;
+            p = c;
+            c = p->left;
+          }
+          Node *app = pp->parent;
+          Node *cc = p->right;
+          pp->parent = p;
+          pp->left = cc;
+          if (cc != this->_nodeEnd) cc->parent = pp;
+          p->parent = app;
+          p->right = pp;
+          if (app == this->_nodeEnd)
+            this->_nodeRoot = p;
+          else
+            (app->right == pp) ? app->right = p : app->left = p;
         }
         else
         {
-            if (p->left == c)                   // right left rotation;
-            {
-              Node *cc = c->right;
+          if (p->left == c)
+          {
+            Node *cc = c->right;
+            pp->right = c;
+            p->parent = c;
+            p->left = cc;
+            c->parent = pp;
+            c->right = p;
+            if (cc != this->_nodeEnd) cc->parent = p;
+            p = c;
+            c = p->right;
+          }
+          Node *app = pp->parent;
+          Node *cc = p->left;
+          pp->parent = p;
+          pp->right = cc;
+           if (cc != this->_nodeEnd) cc->parent = pp;
+          p->parent = app;
+          p->left = pp;
 
-              pp->right = c;
-              p->parent = c;
-              p->left = this->_nodeEnd;
-              p->right = cc;
-              c->parent = pp;
-              c->right = p;
-              (cc != this->_nodeEnd) ? cc->parent = p : 0;
-              p = pp->right;
-              c = p->right;
-            }
-
-            Node *app = pp->parent;   // right right rotation
-            Node *cc = p->left;
-
-            p->left = pp;
-            if (pp == this->_nodeRoot)
-              this->_nodeRoot = p;
-            else
-              (app->left == pp) ? app->left = p : app->right = p;
-            pp->parent = p;
-            pp->right = cc;
-            cc->parent = pp;
-            p->color = BLACK;
-            pp->color = RED;
-            return ;
+          if (app == this->_nodeEnd)
+            this->_nodeRoot = p;
+          else
+            (app->left == pp) ? app->left = p : app->right = p;
         }
+        pp->color = RED;
+        p->color = BLACK;
+        red_problem = 0;
       }
-      else if (p->color == BLACK)
-        i = 0;
     }
   }
 
-*/
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ////////////////////////////////////////////////////////////////////////////////////////// fin de la nouvelle tentative//////////////////////////////////////////////
 
   void  insert2(const value_type &x, Node *lala)
   {
@@ -605,7 +598,6 @@ void  swap(RedBlackTree &lala)
   bool  erase(const value_type &x)
   {
     Node *node = this->_nodeRoot;
-  //  checker();
     if (node == this->_nodeEnd)
       return (0);
     while (node != this->_nodeEnd)
@@ -615,7 +607,6 @@ void  swap(RedBlackTree &lala)
         erase_element(node);
         this->_capacity -= 1;
         this->_nodeEnd->left = this->_nodeRoot;
-        
         return (1);
       }
       if (this->_cmp(x, node->data))
@@ -687,7 +678,7 @@ void  swap(RedBlackTree &lala)
         cibling->color = p->color;
         p->color = RED;
         //rotation in dbp direction
-        if (this->_cmp(dbp->data, p->data))
+        if (p->left == dbp)//if (this->_cmp(dbp->data, p->data))
         {
           Node *cc = cibling->left;
           cibling->parent = p->parent;
@@ -702,7 +693,7 @@ void  swap(RedBlackTree &lala)
           if (cibling->parent == this->_nodeEnd) this->_nodeEnd->left = this->_nodeRoot;
           if (tr == 0) tr = -1 ;
         }
-        else if (this->_cmp(p->data, dbp->data))
+        else if (p->right == dbp)//else if (this->_cmp(p->data, dbp->data))
         {
           Node *cc = cibling->right;
           cibling->parent = p->parent;
@@ -757,7 +748,6 @@ void  swap(RedBlackTree &lala)
           near = find_near(cibling);
         }
         if (far->color == RED)
-        if (far->color == RED)
         {
           if (tr == 0) destroy_last_node(dbp);
           bool  tmp_color = p->color;
@@ -795,17 +785,7 @@ void  swap(RedBlackTree &lala)
             far->color = BLACK;
             double_black = 0;
           }
-          
         }
-        /*
-        std::cout << " far " << far->data.first << std::endl;
-        std::cout << "dbp " << dbp->data.first << std::endl;
-        std::cout << "parent " << p->data.first << std::endl;
-        std::cout << "cibling "  << cibling->data.first << std::endl;
-        displayAllNode(this->_nodeRoot, 0);*/
-        //if (tr == 0) destroy_last_node(dbp);
-        //displayAllNode(this->_nodeRoot, 0);
-        
       }
       tr++;
     }
@@ -1404,7 +1384,20 @@ void  swap(RedBlackTree &lala)
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
+
+void  checker2(Node *node)
+{
+  if (node != NULL && node->left != NULL && node != this->_nodeEnd && node->left != this->_nodeEnd)
+    checker2(node->left);
+  if (node != NULL && node->right != NULL && node != this->_nodeEnd && node->right != this->_nodeEnd)
+    checker2(node->right);
+  if (node != NULL && node->parent != NULL)
+  {
+    if (node->color == RED && node->parent->color == RED)
+      std::cout << "\e[0;31m" <<"red red problem" << "\e[0m" << std::endl;
+  }
+}
+
 void  checker(void)
 {
   Node *node = this->_nodeRoot;
@@ -1412,7 +1405,8 @@ void  checker(void)
   int lala = 0;
   while (node != this->_nodeEnd)
   {
-    i++;
+    if (node->color == BLACK)
+      i++;
     node = node->left;
   }
   parcour1(this->_nodeRoot, i, &lala);
@@ -1449,7 +1443,7 @@ bool parcour2(Node *node, int nbr)
   }
   return  (i != nbr) ? 0 : 1;
 }
-*/
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

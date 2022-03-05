@@ -1626,12 +1626,9 @@ int main (void)
 
 int main(void)
 {
-	ft::map<int,int> lala;
-	lala[10];
-	lala[5];
-	lala[20];
-	lala[0];
-
-
+	std::map<int,int> lala;
+	for (int i = 0; i < 10000000 ; i++)
+		lala[i];
+	//lala.display_element();
 	return 0;
 }
