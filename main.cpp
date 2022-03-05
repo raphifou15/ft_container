@@ -20,1615 +20,798 @@
 #define COLOR_GREEN  "\e[0;32m"
 #define COLOR_BLUE	"\e[0;34m"
 #define COLOR_END  "\e[0m"
-/*
-int main()
-{
-	{
-		std::vector<int>			test(3, 3);
-
-		std::cout << "self assignation test\n";
-		std::vector<std::vector<int> >	self_assign;
-		std::vector<std::vector<int> >	*ptr = &self_assign;
-		std::vector<std::vector<int> >	*ptr2 = &self_assign;
-
-		self_assign.assign(4, test);
-		*ptr = *ptr2;
-
-		std::cout << COLOR_GREEN << std::boolalpha << (*ptr == *ptr2) << COLOR_END << '\n' ;
-		//	self_assign = self_assign; //compiler doesn't like it!
-
-		std::cout << COLOR_BLUE << "test 2" << COLOR_END << std::endl;
-
-		std::vector<std::vector<int> > JOHN;
-		std::vector<std::vector<int> > BOB(5, test);
-		std::cout << "BOB(5, test(test, 5)) : \n";
-		for (size_t i = 0; i < BOB.size(); i++)
-		{
-			for (size_t j = 0; j < BOB[i].size(); j++)
-				std::cout << BOB[i][j] << ' ';
-			std::cout << '\n';
-		}
-		std::vector<std::vector<int> > MIKE(BOB);
-
-		// CTORs
-		std::cout << COLOR_BLUE << "test 3" << COLOR_END << std::endl;
-		std::cout << "\nCTORS\n";
-		std::cout << "Empty is empty ? " << std::boolalpha << JOHN.empty() << '\n';
-		std::cout << "BOB is empty? " << BOB.empty() << '\n';
-
-		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
-		std::cout << "Size of BOB " << BOB.size() << std::endl;
-		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
-		// RESIZE
-		std::cout << COLOR_BLUE << "test 4" << COLOR_END << std::endl;
-		size_t	bob_resize = 2;
-		std::cout << "\nRESIZE\n";
-		BOB.resize(bob_resize);
-		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
-		if (JOHN.capacity() >= JOHN.size())
-			std::cout << "Capacity of JOHN is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 53\n";
-		std::cout << "Size of BOB " << BOB.size() << std::endl;
-		if (BOB.capacity() >= bob_resize)
-			std::cout << "Capacity of BOB is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 58\n";
-		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
-		if (MIKE.capacity() >= MIKE.size())
-			std::cout << "Capacity of MIKE is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 63\n";
-
-		size_t	mike_resize = 9;
-		bob_resize = 0;
-	
-		BOB.resize(bob_resize);
-		std::cout << "BOB is empty now ? " << BOB.empty() << '\n';
-		MIKE.resize(mike_resize, test);
-		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
-		if (JOHN.capacity() >= JOHN.size())
-			std::cout << "Capacity of JOHN is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 86\n";
-		std::cout << "Size of BOB " << BOB.size() << std::endl;
-		if (BOB.capacity() >= bob_resize)
-			std::cout << "Capacity of BOB is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 91\n";
-		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
-		if (MIKE.capacity() >= mike_resize)
-			std::cout << "Capacity of MIKE is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 96\n";
-		for (size_t i = 0; i < MIKE.size(); i++)
-		{
-			for (size_t j = 0; j < MIKE[i].size(); j++)
-			{
-				std::cout << MIKE[i][j] << ' ';
-			}
-			std::cout << std::endl;
-		}
-		// RESERVE
-		std::cout << COLOR_BLUE << "test 5" << COLOR_END << std::endl;
-		std::cout << "\nRESERVE\n";
-
-		size_t	john_reserve = 0;
-		size_t	bob_reserve = 3;
-		size_t	mike_reserve = 4;
-
-		JOHN.reserve(john_reserve);
-		BOB.reserve(bob_reserve);
-		MIKE.reserve(mike_reserve);
-		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
-		if (JOHN.capacity() >= john_reserve)
-			std::cout << "Capacity of JOHN is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 120\n";
-		std::cout << "Size of BOB " << BOB.size() << std::endl;
-		if (BOB.capacity() >= bob_reserve)
-			std::cout << "Capacity of BOB is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 125\n";
-		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
-		if (MIKE.capacity() >= mike_reserve)
-			std::cout << "Capacity of MIKE is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 130\n";
-		for (size_t i = 0; i < MIKE.size(); i++)
-		{
-			for (size_t j = 0; j < MIKE[i].size(); j++)
-				std::cout << MIKE[i][j] << ' ';
-			std::cout << std::endl;
-		}
-		//AT
-		std::cout << COLOR_BLUE << "test 6" << COLOR_END << std::endl;
-		std::cout << "\nAT\n";
-		
-		try
-		{
-			std::cout << MIKE.at(2).front() << '\n';
-			std::cout << MIKE.at(87).back() << '\n';
-		}
-		catch (std::out_of_range& oor)
-		{
-			(void)oor;
-			std::cout << "OOR error caught\n";
-		}
-		
-	}
-
-	std::cout << COLOR_BLUE << std::endl << "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" << COLOR_END << std::endl; 
-	
-	{
-		ft::vector<int>			test(3, 3);
-
-		std::cout << "self assignation test\n";
-		ft::vector<ft::vector<int> >	self_assign;
-		ft::vector<ft::vector<int> >	*ptr = &self_assign;
-		ft::vector<ft::vector<int> >	*ptr2 = &self_assign;
-
-		self_assign.assign(4, test);
-		*ptr = *ptr2;
-
-		std::cout << COLOR_GREEN << std::boolalpha << (*ptr == *ptr2) << COLOR_END << '\n' ;
-		
-		//	self_assign = self_assign; //compiler doesn't like it!
-		std::cout << COLOR_BLUE << "test 2" << COLOR_END << std::endl;
-
-		ft::vector<ft::vector<int> > JOHN;
-		ft::vector<ft::vector<int> > BOB(5, test);
-		std::cout << "BOB(5, test(test, 5)) : \n";
-		for (size_t i = 0; i < BOB.size(); i++)
-		{
-			for (size_t j = 0; j < BOB[i].size(); j++)
-				std::cout << BOB[i][j] << ' ';
-			std::cout << '\n';
-		}
-		ft::vector<ft::vector<int> > MIKE(BOB);
-		// CTORs
-		std::cout << COLOR_BLUE << "test 3" << COLOR_END << std::endl;
-		std::cout << "\nCTORS\n";
-		std::cout << "Empty is empty ? " << std::boolalpha << JOHN.empty() << '\n';
-		std::cout << "BOB is empty? " << BOB.empty() << '\n';
-
-		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
-		std::cout << "Size of BOB " << BOB.size() << std::endl;
-		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
-				// RESIZE
-		std::cout << COLOR_BLUE << "test 4" << COLOR_END << std::endl;
-		size_t	bob_resize = 2;
-		std::cout << "\nRESIZE\n";
-		BOB.resize(bob_resize);
-		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
-		if (JOHN.capacity() >= JOHN.size())
-			std::cout << "Capacity of JOHN is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 53\n";
-		std::cout << "Size of BOB " << BOB.size() << std::endl;
-		if (BOB.capacity() >= bob_resize)
-			std::cout << "Capacity of BOB is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 58\n";
-		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
-		if (MIKE.capacity() >= MIKE.size())
-			std::cout << "Capacity of MIKE is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 63\n";
-
-		size_t	mike_resize = 9;
-		bob_resize = 0;
-	
-		BOB.resize(bob_resize);
-		std::cout << "BOB is empty now ? " << BOB.empty() << '\n';
-		MIKE.resize(mike_resize, test);
-		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
-		if (JOHN.capacity() >= JOHN.size())
-			std::cout << "Capacity of JOHN is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 86\n";
-		std::cout << "Size of BOB " << BOB.size() << std::endl;
-		if (BOB.capacity() >= bob_resize)
-			std::cout << "Capacity of BOB is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 91\n";
-		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
-		if (MIKE.capacity() >= mike_resize)
-			std::cout << "Capacity of MIKE is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 96\n";
-		for (size_t i = 0; i < MIKE.size(); i++)
-		{
-			for (size_t j = 0; j < MIKE[i].size(); j++)
-			{
-				std::cout << MIKE[i][j] << ' ';
-			}
-			std::cout << std::endl;
-		}
-		// RESERVE
-		std::cout << COLOR_BLUE << "test 5" << COLOR_END << std::endl;
-		std::cout << "\nRESERVE\n";
-
-		size_t	john_reserve = 0;
-		size_t	bob_reserve = 3;
-		size_t	mike_reserve = 4;
-
-		JOHN.reserve(john_reserve);
-		BOB.reserve(bob_reserve);
-		MIKE.reserve(mike_reserve);
-		std::cout << "Size of JOHN " << JOHN.size() << std::endl;
-		if (JOHN.capacity() >= john_reserve)
-			std::cout << "Capacity of JOHN is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 120\n";
-		std::cout << "Size of BOB " << BOB.size() << std::endl;
-		if (BOB.capacity() >= bob_reserve)
-			std::cout << "Capacity of BOB is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 125\n";
-		std::cout << "Size of MIKE " << MIKE.size() << std::endl;
-		if (MIKE.capacity() >= mike_reserve)
-			std::cout << "Capacity of MIKE is sufficient\n";
-		else
-			std::cerr << "THERE IS A PROBLEM ON LINE 130\n";
-		for (size_t i = 0; i < MIKE.size(); i++)
-		{
-			for (size_t j = 0; j < MIKE[i].size(); j++)
-				std::cout << MIKE[i][j] << ' ';
-			std::cout << std::endl;
-		}
-		//AT
-		std::cout << COLOR_BLUE << "test 6" << COLOR_END << std::endl;
-		std::cout << "\nAT\n";
-		try
-		{
-			std::cout << MIKE.at(2).front() << '\n';
-			std::cout << MIKE.at(87).back() << '\n';
-		}
-		catch (std::out_of_range& oor)
-		{
-			(void)oor;
-			std::cout << "OOR error caught\n";
-		}
-	}
-	return (0);
-}
-*/
-/*
-void	prepost_incdec(std::vector<TESTED_TYPE> &vct)
-{
-	std::vector<TESTED_TYPE>::iterator it = vct.begin();
-	std::vector<TESTED_TYPE>::iterator it_tmp;
-
-	std::cout << "Pre inc" << std::endl;
-	it_tmp = ++it;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-
-	std::cout << "Pre dec" << std::endl;
-	it_tmp = --it;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-
-	std::cout << "Post inc" << std::endl;
-	it_tmp = it++;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-
-	std::cout << "Post dec" << std::endl;
-	it_tmp = it--;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-	std::cout << "###############################################" << std::endl;
-}
-
-void	prepost_incdec2(ft::vector<TESTED_TYPE> &vct)
-{
-	ft::vector<TESTED_TYPE>::iterator it = vct.begin();
-	ft::vector<TESTED_TYPE>::iterator it_tmp;
-
-	std::cout << "Pre inc" << std::endl;
-	it_tmp = ++it;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-
-	std::cout << "Pre dec" << std::endl;
-	it_tmp = --it;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-
-	std::cout << "Post inc" << std::endl;
-	it_tmp = it++;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-
-	std::cout << "Post dec" << std::endl;
-	it_tmp = it--;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-	std::cout << "###############################################" << std::endl;
-}
-*/
-
-/*
-int main()
-{
-    {
-        const int size = 5;
-	    std::vector<TESTED_TYPE> vct(size);
-	    std::vector<TESTED_TYPE>::iterator it = vct.begin();
-	    std::vector<TESTED_TYPE>::const_iterator ite = vct.begin();
-
-	    for (int i = 0; i < size; ++i)
-		    it[i] = (size - i) * 5;
-	    prepost_incdec(vct);
-
-	    it = it + 5;
-	    it = 1 + it;
-	    it = it - 4;
-	    std::cout << *(it += 2) << std::endl;
-	    std::cout << *(it -= 1) << std::endl;
-
-	    *(it -= 2) = 42;
-	    *(it += 2) = 21;
-
-	    std::cout << "const_ite +=: " << *(ite += 2) << std::endl;
-	    std::cout << "const_ite -=: " << *(ite -= 2) << std::endl;
-
-	    std::cout << "(it == const_it): " << (ite == it) << std::endl;
-	    std::cout << "(const_ite - it): " << (ite - it) << std::endl;
-	    std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
-
-	    std::cout << vct.size() << std::endl;
-    }
-    std::cout << "//////////////////////////////////////////" << std::endl;
-    {
-        const int size = 5;
-	    ft::vector<TESTED_TYPE> vct(size);
-	    ft::vector<TESTED_TYPE>::iterator it = vct.begin();
-	    ft::vector<TESTED_TYPE>::const_iterator ite = vct.begin();
-
-	    for (int i = 0; i < size; ++i)
-		    it[i] = (size - i) * 5;
-	    prepost_incdec2(vct);
-
-	    it = it + 5;
-	    it = 1 + it;
-	    it = it - 4;
-	    std::cout << *(it += 2) << std::endl;
-	    std::cout << *(it -= 1) << std::endl;
-
-	    *(it -= 2) = 42;
-	    *(it += 2) = 21;
-
-	    std::cout << "const_ite +=: " << *(ite += 2) << std::endl;
-	    std::cout << "const_ite -=: " << *(ite -= 2) << std::endl;
-
-	    std::cout << "(it == const_it): " << (ite == it) << std::endl;
-	    std::cout << "(const_ite - it): " << (ite - it) << std::endl;
-	    std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
-
-	    std::cout << vct.size() << std::endl;
-    }
-    return (0);
-}
-*/
-/*
-
-        void	checkErase(std::vector<TESTED_TYPE> const &vct,
-					std::vector<TESTED_TYPE>::const_iterator const &it)
-        {
-	        static int i = 0;
-	        std::cout << "[" << i++ << "] " << "erase: " << it - vct.begin() << std::endl;
-	        std::cout << vct.size() << std::endl;
-        }
-        void	checkErase2(ft::vector<TESTED_TYPE> const &vct,
-					ft::vector<TESTED_TYPE>::const_iterator const &it)
-        {
-	        static int i = 0;
-	        std::cout << "[" << i++ << "] " << "erase: " << it - vct.begin() << std::endl;
-	        std::cout << vct.size() << std::endl;
-        }
-*/
-
-
-/*
-int main()
-{
-    
-        {
-	    std::vector<TESTED_TYPE> vct(10);
-
-	    for (unsigned long int i = 0; i < vct.size(); ++i)
-		    vct[i] = std::string((vct.size() - i), i + 65);
-
-	    //printSize(vct);
-
-	    checkErase(vct, vct.erase(vct.begin() + 2));
-
-	    checkErase(vct, vct.erase(vct.begin()));
-	    checkErase(vct, vct.erase(vct.end() + 1));
-
-        
-	    checkErase(vct, vct.erase(vct.begin(), vct.begin() + 3));
-	    checkErase(vct, vct.erase(vct.end() - 3, vct.end() - 1));
-
-	    vct.push_back("Hello");
-	    vct.push_back("Hi there");
-	    //printSize(vct);
-	    checkErase(vct, vct.erase(vct.end() - 3, vct.end()));
-
-	    vct.push_back("ONE");
-	    vct.push_back("TWO");
-	    vct.push_back("THREE");
-	    vct.push_back("FOUR");
-	    //printSize(vct);
-	    checkErase(vct, vct.erase(vct.begin(), vct.end()));
-        
-        }
-
-        std::cout << "////////////////////" << std::endl;
-        
-        {
-	    ft::vector<TESTED_TYPE> vct(10);
-
-	    for (unsigned long int i = 0; i < vct.size(); ++i)
-		    vct[i] = std::string((vct.size() - i), i + 65);
-            
-	    //printSize(vct);
-        
-	    checkErase2(vct, vct.erase(vct.begin() + 2));
-
-	    checkErase2(vct, vct.erase(vct.begin()));
-	    checkErase2(vct, vct.erase(vct.end() + 1));
-        
-    
-	    checkErase2(vct, vct.erase(vct.begin(), vct.begin() + 3));
-        
-	    checkErase2(vct, vct.erase(vct.end() - 3, vct.end() - 1));
-
-	    vct.push_back("Hello");
-	    vct.push_back("Hi there");
-	    //printSize(vct);
-	    checkErase2(vct, vct.erase(vct.end() - 3, vct.end()));
-
-	    vct.push_back("ONE");
-	    vct.push_back("TWO");
-	    vct.push_back("THREE");
-	    vct.push_back("FOUR");
-	    //printSize(vct);
-	    checkErase2(vct, vct.erase(vct.begin(), vct.end()));
-        
-        }
-    return (0);
-}
-*/
-/*
-int main(void)
-{
-    */
-   /* 
-    {
-        std::vector<int>::iterator it;
-        std::vector<int> la (4, 100);
-        std::vector<int> lou;
-        for (int i = 0 ; i < 4; i++)
-            std::cout << la[i] << std::endl;
-        try
-        {
-            std::cout << COLOR_GREEN << "at: " << la.at(4) << std::endl;
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << e.what() << '\n';
-        }
-        std::cout << COLOR_GREEN << "at: " << la.at(1) << std::endl;
-        std::cout << COLOR_GREEN << lou.size() << COLOR_END << std::endl;
-        std::cout << COLOR_GREEN << lou.max_size() << COLOR_END << std::endl;
-        std::cout << COLOR_GREEN << lou.capacity() << COLOR_END << std::endl;
-        std::cout << COLOR_GREEN << lou.empty() << COLOR_END << std::endl;
-        try
-        {
-            lou.reserve(2305843009213693952);
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << e.what() << '\n';
-        }
-        lou.reserve(5);
-        lou.resize(10);
-        std::cout << COLOR_GREEN << lou.capacity() << COLOR_END << std::endl;
-        std::cout << COLOR_GREEN << lou.size() << COLOR_END << std::endl;
-        std::cout << COLOR_GREEN << la.front() << COLOR_END << std::endl;
-        
-        
-    }
-
-    {
-        ft::vector<int>::iterator it;
-        ft::vector<int>::iterator it2;
-        ft::vector<int>::reverse_iterator ot;
-        ft::vector<int>::reverse_iterator ot2;
-        ft::vector<int> la (4, 100);
-        ft::vector<int> lou;
-
-        for (int i = 0 ; i < 4; i++)
-            std::cout << la[i] << std::endl;
-        try
-        {
-            std::cout << COLOR_GRAY << "at: " << la.at(4) << std::endl;
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << e.what() << '\n';
-        }
-        std::cout << COLOR_GRAY << "at: " << la.at(1) << std::endl;
-        std::cout << COLOR_GRAY << lou.size() << COLOR_END << std::endl;
-        std::cout << COLOR_GRAY << lou.max_size() << COLOR_END << std::endl;
-        std::cout << COLOR_GRAY << lou.capacity() << COLOR_END << std::endl;
-        std::cout << COLOR_GRAY << lou.empty() << COLOR_END << std::endl;
-        try
-        {
-            lou.reserve(2305843009213693952);
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << e.what() << '\n';
-        }
-        lou.reserve(5);
-        lou.resize(10);
-        std::cout << COLOR_GRAY << lou.capacity() << COLOR_END << std::endl;
-        std::cout << COLOR_GRAY << lou.size() << COLOR_END << std::endl;
-        std::cout << COLOR_GRAY << la.front() << COLOR_END << std::endl;
-        la[1] = 2;
-        it = la.begin();
-        it = la.end();
-        ot = la.rbegin();
-        //it++;
-        it2 = it;
-        if (it2 == it)
-            std::cout << "== fonctionne" << std::endl;
-        if (ot == ot2)
-            std::cout << "== fonctionne" << std::endl;
-        std::cout << COLOR_GRAY << *ot << COLOR_END << std::endl;
-    }*/
-
-    /*
-    {
-        ft::vector<int>::reverse_iterator ot;
-        std::vector<int>::reverse_iterator ot_true;
-
-        std::vector<int> la_true;
-        ft::vector<int> la;
-
-        for (int i = 0; i < 20; i++)
-        {
-            la_true.push_back(i);
-            la.push_back(i);
-        }
-
-        ot_true = la_true.rbegin();
-        ot = la.rbegin();
-        std::cout << COLOR_GREEN << la_true.capacity() << COLOR_END << std::endl;
-        std::cout << COLOR_GREEN << la_true.size() << COLOR_END << std::endl;
-        std::cout << COLOR_GRAY << la.capacity() << COLOR_END << std::endl;
-        std::cout << COLOR_GRAY << la.size() << COLOR_END << std::endl;
-    }
-    */
-   /*
-   {
-    std::vector<int> lala (4, 10);
-    std::vector<int>::iterator it;
-    lala.clear();
-    
-    std::cout << COLOR_GREEN << lala.capacity() << COLOR_END << std::endl;
-    std::cout << COLOR_GREEN << lala.size() << COLOR_END << std::endl;
-    std::cout <<  COLOR_GREEN << *(lala.begin()) << COLOR_END << std::endl;
-   }
-   */
-  /*
-  {
-    std::vector<int> lala (2, 2);
-    std::vector<int> lili (1, 1);
-    lala.swap(lili);
-    std::cout << COLOR_GREEN << lala.capacity() << COLOR_END << std::endl;
-    std::cout << COLOR_GREEN << lala.size() << COLOR_END << std::endl;
-  }
-  */
- /*
-    {
-        ft::vector<int> lala(5, 5);
-        ft::vector<int> lila(3, 3);
-
-        const ft::vector<int>::iterator rapha = lala.begin();
-        ft::vector<int> kiki(++(lala.begin()), (--lala.end()));
-        
-
-        lala = lila;
-        std::cout << COLOR_GREEN << kiki.capacity() << COLOR_END << std::endl;
-        std::cout << COLOR_GREEN << kiki.size() << COLOR_END << std::endl;
-        std::cout << COLOR_GREEN << *rapha << COLOR_END << std::endl;
-
-
-        std::vector<int> la(5, 5);
-        std::vector<int> li(3, 3);
-
-        const std::vector<int>::iterator raph = la.begin();
-        std::vector<int> ki(++(la.begin()), --(la.end()));
-
-        la = li;
-        std::cout << COLOR_GREEN << ki.capacity() << COLOR_END << std::endl;
-        std::cout << COLOR_GREEN << ki.size() << COLOR_END <<sstd::endl;
-        std::cout << COLOR_GREEN << *raph << COLOR_END << std::endl;
-
-        
-    }
-    */
-   /*
-   {
-       
-       ft::vector<int> raph;
-       ft::vector<int> myd (4, 200);
-       //std::vector<int>::iterator pk;
-
-       raph.insert(raph.begin(), 3, 34);
-       raph.insert(raph.begin() + 1, 3, 4);
-       raph.insert(raph.begin(), myd.begin(), myd.end());
-       ft::vector<int>::iterator lala =  raph.insert(raph.begin() + 2, 1);
-       std::cout << COLOR_GREEN << raph.capacity() << COLOR_END << std::endl;
-       for (size_t i = 0; i < raph.size(); i++)
-       {
-            std::cout << COLOR_GREEN << raph[i] << COLOR_END << std::endl;
-       }
-
-        std::cout << *lala << std::endl;
-
-      // std::vector<int> lol (5, 100);
-       std::vector<int> rapha;
-       std::vector<int> my (4, 200);
-       //std::vector<int>::iterator pk;
-        
-       rapha.insert(rapha.begin(), 3, 34);
-       rapha.insert(rapha.begin() + 1, 3, 4);
-       rapha.insert(rapha.begin(), my.begin(), my.end());
-       
-       std::vector<int>::iterator lalala = rapha.insert(rapha.begin() + 2, 1);
-       std::cout << COLOR_GREEN << rapha.capacity() << COLOR_END << std::endl;
-       for (size_t i = 0; i < rapha.size(); i++)
-       {
-            std::cout << COLOR_GREEN << rapha[i] << COLOR_END << std::endl;
-       }
-       std::cout << *lalala << std::endl;
-   }*/
-   /*
-   {
-        std::vector<int> rapha(3, 3);
-        rapha.erase(rapha.begin(), rapha.end());
-        std::cout << COLOR_GREEN << rapha.capacity() << COLOR_END << std::endl;
-        std::cout << COLOR_GREEN << rapha.size() << COLOR_END << std::endl;
-        for (int i = 0; i < 3; i++)
-        {
-            std::cout << *(rapha.begin() + i) << std::endl;  
-        }
-       
-       std::cout << "--------------------------------" << std::endl;
-        std::vector<int> raph(3, 3);
-        raph.erase(raph.begin(), raph.end());
-        std::cout << COLOR_GREEN << raph.capacity() << COLOR_END << std::endl;
-        std::cout << COLOR_GREEN << raph.size() << COLOR_END << std::endl;
-        for (int i = 0; i < 3; i++)
-        {
-            std::cout << *(raph.begin() + i) << std::endl;  
-        }
-   }
-   */
-  /*
-  {
-    {
-	ft::vector<int> vct(7);
-
-	for (unsigned long int i = 0; i < vct.size(); ++i)
-	{
-		vct.at(i) = (vct.size() - i) * 3;
-		std::cout << "vct[]: " << vct[i] << std::endl;
-	}
-	std::cout << vct.size() << std::endl;
-
-	ft::vector<int> const vct_c(vct);
-
-	std::cout << "front(): " << vct.front() << " " << vct_c.front() << std::endl;
-	std::cout << "back(): " << vct.back() << " " <<  vct_c.back() << std::endl;
-
-	for (unsigned long int i = 0; i < vct_c.size(); ++i)
-		std::cout << "vct_c.at(): " << vct_c.at(i) << std::endl;
-	try {
-		std::cout << vct_c.at(10) << std::endl;
-	}
-	catch (std::out_of_range &e) {
-		std::cout << "Catch out_of_range exception!" << std::endl;
-	}
-	catch (std::exception &e) {
-		std::cout << "Catch exception: " << e.what() << std::endl;
-	}
-	std::cout << vct_c.size() << std::endl;
-    }
-    std::cout << "/////////////////////////////" << std::endl;
-    {
-	std::vector<int> vct(7);
-
-	for (unsigned long int i = 0; i < vct.size(); ++i)
-	{
-		vct.at(i) = (vct.size() - i) * 3;
-		std::cout << "vct[]: " << vct[i] << std::endl;
-	}
-	std::cout << vct.size() << std::endl;
-
-	std::vector<int> const vct_c(vct);
-
-	std::cout << "front(): " << vct.front() << " " << vct_c.front() << std::endl;
-	std::cout << "back(): " << vct.back() << " " <<  vct_c.back() << std::endl;
-
-	for (unsigned long int i = 0; i < vct_c.size(); ++i)
-		std::cout << "vct_c.at(): " << vct_c.at(i) << std::endl;
-	try {
-		std::cout << vct_c.at(10) << std::endl;
-	}
-	catch (std::out_of_range &e) {
-		std::cout << "Catch out_of_range exception!" << std::endl;
-	}
-	catch (std::exception &e) {
-		std::cout << "Catch exception: " << e.what() << std::endl;
-	}
-	std::cout << vct_c.size() << std::endl;
-    }
-  }
-  */
- /*
-
-}
-
-*/
-//#define TESTED_TYPE int
-/*
-int		main(void)
-{
-    {
-	std::list<TESTED_TYPE> lst;
-	std::list<TESTED_TYPE>::iterator lst_it;
-	for (int i = 1; i < 5; ++i)
-		lst.push_back(i * 3);
-
-	ft::vector<TESTED_TYPE> vct(lst.begin(), lst.end());
-	std::cout << vct.size() << std::endl;
-
-	lst_it = lst.begin();
-	for (int i = 1; lst_it != lst.end(); ++i)
-		*lst_it++ = i * 5;
-	vct.assign(lst.begin(), lst.end());
-	std::cout << vct.size() << std::endl;
-
-	vct.insert(vct.end(), lst.rbegin(), lst.rend());
-	std::cout << vct.size() << std::endl;
-    }
-
-    {
-	std::list<TESTED_TYPE> lst;
-	std::list<TESTED_TYPE>::iterator lst_it;
-	for (int i = 1; i < 5; ++i)
-		lst.push_back(i * 3);
-
-	std::vector<TESTED_TYPE> vct(lst.begin(), lst.end());
-	std::cout << vct.size() << std::endl;
-
-	lst_it = lst.begin();
-	for (int i = 1; lst_it != lst.end(); ++i)
-		*lst_it++ = i * 5;
-	vct.assign(lst.begin(), lst.end());
-	std::cout << vct.size() << std::endl;
-
-	vct.insert(vct.end(), lst.rbegin(), lst.rend());
-	std::cout << vct.size() << std::endl;
-    }
-    return (0);
-}
-*/
-/*
-int		main(void)
-{
-    {
-	std::vector<TESTED_TYPE> vct(10);
-    std::vector<TESTED_TYPE> vct2;
-
-	for (unsigned long int i = 0; i < vct.size(); ++i)
-		vct[i] = (vct.size() - i) * 3;
-	std::cout << vct.size() << std::endl;
-
-	vct2.insert(vct2.end(), 42);
-	vct2.insert(vct2.begin(), 2, 21);
-	std::cout << vct2.size() << std::endl;
-
-	vct2.insert(vct2.end() - 2, 42);
-	std::cout << vct2.size() << std::endl;
-
-	vct2.insert(vct2.end(), 2, 84);
-	std::cout << vct2.size() << std::endl;
-
-	vct2.resize(4);
-	std::cout << vct2.size() << std::endl;
-
-	vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
-	vct.clear();
-	std::cout << vct2.size() << std::endl;
-
-	std::cout << vct.size() << std::endl;
-    }
-
-    std::cout << "/////////////////////////////////////////////////////////////////" << std::endl;
-
-    {
-    ft::vector<TESTED_TYPE> vct(10);
-    ft::vector<TESTED_TYPE> vct2;
-
-	for (unsigned long int i = 0; i < vct.size(); ++i)
-		vct[i] = (vct.size() - i) * 3;
-	std::cout << vct.size() << std::endl;
-
-	vct2.insert(vct2.end(), 42);
-	vct2.insert(vct2.begin(), 2, 21);
-	std::cout << vct2.size() << std::endl;
-
-	vct2.insert(vct2.end() - 2, 42);
-	std::cout << vct2.size() << std::endl;
-
-	vct2.insert(vct2.end(), 2, 84);
-	std::cout << vct2.size() << std::endl;
-
-	vct2.resize(4);
-	std::cout << vct2.size() << std::endl;
-
-	vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
-	vct.clear();
-	std::cout << vct2.size() << std::endl;
-
-	std::cout << vct.size() << std::endl;
-    }
-	return (0);
-}
-*/
-/*
-#define TESTED_TYPE int
-
-int		main(void)
-{
-    {
-	const int size = 5;
-	std::vector<TESTED_TYPE> vct(size);
-	std::vector<TESTED_TYPE>::iterator it(vct.begin());
-	std::vector<TESTED_TYPE>::const_iterator ite(vct.end());
-
-	for (int i = 1; it != ite; ++i)
-		*it++ = i;
-    std::cout << vct.size() << std::endl;
-
-	it = vct.begin();
-	ite = vct.begin();
-
-	std::cout << *(++ite) << std::endl;
-	std::cout << *(ite++) << std::endl;
-	std::cout << *ite++ << std::endl;
-	std::cout << *++ite << std::endl;
-
-	//it->m();
-	//ite->m();
-
-	std::cout << *(++it) << std::endl;
-	std::cout << *(it++) << std::endl;
-	std::cout << *it++ << std::endl;
-	std::cout << *++it << std::endl;
-
-	std::cout << *(--ite) << std::endl;
-	std::cout << *(ite--) << std::endl;
-	std::cout << *--ite << std::endl;
-	std::cout << *ite-- << std::endl;
-
-	//(*it).m();
-	//(*ite).m();
-
-	std::cout << *(--it) << std::endl;
-	std::cout << *(it--) << std::endl;
-	std::cout << *it-- << std::endl;
-	std::cout << *--it << std::endl;
-    }
-
-    std::cout << "/////////////////////////////////////" << std::endl;
-
-    {
-    const int size = 5;
-	ft::vector<TESTED_TYPE> vct(size);
-	ft::vector<TESTED_TYPE>::iterator it(vct.begin());
-	ft::vector<TESTED_TYPE>::const_iterator ite(vct.end());
-
-	for (int i = 1; it != ite; ++i)
-		*it++ = i;
-    std::cout << vct.size() << std::endl;
-
-	it = vct.begin();
-	ite = vct.begin();
-
-	std::cout << *(++ite) << std::endl;
-	std::cout << *(ite++) << std::endl;
-	std::cout << *ite++ << std::endl;
-	std::cout << *++ite << std::endl;
-
-	//it->m();
-	//ite->m();
-
-	std::cout << *(++it) << std::endl;
-	std::cout << *(it++) << std::endl;
-	std::cout << *it++ << std::endl;
-	std::cout << *++it << std::endl;
-
-	std::cout << *(--ite) << std::endl;
-	std::cout << *(ite--) << std::endl;
-	std::cout << *--ite << std::endl;
-	std::cout << *ite-- << std::endl;
-
-	//(*it).m();
-	//(*ite).m();
-
-	std::cout << *(--it) << std::endl;
-	std::cout << *(it--) << std::endl;
-	std::cout << *it-- << std::endl;
-	std::cout << *--it << std::endl;
-    }
-    
-	return (0);
-}
-*/
-/*
-int main(void)
-{
-	
-	
-	ft::map<int, std::string> lala;
-	//ft::map<int, int> lili;
-	lala.insert(ft::pair<int,std::string>(50,"cinquante"));
-	lala.insert(ft::pair<int,std::string>(30,"trente"));
-	lala.insert(ft::pair<int,std::string>(65,"soixante-cinq"));
-	lala.insert(ft::pair<int,std::string>(15,"quinze"));
-	lala.insert(ft::pair<int,std::string>(35,"trente-cinq"));
-	lala.insert(ft::pair<int,std::string>(55,"cinquante-cinq"));
-	lala.insert(ft::pair<int,std::string>(70,"soixante-dix"));
-	lala.insert(ft::pair<int,std::string>(68,"soixante-huit"));
-	lala.insert(ft::pair<int,std::string>(80,"quatre-vingts"));
-
-	lala.change_color(65, 0);
-	lala.change_color(70, 1);
-	lala.change_color(15, 0);
-	lala.change_color(35, 0);
-	lala.change_color(68, 0);
-	lala.change_color(80, 0);
-	lala.insert(ft::pair<int,std::string>(90,"quatre-vingt-dix"));
-	// lala.insert(ft::pair<int,std::string>(85,"neuf"));
-	// lala.insert(ft::pair<int,std::string>(10,"dix"));
-	// lala.insert(ft::pair<int,std::string>(5,"cinq"));
-	// lala.insert(ft::pair<int,std::string>(30,"trente"));
-	// lala.insert(ft::pair<int,std::string>(1,"un"));
-	// lala.insert(ft::pair<int,std::string>(7,"sept"));
-
-	// lala.insert(ft::pair<int,std::string>(40,"quarante"));
-	
-	// lala.insert(ft::pair<int,std::string>(28,"vingt-huit"));
-	//lala.insert(ft::pair<int,std::string>(7,"sept"));
-	 
-	// lala.insert(ft::pair<int,std::string>(2,"deux"));
-	
-	 
-	// lala.insert(ft::pair<int,std::string>(9,"neuf"));
-	
-	
-
-
-	// lala.insert(ft::pair<int,std::string>(35,"trente-cinq"));
-	// lala.insert(ft::pair<int,std::string>(38,"trente-huit"));
-	
-	//ft::map<int, int>::iterator it;
-	
-	
-	//lala.change_color(1, 0);
-	//lala.change_color(7, 0);
-	// lala.change_color(15,0);
-	//lala.change_color(20, 0);
-	//lala.change_color(28, 0);
-	//lala.change_color(25, 1);
-	//lala.change_color(30, 0);
-	//lala.change_color(40, 0);
-	lala.erase(55);
-	lala.erase(30);
-	lala.erase(90);
-	lala.erase(80);
-	lala.erase(50);
-	lala.erase(35);
-	lala.erase(15);
-	lala.erase(65);
-	ft::map<int, std::string>::iterator it = lala.begin();
-	lala.erase(it);
-	lala.display_element();
-	
-	//std::cout << "salut" << std::endl;
-	
-	return (0);
-}
-*/
-/*
-int main(void)
-{
-	ft::map<int, int> lala;
-	
-
-	lala.insert(ft::pair<int, int>(10,1));
-	lala.insert(ft::pair<int, int>(5,1));
-	lala.insert(ft::pair<int, int>(30,1));
-	lala.insert(ft::pair<int, int>(20,1));
-	lala.insert(ft::pair<int, int>(40,1));
-	//lala.insert(ft::pair<int, int>(38,1));
-	ft::map<int,int>::iterator it = lala.begin();
-	for (int i = 0; i < 20; i++)
-	{
-		std::cout << (*it).first << std::endl;
-		it++;
-	}
-	lala.display_element();
-	return (0);
-}
-*/
-/*
-int main ()
-{
-  ft::map<char,int> mymap;
-  ft::map<char,int>::iterator it;
-
-  // insert some values:
-  mymap['a']=10;
-  mymap['b']=20;
-  mymap['c']=30;
-  mymap['d']=40;
-  mymap['e']=50;
-  mymap['f']=60;
-
-  it=mymap.find('b');
-  mymap.erase (it);                   // erasing by iterator
-
-  mymap.erase ('c');                  // erasing by key
-
-  it=mymap.find ('e');
-  mymap.erase ( it, mymap.end() );    // erasing by range
-
-  // show content:
-  for (it=mymap.begin(); it!=mymap.end(); ++it)
-    std::cout << it->first << " => " << it->second << '\n';
-
-  return 0;
-}
-*/
-/*
-int main (void)
-{
-  ft::map<char,int> foo,bar;
-
-  foo['x']=100;
-  foo['y']=200;
-
-  bar['a']=11;
-  bar['b']=22;
-  bar['c']=33;
-
-  foo.swap(bar);
-
-  std::cout << "foo contains:\n";
-  for (ft::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
-    std::cout << it->first << " => " << it->second << '\n';
-
-  std::cout << "bar contains:\n";
-  for (ft::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
-    std::cout << it->first << " => " << it->second << '\n';
-
-  return 0;
-}
-*/
-/*
-int main (void)
-{
-  ft::map<char,int> mymap;
-
-  mymap['x']=100;
-  mymap['y']=200;
-  mymap['z']=300;
-
-  std::cout << "mymap contains:\n";
-  for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-    std::cout << it->first << " => " << it->second << '\n';
-
-  mymap.clear();
-
-  mymap['a']=1101;
-  mymap['b']=2202;
-
-  std::cout << "mymap contains:\n";
-  for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-    std::cout << it->first << " => " << it->second << '\n';
-  return 0;
-}
-*/
-/*
-int main (void)
-{
-  ft::map<char,int> mymap;
-
-  ft::map<char,int>::key_compare mycomp = mymap.key_comp();
-
-  mymap['a']=100;
-  mymap['b']=200;
-  mymap['c']=300;
-
-  std::cout << "mymap contains:\n";
-
-  char highest = mymap.rbegin()->first;     // key value of last element
-
-  ft::map<char,int>::iterator it = mymap.begin();
-  do {
-    std::cout << it->first << " => " << it->second << '\n';
-  } while ( mycomp((*it++).first, highest) );
-
-  std::cout << '\n';
-
-  return 0;
-}
-*/
-/*
-int main ()
-{
-  ft::map<char,int> mymap;
-
-  mymap['x']=1001;
-  mymap['y']=2002;
-  mymap['z']=3003;
-
-  std::cout << "mymap contains:\n";
-
-  ft::pair<char,int> highest = *mymap.rbegin();          // last element
-
-  ft::map<char,int>::iterator it = mymap.begin();
-  do {
-    std::cout << it->first << " => " << it->second << '\n';
-  } while ( mymap.value_comp()(*it++, highest) );
-
-  return 0;
-}
-*/
-/*
-int main (void)
-{
-  ft::map<char,int> mymap;
-  ft::map<char,int>::iterator it;
-
-  mymap['a']=50;
-  mymap['b']=100;
-  mymap['c']=150;
-  mymap['d']=200;
-
-  it = mymap.find('b');
-  if (it != mymap.end())
-    mymap.erase (it);
-
-  // print content:
-  std::cout << "elements in mymap:" << '\n';
-  std::cout << "a => " << mymap.find('a')->second << '\n';
-  std::cout << "c => " << mymap.find('c')->second << '\n';
-  std::cout << "d => " << mymap.find('d')->second << '\n';
-  return 0;
-}
-*/
-
-/*
-int main (void)
-{
-  ft::map<char,int> mymap;
-  char c;
-
-  mymap ['a']=101;
-  mymap ['c']=202;
-  mymap ['f']=303;
-
-  for (c='a'; c<'h'; c++)
-  {
-    std::cout << c;
-    if (mymap.count(c)>0)
-      std::cout << " is an element of mymap.\n";
-    else 
-      std::cout << " is not an element of mymap.\n";
-  }
-
-  return 0;
-}
-*/
-/*
-int main (void)
-{
-  ft::map<char,int> mymap;
-  ft::map<char,int>::iterator itlow,itup;
-
-  mymap['a']=20;
-  mymap['b']=40;
-  mymap['c']=60;
-  mymap['d']=80;
-  mymap['e']=100;
-
-  itlow=mymap.lower_bound ('b');  // itlow points to b
-  itup=mymap.upper_bound ('d');   // itup points to e (not d!)
-
-  mymap.erase(itlow,itup);        // erases [itlow,itup)
-
-  // print content:
-  for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-    std::cout << it->first << " => " << it->second << '\n';
-
-  return 0;
-
-}
-*/
-/*
-int main(void)
-{
-	std::map<char,int> mymap;
-	std::map<char,int>::iterator it = mymap.begin();
-	mymap['c'] = 5;
-	mymap['b'] = 5;
-	mymap['d'] = 5;
-	++it;
-
-	std::cout << (*it).first << std::endl;
-
-	++it;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-
-	return (0);
-}
-*/
-/*
-int main (void)
-{
-  ft::map<char,int> mymap;
-
-  mymap['a']=10;
-  mymap['b']=20;
-  mymap['c']=30;
-
-  ft::pair<ft::map<char,int>::iterator,ft::map<char,int>::iterator> ret;
-  ret = mymap.equal_range('b');
-
-  std::cout << "lower bound points to: ";
-  std::cout << ret.first->first << " => " << ret.first->second << '\n';
-
-  std::cout << "upper bound points to: ";
-  std::cout << ret.second->first << " => " << ret.second->second << '\n';
-
-  return 0;
-}
-*/
-/*
-int main ()
-{
-  ft::map<char,int> foo,bar;
-  foo['a']=100;
-  foo['b']=200;
-  bar['a']=10;
-  bar['z']=1000;
-
-  // foo ({{a,100},{b,200}}) vs bar ({a,10},{z,1000}}):
-  if (foo==bar) std::cout << "foo and bar are equal\n";
-  if (foo!=bar) std::cout << "foo and bar are not equal\n";
-  if (foo< bar) std::cout << "foo is less than bar\n";
-  if (foo> bar) std::cout << "foo is greater than bar\n";
-  if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
-  if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
-
-  return 0;
-}
-*/
-/*
-int main (void)
-{
-  ft::map<char,int> mymap;
-
-  mymap['x'] = 100;
-  mymap['y'] = 200;
-  mymap['z'] = 300;
-
-  // show content:
-  ft::map<char,int>::reverse_iterator rit;
-  for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
-    std::cout << rit->first << " => " << rit->second << '\n';
-
-  return 0;
-}
-*/
-/*
-int main ()
-{
-	ft::map<char,int> mymap;
-
-	mymap['x'] = 100;
-	mymap['y'] = 200;
-	mymap['z'] = 300;
-	
-
-	//ft::map<char,int> const copy =mymap;
-	// show content:
-
-	ft::map<char,int>::reverse_iterator rit;
-	for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
-    	std::cout << rit->first << " => " << rit->second << '\n';
-
-
-	for (ft::map<char,int>::const_reverse_iterator it=mymap.rbegin(); it!=mymap.rend(); it++)
-    	std::cout << it->first << " => " << it->second << '\n';
-
-	std::cout << "creating const reverse iterator" << std::endl;
-	ft::map<const char,int>::reverse_iterator it = mymap.rbegin();
-	it++;
-
-	ft::map<const char,int>::reverse_iterator it2(mymap.rbegin()); it2++;
-
-	ft::map<char, int>::const_reverse_iterator it = mymap.rbegin();
-	ft::map<char, int>::const_reverse_iterator ti = mymap.rend();
-
-	it++;
-	++it;
-	it--;
-	--it;
-
-	ti--;
-	--ti;
-	++ti;
-	ti++;
-
-	ti = it;
-
-	ft::map<char, int>::reverse_iterator end = mymap.rend();
-	while(it != end)
-	{
-    	std::cout << it->first << " => " << it->second << '\n';
-		it++;
-	}
-
-
-	return 0;
-}
-*/
-/*
-int main(void)
-{
-*/	
-	// ft::map<int, int> lala;
-	// lala[50];
-	// lala[0];
-	// lala[100];
-	// lala.change_color(0, 0);
-	// lala.change_color(100, 0);
-	// lala.change_color(50, 0);
-	// lala[-50];
-	// lala[25];
-	// lala[75];
-	// lala[150];
-	// lala.change_color(-50, 0);
-	// lala.change_color(25, 0);
-	// lala.change_color(75, 0);
-	// lala.change_color(150, 0);
-	// lala[-100];
-	// lala[-25];
-	// lala[12];
-	// lala[33];
-	// lala[63];
-	// lala[84];
-	// lala[200];
-	// lala[125];
-	// lala.change_color(-100, 0);
-	// lala.change_color(-25, 0);
-	// lala.change_color(12, 0);
-	// lala.change_color(33, 0);
-	// lala.change_color(63, 0);
-	// lala.change_color(84, 0);
-	// lala.change_color(200, 0);
-	// lala.change_color(125, 0);
-	// lala.erase(200);
-	// lala.erase(150);
-	// lala.erase(125);
-	// lala.erase(100);
-	// lala.erase(84);
-	// lala.erase(75);
-	// /*lala.erase("bb");
-	// lala.erase("bd");
-	// lala.erase("bda");
-	// lala.erase("hdsh");
-	// lala.erase("a");
-	// lala.erase("f");
-	// lala.erase("koko");*/
-	// /*lala.erase(-100);
-	// lala.erase(50);
-	// lala.erase(63);
-	// lala.erase(75);
-	// lala.erase(84);
-	// lala.erase(100);
-	// lala.erase(25);
-	// lala.erase(33);
-	// lala.erase(125);*/
-	// lala.display_element();
-/*
-	{
-	ft::map<int, std::string> lala;
-	lala[10] = "dix";
-	lala[18] = "dix-huit";
-	lala[7] = "sept";
-	lala[15] = "quize";
-	lala[16] = "seize";
-	lala[30] = "trente";
-	lala[25] = "twenty-five";
-	lala.display_element();
-	}
-std::cout << "--------------------------------------------------------------------------------------------------" << std::endl;
-	{
-	ft::map<int, std::string> lala;
-	lala[10] = "dix";
-	lala[-18] = "moins-dix-huit";
-	lala[17] = "dix-sept";
-	lala[-15] = "moins-quize";
-	lala[-16] = "moins-seize";
-	lala[-30] = "moins-trente";
-	lala[-25] = "-twenty-five";
-	lala.display_element();
-	}
-*/
-/*
-	ft::map<int, int> lala;
-	for (int i = 0; i < 1000000 ; i++)
-	{
-		lala.insert(ft::pair<int, int>(i,i));
-	}
-	for (ft::map<int, int>::iterator it = lala.begin(); it != lala.end(); it++)
-		std::cout << it->first;
-	for (int i = 0 ; i < 1000000 ; i++)
-	{
-		lala.erase(i);
-	}
-*/
-/*
-	return (0);
-}
-*/
-/*
-int main(void)
-{
-	ft::map<int, int> lala;
-
-*/	
-	/*
-	lala[5];
-	lala[10];
-	lala[2];
-	lala[9];
-	lala[30];
-	lala[25];
-	lala[40];
-	lala[35];
-	lala[50];
-	lala[38];
-	//lala[12] = 10;
-	*/
-	//lala.change_color(5, 1);
-/*
-	lala[10];
-	lala[5];
-	lala[20];
-	lala[1];
-	lala[7];
-	lala[15];
-	lala[30];
-	lala[25];
-	lala[40];
-	lala.change_color(7, 0);
-	lala.change_color(1, 0);
-	lala.change_color(20, 0);
-	//lala.change_color(15, 0);
-	lala.change_color(30, 1);
-	lala.change_color(25, 0);
-	lala.change_color(40, 0);
-
-	lala.erase(15);
-*/
-	// lala[10];
-	// lala[5];
-	// lala[20];
-	// lala[0];
-	// lala[7];
-	// lala[25];
-	// lala[40];
-	// lala[-1];
-	// lala[3];
-	// lala.change_color(5, 0);
-	// lala.change_color(0, 1);
-	// lala.change_color(-1, 0);
-	// lala.change_color(3, 0);
-	// lala.change_color(20, 0);
-	// lala.change_color(40, 0);
-/*
-	lala[10];
-	lala[5];
-	lala[30];
-	lala.change_color(5, 0);
-	lala.change_color(30, 0);
-	lala[1];
-	lala[7];
-	lala[25];
-	lala[40];
-	lala.change_color(1, 0);
-	lala.change_color(7, 0);
-	lala.change_color(25, 0);
-	lala.change_color(40, 0);
-	lala[20];
-	lala[28];
-	lala.change_color(25, 1);
-	lala.change_color(20, 0);
-	lala.change_color(28, 0);
-	
-	lala.erase(1);
-
-	lala.display_element();
-	return (0);
-}*/
-
-
-/*
-
-int main (void)
-{
-  ft::map<char,int> mymap;
-  ft::map<char,int>::iterator it;
-
-  // insert some values:
-  mymap['a']=10;
-  mymap['b']=20;
-  mymap['c']=30;
-  mymap['d']=40;
-  mymap['e']=50;
-  mymap['f']=60;
-
-  it=mymap.find('b');
-  std::cout << "found b\n";
-  //mymap.erase (it);                  // erasing by iterator
-  mymap.display_element();
-  mymap.erase ('b');
-  mymap.display_element();
-  std::cout << "erase iterator to b\n";
-  mymap.erase ('c');               // erasing by key
-  
-  std::cout << "erase by key 'c'\n";
-  it=mymap.find ('e');
-  std::cout << "erase by range 'e' to end\n";
-  mymap.erase ( it, mymap.end() );    // erasing by range
-
-  std::cout << " display :\n";
-  // show content:
-  for (it=mymap.begin(); it!=mymap.end(); ++it)
-    std::cout << it->first << " => " << it->second << '\n';
-  return 0;
-  
-}
-
-
-
-*/
-
+#define COLOR_RED "\e[0;31m"
 
 int main(void)
 {
-	std::map<int,int> lala;
-	for (int i = 0; i < 10000000 ; i++)
-		lala[i];
-	//lala.display_element();
-	return 0;
+	std::cout << COLOR_GREEN << "/////////////////////////" COLOR_END << std::endl;
+	std::cout << COLOR_BLUE << "main de test pour stack" << COLOR_END << std::endl;
+	std::cout << COLOR_GREEN << "/////////////////////////" COLOR_END << std::endl;
+
+	
+	{
+		std::cout << COLOR_RED << "constructing stacks" << COLOR_END << std::endl;
+  		ft::vector<int> myvector (2,200);        // vector with 2 elements
+  		ft::stack<int> first;                    // empty stack
+		ft::stack<int,ft::vector<int> > second;  // empty stack using vector
+  		ft::stack<int,ft::vector<int> > third (myvector);
+		std::cout << COLOR_BLUE << "ft " << std::endl;
+		std::cout << "size of first: " << first.size() << '\n';
+  		std::cout << "size of third: " << second.size() << '\n';
+  		std::cout << "size of fourth: " << third.size() << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+  		std::vector<int> myvector (2,200);        // vector with 2 elements
+  		std::stack<int> first;                    // empty stack
+		std::stack<int,std::vector<int> > second;  // empty stack using vector
+  		std::stack<int,std::vector<int> > third (myvector);
+		std::cout << COLOR_GREEN << "std " << std::endl;
+		std::cout << "size of first: " << first.size() << '\n';
+  		std::cout << "size of third: " << second.size() << '\n';
+  		std::cout << "size of fourth: " << third.size() << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "stack::empty" << COLOR_END << std::endl;
+		ft::stack<int> mystack;
+  		int sum (0);
+  		for (int i=1;i<=10;i++) mystack.push(i);
+  		while (!mystack.empty())
+  		{
+     		sum += mystack.top();
+     		mystack.pop();
+  		}
+		std::cout << COLOR_BLUE << "ft " << std::endl;
+  		std::cout << COLOR_BLUE << "total:" << sum << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+		std::stack<int> mystack;
+  		int sum (0);
+  		for (int i=1;i<=10;i++) mystack.push(i);
+  		while (!mystack.empty())
+  		{
+     		sum += mystack.top();
+     		mystack.pop();
+  		}
+		std::cout << COLOR_GREEN << "std" << std::endl;
+  		std::cout << COLOR_GREEN << "total:" <<  sum <<'\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "stack::size" << COLOR_END << std::endl;
+		ft::stack<int> myints;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+  		std::cout << "0. size: " << myints.size() << '\n';
+  		for (int i=0; i<5; i++) myints.push(i);
+  		std::cout << "1. size: " << myints.size() << '\n';
+		myints.pop();
+		std::cout << "2. size: " << myints.size() << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+		std::stack<int> myints;
+		std::cout << COLOR_GREEN << "std" << std::endl;
+  		std::cout << "0. size: " << myints.size() << '\n';
+  		for (int i=0; i<5; i++) myints.push(i);
+  		std::cout << "1. size: " << myints.size() << '\n';
+		myints.pop();
+		std::cout << "2. size: " << myints.size() << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "stack::top" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::stack<int> mystack;
+		mystack.push(10);
+  		mystack.push(20);
+  		mystack.top() -= 5;
+  		std::cout << "mystack.top() is now " << mystack.top() << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::stack<int> mystack;
+		mystack.push(10);
+  		mystack.push(20);
+  		mystack.top() -= 5;
+  		std::cout << "mystack.top() is now " << mystack.top() << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "stack::push/pop" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::stack<int> mystack;
+		for (int i=0; i<5; ++i) mystack.push(i);
+  		std::cout << "Popping out elements...";
+  		while (!mystack.empty())
+  		{
+     		std::cout << ' ' << mystack.top();
+     		mystack.pop();
+  		}
+  		std::cout << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::stack<int> mystack;
+		for (int i=0; i<5; ++i) mystack.push(i);
+  		std::cout << "Popping out elements...";
+  		while (!mystack.empty())
+  		{
+     		std::cout << ' ' << mystack.top();
+     		mystack.pop();
+  		}
+  		std::cout << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+
+	std::cout << COLOR_GREEN << "/////////////////////////" COLOR_END << std::endl;
+	std::cout << COLOR_BLUE << "main de test pour vector" << COLOR_END << std::endl;
+	std::cout << COLOR_GREEN << "/////////////////////////" COLOR_END << std::endl;
+
+	{
+		std::cout << COLOR_RED << "constructing vectors" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> first;
+  		ft::vector<int> second (4,100);                      
+  		ft::vector<int> third (second.begin(),second.end());  
+  		ft::vector<int> fourth (third);                       
+  		int myints[] = {16,2,77,29};
+  		ft::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
+  		std::cout << "The contents of fifth are:";
+  		for (ft::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
+    		std::cout << ' ' << *it;
+  		std::cout << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> first;
+  		std::vector<int> second (4,100);                      
+  		std::vector<int> third (second.begin(),second.end());  
+  		std::vector<int> fourth (third);                       
+  		int myints[] = {16,2,77,29};
+  		std::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
+  		std::cout << "The contents of fifth are:";
+  		for (std::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
+    		std::cout << ' ' << *it;
+  		std::cout << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector assignment" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> foo (3,0);
+		ft::vector<int> bar (5,0);
+		bar = foo;
+		foo = ft::vector<int>();
+		std::cout << "Size of foo: " << int(foo.size()) << '\n';
+		std::cout << "Size of bar: " << int(bar.size()) << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> foo (3,0);
+		std::vector<int> bar (5,0);
+		bar = foo;
+		foo = std::vector<int>();
+		std::cout << "Size of foo: " << int(foo.size()) << '\n';
+		std::cout << "Size of bar: " << int(bar.size()) << '\n';
+		std::cout << "-----------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector::begin/end" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector;
+		for (int i=1; i<=5; i++) myvector.push_back(i);
+  		std::cout << "myvector contains:";
+		for (ft::vector<int>::iterator it = myvector.begin() ; it != myvector.end(); ++it)
+		std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector;
+		for (int i=1; i<=5; i++) myvector.push_back(i);
+  		std::cout << "myvector contains:";
+		for (std::vector<int>::iterator it = myvector.begin() ; it != myvector.end(); ++it)
+		std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector::rbegin/rend" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector (5);
+		int i=0;
+		ft::vector<int>::reverse_iterator rit = myvector.rbegin();
+		for (; rit!= myvector.rend(); ++rit)
+			*rit = ++i;
+		std::cout << "myvector contains:";
+		for (ft::vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector (5);
+		int i=0;
+		std::vector<int>::reverse_iterator rit = myvector.rbegin();
+		for (; rit!= myvector.rend(); ++rit)
+			*rit = ++i;
+		std::cout << "myvector contains:";
+		for (std::vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector::size" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myints;
+		std::cout << "0. size: " << myints.size() << '\n';
+  		for (int i=0; i<10; i++) myints.push_back(i);
+		std::cout << "1. size: " << myints.size() << '\n';
+		myints.insert (myints.end(),10,100);
+		std::cout << "2. size: " << myints.size() << '\n';
+		myints.pop_back();
+		std::cout << "3. size: " << myints.size() << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myints;
+		std::cout << "0. size: " << myints.size() << '\n';
+  		for (int i=0; i<10; i++) myints.push_back(i);
+		std::cout << "1. size: " << myints.size() << '\n';
+		myints.insert (myints.end(),10,100);
+		std::cout << "2. size: " << myints.size() << '\n';
+		myints.pop_back();
+		std::cout << "3. size: " << myints.size() << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "comparing size, capacity and max_size" << COLOR_END << std::endl;
+		ft::vector<int> myvector;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		for (int i=0; i<100; i++) myvector.push_back(i);
+		std::cout << "size: " << myvector.size() << "\n";
+		std::cout << "capacity: " << myvector.capacity() << "\n";
+		std::cout << "max_size: " << myvector.max_size() << "\n";
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::vector<int> myvector;
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		for (int i=0; i<100; i++) myvector.push_back(i);
+		std::cout << "size: " << myvector.size() << "\n";
+		std::cout << "capacity: " << myvector.capacity() << "\n";
+		std::cout << "max_size: " << myvector.max_size() << "\n";
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "resizing vector" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector;
+		for (int i=1;i<10;i++) myvector.push_back(i);
+  		myvector.resize(5);
+  		myvector.resize(8,100);
+  		myvector.resize(12);
+		std::cout << "myvector contains:";
+		for (unsigned int i=0;i < myvector.size();i++)
+    		std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector;
+		for (int i=1;i<10;i++) myvector.push_back(i);
+  		myvector.resize(5);
+  		myvector.resize(8,100);
+  		myvector.resize(12);
+		std::cout << "myvector contains:";
+		for (unsigned int i=0;i<myvector.size();i++)
+    		std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector::empty" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector;
+		int sum (0);
+		for (int i=1;i<=10;i++) myvector.push_back(i);
+		while (!myvector.empty())
+		{
+			sum += myvector.back();
+			myvector.pop_back();
+		}
+  		std::cout << "total: " << sum << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector;
+		int sum (0);
+		for (int i=1;i<=10;i++) myvector.push_back(i);
+		while (!myvector.empty())
+		{
+			sum += myvector.back();
+			myvector.pop_back();
+		}
+  		std::cout << "total: " << sum << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector::reserve" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int>::size_type sz;
+  		ft::vector<int> foo;
+		sz = foo.capacity();
+		std::cout << "making foo grow:\n";
+		for (int i=0; i<100; ++i) {
+		foo.push_back(i);
+		if (sz!=foo.capacity()) {
+			sz = foo.capacity();
+		std::cout << "capacity changed: " << sz << '\n';
+    		}
+		}
+		ft::vector<int> bar;
+		sz = bar.capacity();
+		bar.reserve(100);   // this is the only difference with foo above
+		std::cout << "making bar grow:\n";
+		for (int i=0; i<100; ++i) {
+			bar.push_back(i);
+			if (sz!=bar.capacity()) {
+			sz = bar.capacity();
+			std::cout << "capacity changed: " << sz << '\n';
+    		}
+  		}
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int>::size_type sz;
+  		std::vector<int> foo;
+		sz = foo.capacity();
+		std::cout << "making foo grow:\n";
+		for (int i=0; i<100; ++i) {
+		foo.push_back(i);
+		if (sz!=foo.capacity()) {
+			sz = foo.capacity();
+		std::cout << "capacity changed: " << sz << '\n';
+    		}
+		}
+		std::vector<int> bar;
+		sz = bar.capacity();
+		bar.reserve(100);   // this is the only difference with foo above
+		std::cout << "making bar grow:\n";
+		for (int i=0; i<100; ++i) {
+			bar.push_back(i);
+			if (sz!=bar.capacity()) {
+			sz = bar.capacity();
+			std::cout << "capacity changed: " << sz << '\n';
+    		}
+  		}
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector::operator[]" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector (10);   // 10 zero-initialized elements
+		ft::vector<int>::size_type sz = myvector.size();
+  		for (unsigned i=0; i<sz; i++) myvector[i]=i;
+  		for (unsigned i=0; i<sz/2; i++)
+  		{
+    		int temp;
+    		temp = myvector[sz-1-i];
+    		myvector[sz-1-i]=myvector[i];
+    		myvector[i]=temp;
+		}
+  		std::cout << "myvector contains:";
+  		for (unsigned i=0; i<sz; i++)
+    		std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector (10);   // 10 zero-initialized elements
+		std::vector<int>::size_type sz = myvector.size();
+  		for (unsigned i=0; i<sz; i++) myvector[i]=i;
+  		for (unsigned i=0; i<sz/2; i++)
+  		{
+    		int temp;
+    		temp = myvector[sz-1-i];
+    		myvector[sz-1-i]=myvector[i];
+    		myvector[i]=temp;
+		}
+  		std::cout << "myvector contains:";
+  		for (unsigned i=0; i<sz; i++)
+    		std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector::at" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector (10);   // 10 zero-initialized ints
+		for (unsigned i=0; i<myvector.size(); i++)
+			myvector.at(i)=i;
+		std::cout << "myvector contains:";
+		for (unsigned i=0; i<myvector.size(); i++)
+			std::cout << ' ' << myvector.at(i);
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector (10);   // 10 zero-initialized ints
+		for (unsigned i=0; i<myvector.size(); i++)
+			myvector.at(i)=i;
+		std::cout << "myvector contains:";
+		for (unsigned i=0; i<myvector.size(); i++)
+			std::cout << ' ' << myvector.at(i);
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector::front" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector;
+		myvector.push_back(78);
+		myvector.push_back(16);
+		myvector.front() -= myvector.back();
+		std::cout << "myvector.front() is now " << myvector.front() << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector;
+		myvector.push_back(78);
+		myvector.push_back(16);
+		myvector.front() -= myvector.back();
+		std::cout << "myvector.front() is now " << myvector.front() << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector::back" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector;
+		myvector.push_back(10);
+		while (myvector.back() != 0)
+		{
+			myvector.push_back ( myvector.back() -1 );
+		}
+		std::cout << "myvector contains:";
+		for (unsigned i=0; i<myvector.size() ; i++)
+			std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector;
+		myvector.push_back(10);
+		while (myvector.back() != 0)
+		{
+			myvector.push_back ( myvector.back() -1 );
+		}
+		std::cout << "myvector contains:";
+		for (unsigned i=0; i<myvector.size() ; i++)
+			std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector assign" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> first;
+		ft::vector<int> second;
+		ft::vector<int> third;
+		first.assign (7,100);             // 7 ints with a value of 100
+		ft::vector<int>::iterator it;
+		it=first.begin()+1;
+		second.assign (it,first.end()-1); // the 5 central values of first
+		int myints[] = {1776,7,4};
+		third.assign (myints,myints+3);   // assigning from array.
+		std::cout << "Size of first: " << int (first.size()) << '\n';
+		std::cout << "Size of second: " << int (second.size()) << '\n';
+		std::cout << "Size of third: " << int (third.size()) << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> first;
+		std::vector<int> second;
+		std::vector<int> third;
+		first.assign (7,100);             // 7 ints with a value of 100
+		std::vector<int>::iterator it;
+		it=first.begin()+1;
+		second.assign (it,first.end()-1); // the 5 central values of first
+		int myints[] = {1776,7,4};
+		third.assign (myints,myints+3);   // assigning from array.
+		std::cout << "Size of first: " << int (first.size()) << '\n';
+		std::cout << "Size of second: " << int (second.size()) << '\n';
+		std::cout << "Size of third: " << int (third.size()) << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector::push_back" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector;
+		for (int myint = 0; myint < 100; myint++)
+			myvector.push_back (myint);
+		std::cout << "myvector stores " << int(myvector.size()) << " numbers.\n";
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector;
+		for (int myint = 0; myint < 100; myint++)
+			myvector.push_back (myint);
+		std::cout << "myvector stores " << int(myvector.size()) << " numbers.\n";
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector::pop_back" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector;
+		int sum (0);
+		myvector.push_back (100);
+		myvector.push_back (200);
+		myvector.push_back (300);
+		while (!myvector.empty())
+		{
+			sum+=myvector.back();
+			myvector.pop_back();
+		}
+		std::cout << "The elements of myvector add up to " << sum << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector;
+		int sum (0);
+		myvector.push_back (100);
+		myvector.push_back (200);
+		myvector.push_back (300);
+		while (!myvector.empty())
+		{
+			sum+=myvector.back();
+			myvector.pop_back();
+		}
+		std::cout << "The elements of myvector add up to " << sum << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "inserting into a vector" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector (3,100);
+		ft::vector<int>::iterator it;
+		it = myvector.begin();
+		it = myvector.insert ( it , 200 );
+		myvector.insert (it,2,300);
+		it = myvector.begin();
+		ft::vector<int> anothervector (2,400);
+		myvector.insert (it+2,anothervector.begin(),anothervector.end());
+		int myarray [] = { 501,502,503 };
+		myvector.insert (myvector.begin(), myarray, myarray+3);
+		std::cout << "myvector contains:";
+		for (it=myvector.begin(); it<myvector.end(); it++)
+    		std::cout << ' ' << *it;
+  		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector (3,100);
+		std::vector<int>::iterator it;
+		it = myvector.begin();
+		it = myvector.insert ( it , 200 );
+		myvector.insert (it,2,300);
+		it = myvector.begin();
+		std::vector<int> anothervector (2,400);
+		myvector.insert (it+2,anothervector.begin(),anothervector.end());
+		int myarray [] = { 501,502,503 };
+		myvector.insert (myvector.begin(), myarray, myarray+3);
+		std::cout << "myvector contains:";
+		for (it=myvector.begin(); it<myvector.end(); it++)
+    		std::cout << ' ' << *it;
+  		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "erasing from vector" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector;
+		for (int i=1; i<=10; i++) myvector.push_back(i);
+		myvector.erase (myvector.begin()+5);
+		myvector.erase (myvector.begin(),myvector.begin()+3);
+		std::cout << "myvector contains:";
+		for (unsigned i=0; i<myvector.size(); ++i)
+    		std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector;
+		for (int i=1; i<=10; i++) myvector.push_back(i);
+		myvector.erase (myvector.begin()+5);
+		myvector.erase (myvector.begin(),myvector.begin()+3);
+		std::cout << "myvector contains:";
+		for (unsigned i=0; i<myvector.size(); ++i)
+    		std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "swap vectors" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> foo (3,100);
+		ft::vector<int> bar (5,200);
+		foo.swap(bar);
+		std::cout << "foo contains:";
+		for (unsigned i=0; i<foo.size(); i++)
+			std::cout << ' ' << foo[i];
+		std::cout << '\n';
+		std::cout << "bar contains:";
+		for (unsigned i=0; i<bar.size(); i++)
+			std::cout << ' ' << bar[i];
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> foo (3,100);
+		std::vector<int> bar (5,200);
+		foo.swap(bar);
+		std::cout << "foo contains:";
+		for (unsigned i=0; i<foo.size(); i++)
+			std::cout << ' ' << foo[i];
+		std::cout << '\n';
+		std::cout << "bar contains:";
+		for (unsigned i=0; i<bar.size(); i++)
+			std::cout << ' ' << bar[i];
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "clearing vectors" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector;
+		myvector.push_back (100);
+		myvector.push_back (200);
+		myvector.push_back (300);
+		std::cout << "myvector contains:";
+		for (unsigned i=0; i<myvector.size(); i++)
+    		std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+  		myvector.clear();
+  		myvector.push_back (1101);
+  		myvector.push_back (2202);
+  		std::cout << "myvector contains:";
+  		for (unsigned i=0; i<myvector.size(); i++)
+			std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector;
+		myvector.push_back (100);
+		myvector.push_back (200);
+		myvector.push_back (300);
+		std::cout << "myvector contains:";
+		for (unsigned i=0; i<myvector.size(); i++)
+    		std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+  		myvector.clear();
+  		myvector.push_back (1101);
+  		myvector.push_back (2202);
+  		std::cout << "myvector contains:";
+  		for (unsigned i=0; i<myvector.size(); i++)
+			std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "vector::get_allocator" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> myvector;
+		int * p;
+		unsigned int i;
+		p = myvector.get_allocator().allocate(5);
+		for (i=0; i<5; i++) myvector.get_allocator().construct(&p[i],i);
+		std::cout << "The allocated array contains:";
+		for (i=0; i<5; i++) std::cout << ' ' << p[i];
+		std::cout << '\n';
+		for (i=0; i<5; i++) myvector.get_allocator().destroy(&p[i]);
+		myvector.get_allocator().deallocate(p,5);
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> myvector;
+		int * p;
+		unsigned int i;
+		p = myvector.get_allocator().allocate(5);
+		for (i=0; i<5; i++) myvector.get_allocator().construct(&p[i],i);
+		std::cout << "The allocated array contains:";
+		for (i=0; i<5; i++) std::cout << ' ' << p[i];
+		std::cout << '\n';
+		for (i=0; i<5; i++) myvector.get_allocator().destroy(&p[i]);
+		myvector.get_allocator().deallocate(p,5);
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "swap (vector overload)" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		unsigned int i; (void)i;
+		ft::vector<int> foo (3,100);   // three ints with a value of 100
+		ft::vector<int> bar (5,200);   // five ints with a value of 200
+		foo.swap(bar);
+		std::cout << "foo contains:";
+		for (ft::vector<int>::iterator it = foo.begin(); it!=foo.end(); ++it)
+    		std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "bar contains:";
+		for (ft::vector<int>::iterator it = bar.begin(); it!=bar.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		unsigned int i; (void)i;
+		std::vector<int> foo (3,100);   // three ints with a value of 100
+		std::vector<int> bar (5,200);   // five ints with a value of 200
+		foo.swap(bar);
+		std::cout << "foo contains:";
+		for (std::vector<int>::iterator it = foo.begin(); it!=foo.end(); ++it)
+    		std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "bar contains:";
+		for (std::vector<int>::iterator it = bar.begin(); it!=bar.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_RED << "swap (vector overload)" << COLOR_END << std::endl;
+		std::cout << COLOR_BLUE << "ft" << std::endl;
+		ft::vector<int> foo (3,100);   // three ints with a value of 100
+		ft::vector<int> bar (2,200);   // two ints with a value of 200
+
+		if (foo==bar) std::cout << "foo and bar are equal\n";
+		if (foo!=bar) std::cout << "foo and bar are not equal\n";
+		if (foo< bar) std::cout << "foo is less than bar\n";
+		if (foo> bar) std::cout << "foo is greater than bar\n";
+		if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	{
+		std::cout << COLOR_GREEN << "std" << std::endl;
+		std::vector<int> foo (3,100);   // three ints with a value of 100
+		std::vector<int> bar (2,200);   // two ints with a value of 200
+
+		if (foo==bar) std::cout << "foo and bar are equal\n";
+		if (foo!=bar) std::cout << "foo and bar are not equal\n";
+		if (foo< bar) std::cout << "foo is less than bar\n";
+		if (foo> bar) std::cout << "foo is greater than bar\n";
+		if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+		std::cout << "------------------" << COLOR_END << std::endl;
+	}
+	std::cout << COLOR_GREEN << "/////////////////////////" COLOR_END << std::endl;
+	std::cout << COLOR_BLUE << "main de test pour map" << COLOR_END << std::endl;
+	std::cout << COLOR_GREEN << "/////////////////////////" COLOR_END << std::endl;
+	return (0);
 }

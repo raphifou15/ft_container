@@ -7,7 +7,7 @@
 # include <sstream>
 # include <algorithm>
 # include <sys/cdefs.h>
-# include "bidirectional_iterator.hpp"
+# include "treeIterator.hpp"
 # include "pair.hpp"
 # include "red_black_tree.hpp"
 # include "lexicographical_compare.hpp"
@@ -126,33 +126,36 @@ namespace ft
             return (*((insert(ft::make_pair(x, T()))).first)).second;
         }
 
+        //if (node->data.first == x.first)
+        //return (node);
+
         // modifiers:
         pair<iterator, bool> insert(const value_type& x)
         {
-            iterator it = find(x.first);
+            bool tf = 1;
+            /*iterator it = find(x.first);
             if (it != iterator(this->_rb.get_endl_node(), this->_rb.get_endl_node(), this->_rb.getRoot()))
-                return (ft::make_pair(it, false));
-            this->_rb.insert(x);
-            it = find(x.first);
-            return (ft::make_pair(it, true));
-            //faire une insertion d'un element
+                return (ft::make_pair(it, false));*/
+            iterator it = iterator(this->_rb.insert(x, &tf), this->_rb.get_endl_node(), this->_rb.getRoot());
+            return (ft::make_pair(it, tf));
+            // faire une insertion d'un element
             // dans un premier temps rechercher si la clef existe ou non si elle existe deja ne pas inserer d'element nouveau.
             // dans un second temps inserer le nouvel element.
         }
     
         iterator insert(iterator , const value_type& x)
         {
-            insert(x);
-            return (find(x.first));
+            bool tf = 1;
+            return (iterator(this->_rb.insert(x, &tf), this->_rb.get_endl_node(), this->_rb.getRoot()));
+            //insert(x);
+            //return (find(x.first));
         }
-        template <class InputIterator>  void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
+        template <class InputIterator>  void insert(InputIterator first, InputIterator last)
         {
             for (; first != last; first++)
-            {
-                iterator it = find((*first).first);
-                if (it == iterator(this->_rb.get_endl_node(), this->_rb.get_endl_node(), this->_rb.getRoot()))
                     insert(*first);
-            }
+            //iterator it = find((*first).first);
+            //if (it == iterator(this->_rb.get_endl_node(), this->_rb.get_endl_node(), this->_rb.getRoot()))
         }
 
         void erase(iterator position)
@@ -162,11 +165,7 @@ namespace ft
 
         size_type erase(const key_type& x)
         {
-            //display_element();
-            //std::cout << "\n\n\n\n\n\n" << std::endl;
             bool tf = this->_rb.erase(ft::make_pair(x, mapped_type()));
-            //display_element();
-            //std::cout << "\n\n\n\n\n\n" << std::endl;
             return (tf);
         }
 
@@ -174,13 +173,9 @@ namespace ft
         {
             while (first != last)
             {
-                //display_element();
-                //std::cout << "\n\n\n\n\n\n" << std::endl;
                 iterator position = first;
                 ++first;
                 this->_rb.erase(*position);
-                //display_element();
-                //std::cout << "\n\n\n\n\n\n" << std::endl;
             }
         }
         void swap(map<Key,T,Compare,Allocator> &lala)
@@ -280,7 +275,12 @@ namespace ft
         {
             return ft::make_pair(lower_bound(x), upper_bound(x));
         }
-
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////                   /////////////////////////////////
+////////////////////////// fonction de debug /////////////////////////////////
+/////////////////////////                   /////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+/*
         void    display_element(void)
            {
             this->_rb.displayAllNode(this->_rb.getRoot(), 0);
@@ -295,7 +295,12 @@ namespace ft
         {
             this->_rb.checker();
         }
-
+*/
+/////////////////////////////////////////////////////////////////////
+/////////////////////////                      /////////////////////
+////////////////////////    fin de debug      /////////////////////
+///////////////////////                      /////////////////////
+/////////////////////////////////////////////////////////////////
         friend bool operator==(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y)
         {
             if (x.size() != y.size())
